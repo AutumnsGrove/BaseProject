@@ -172,6 +172,66 @@ experiment/new-idea     # Experiments
 release/v1.0.0         # Releases
 ```
 
+### Dev/Main Branch Strategy (Optional)
+
+For projects with ongoing development and production releases, consider a two-branch strategy:
+
+**`main` branch** - Production-ready code
+- Only receives merges from dev when stable
+- Always in deployable state
+- Users/clients clone from this branch
+- Clean and minimal
+
+**`dev` branch** - Active development
+- All development work happens here
+- Experimental features and work-in-progress
+- Testing and iteration
+- Can be messy during active development
+
+**Workflow:**
+```bash
+# Daily development in dev branch
+git checkout dev
+git pull origin dev
+
+# Create feature branches off dev
+git checkout -b feature/new-feature
+
+# Work and commit
+git add .
+git commit -m "feat: implement new feature"
+
+# Merge back to dev
+git checkout dev
+git merge feature/new-feature
+
+# When ready for production
+# Test thoroughly, then merge to main
+git checkout main
+git merge dev
+git push origin main
+
+# Continue development in dev
+git checkout dev
+```
+
+**Benefits:**
+- Keeps main clean for users/production
+- Development work doesn't clutter production branch
+- Can experiment freely in dev
+- Clear separation between stable and in-progress work
+
+**When to use:**
+- Template repositories (like BaseProject itself)
+- Projects with external users cloning the repo
+- Applications with production deployments
+- Open source projects with stable releases
+
+**When NOT to use:**
+- Simple personal projects
+- Rapid prototypes
+- Single-developer projects without production needs
+
 ---
 
 ## Handling Merge Conflicts

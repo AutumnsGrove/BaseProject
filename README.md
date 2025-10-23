@@ -4,11 +4,11 @@ A comprehensive project template with built-in Claude Code workflows, best pract
 
 ## 🚀 Quick Start
 
-### Using Claude Code (Recommended)
+### Option 1: New Project Setup
 
 **One-liner in Claude Code:**
 ```
-Clone https://github.com/AutumnsGrove/BaseProject to /tmp, copy to ~/Projects/[ASK ME PROJECT NAME] excluding (.git, TemplateDocs/), rename TEMPLATE_CLAUDE.md to CLAUDE.md, customize CLAUDE.md sections (Project Purpose, Tech Stack, API Keys List, Architecture Notes) and README.md (title, description, features) with my project details [ASK ME: name, description, tech stack, API keys needed], init language-specific dependencies (uv for Python, npm for JS, go mod for Go), create proper directory structure (src/ with __init__.py or index.js, tests/ with __init__.py), generate secrets_template.json with my API key placeholders, write TODOS.md with 3-5 initial tasks derived from project description, git init with user.name and user.email from global git config, optionally copy pre-commit hooks from ClaudeUsage/pre_commit_hooks/ [ASK ME], make initial commit "feat: initialize [PROJECT] from BaseProject template", display project summary and next steps
+Clone https://github.com/AutumnsGrove/BaseProject (master branch) to /tmp, copy to ~/Projects/[ASK ME PROJECT NAME] excluding (.git/), rename TEMPLATE_CLAUDE.md to CLAUDE.md, customize CLAUDE.md sections (Project Purpose, Tech Stack, API Keys List, Architecture Notes) and README.md (title, description, features) with my project details [ASK ME: name, description, tech stack, API keys needed], init language-specific dependencies (uv for Python, npm for JS, go mod for Go), create proper directory structure (src/ with __init__.py or index.js, tests/ with __init__.py), generate secrets_template.json with my API key placeholders, write TODOS.md with 3-5 initial tasks derived from project description, git init with user.name and user.email from global git config, optionally copy pre-commit hooks from ClaudeUsage/pre_commit_hooks/ [ASK ME], make initial commit "feat: initialize [PROJECT] from BaseProject template", display project summary and next steps
 ```
 
 Claude will interactively:
@@ -21,9 +21,31 @@ Claude will interactively:
 - Initialize git with proper configuration
 - Create initial commit following our standards
 
+---
+
+### Option 2: Add to Existing Project
+
+**For projects already in progress with existing code, documentation, and git history:**
+
+```
+Clone https://github.com/AutumnsGrove/BaseProject (master branch) to /tmp/bp, analyze my project: read existing README.md/CLAUDE.md, scan git history for commit patterns, detect tech stack and package managers, identify project architecture (monorepo/single package/etc), read TODOS.md if exists, copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides), intelligently merge CLAUDE.md: if exists parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->", if new create from template with detected project details, enhance .gitignore by merging entries (preserve existing, add missing), analyze commit messages and suggest adopting BaseProject style if inconsistent, check if using branches like dev/main and suggest workflow if not, optionally setup pre-commit hooks [ASK ME], generate/update TODOS.md with project-aware tasks, create integration-summary.md report showing what was added/merged/skipped, backup modified files to ./.baseproject-backup-[TIMESTAMP]/, cleanup temp directory, display next steps
+```
+
+Claude will intelligently:
+- Analyze your existing project structure and conventions
+- Detect tech stack from package files (package.json, pyproject.toml, etc.)
+- Copy ClaudeUsage/ guides without overwriting existing files
+- Merge CLAUDE.md sections with clear markers (preserves your content)
+- Append missing .gitignore entries without removing existing ones
+- Compare your commit style to BaseProject standards and offer suggestions
+- Create backup of all modified files before making changes
+- Generate integration-summary.md showing exactly what was changed
+- Respect your existing README.md (won't overwrite)
+- Adapt to your project's existing structure
+
 ### Manual Setup
 
-For full control over the setup process, see [TemplateDocs/NEW_PROJECT_SETUP.md](TemplateDocs/NEW_PROJECT_SETUP.md) for detailed step-by-step instructions.
+For full control over the setup process, see [NEW_PROJECT_SETUP.md](https://github.com/AutumnsGrove/BaseProject/blob/dev/TemplateDocs/NEW_PROJECT_SETUP.md) in the dev branch for detailed step-by-step instructions.
 
 ---
 
@@ -46,9 +68,6 @@ BaseProject/
 │   ├── pre_commit_hooks/      # Git hooks for code quality
 │   ├── templates/             # Template files for common configs
 │   └── ... (18 total guides)
-├── TemplateDocs/               # Template-specific docs (NOT copied to new projects)
-│   ├── NEW_PROJECT_SETUP.md   # Manual setup guide
-│   └── QUICK_REFERENCE.md     # Quick reference card
 └── .gitignore                  # Comprehensive gitignore
 ```
 
@@ -311,6 +330,17 @@ After setup:
 
 Found a better pattern? Want to add a guide?
 
+This template uses a **two-branch strategy**:
+- **`master` branch** - Clean, user-facing template (you're here)
+- **`dev` branch** - Template development and maintenance
+
+### For Template Development:
+1. Check out the [dev branch](https://github.com/AutumnsGrove/BaseProject/tree/dev)
+2. Read [CONTRIBUTING.md](https://github.com/AutumnsGrove/BaseProject/blob/dev/CONTRIBUTING.md) for full workflow
+3. Make changes in dev branch
+4. Test thoroughly before merging to master
+
+### For Quick Improvements:
 1. Add your guide to `ClaudeUsage/`
 2. Update `ClaudeUsage/README.md` index
 3. Follow the documentation standards in `ClaudeUsage/documentation_standards.md`
