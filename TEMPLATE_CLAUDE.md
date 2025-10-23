@@ -38,6 +38,13 @@
 - Keep the list current and manageable
 
 ### Git Workflow Essentials
+
+**Branch Strategy:**
+- Consider using a **dev/main branch strategy** for projects with production releases
+- See `ClaudeUsage/git_workflow.md` for details on when and how to implement
+- Keep development work in `dev`, merge to `main` when stable
+- This is optional - simple projects can use a single branch
+
 **After completing major changes, you MUST:**
 1. Check git status: `git status`
 2. Review recent commits for style: `git log --oneline -5`
