@@ -4,7 +4,7 @@ A comprehensive project template with built-in Claude Code workflows, best pract
 
 ## 🚀 Quick Start
 
-### Using Claude Code (Recommended)
+### Option 1: New Project Setup
 
 **One-liner in Claude Code:**
 ```
@@ -20,6 +20,28 @@ Claude will interactively:
 - Generate secrets_template.json with your needed API keys
 - Initialize git with proper configuration
 - Create initial commit following our standards
+
+---
+
+### Option 2: Add to Existing Project
+
+**For projects already in progress with existing code, documentation, and git history:**
+
+```
+Clone https://github.com/AutumnsGrove/BaseProject (master branch) to /tmp/bp, analyze my project: read existing README.md/CLAUDE.md, scan git history for commit patterns, detect tech stack and package managers, identify project architecture (monorepo/single package/etc), read TODOS.md if exists, copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides), intelligently merge CLAUDE.md: if exists parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->", if new create from template with detected project details, enhance .gitignore by merging entries (preserve existing, add missing), analyze commit messages and suggest adopting BaseProject style if inconsistent, check if using branches like dev/main and suggest workflow if not, optionally setup pre-commit hooks [ASK ME], generate/update TODOS.md with project-aware tasks, create integration-summary.md report showing what was added/merged/skipped, backup modified files to ./.baseproject-backup-[TIMESTAMP]/, cleanup temp directory, display next steps
+```
+
+Claude will intelligently:
+- Analyze your existing project structure and conventions
+- Detect tech stack from package files (package.json, pyproject.toml, etc.)
+- Copy ClaudeUsage/ guides without overwriting existing files
+- Merge CLAUDE.md sections with clear markers (preserves your content)
+- Append missing .gitignore entries without removing existing ones
+- Compare your commit style to BaseProject standards and offer suggestions
+- Create backup of all modified files before making changes
+- Generate integration-summary.md showing exactly what was changed
+- Respect your existing README.md (won't overwrite)
+- Adapt to your project's existing structure
 
 ### Manual Setup
 
