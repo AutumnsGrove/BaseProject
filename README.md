@@ -1,3 +1,48 @@
+## 🚀 Quick Start - Use This Template
+
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-2ea44f?style=for-the-badge)](https://github.com/AutumnsGrove/BaseProject/generate)
+
+**One-click setup:**
+
+1. Click the green **"Use this template"** button above (or [click here](https://github.com/AutumnsGrove/BaseProject/generate))
+2. Name your repository
+3. GitHub Actions will automatically:
+   - Rename `TEMPLATE_CLAUDE.md` → `CLAUDE.md`
+   - Create a customized `TODOS.md`
+   - Update `README.md` with your project name
+   - Clean up template-specific files
+   - Create a welcome issue with next steps
+
+**Manual setup (if you prefer):**
+
+```bash
+# Clone and setup
+git clone https://github.com/AutumnsGrove/BaseProject.git MyProject
+cd MyProject
+bash setup_new_project.sh
+```
+
+### What You Get
+
+✅ **Instant project structure** - Ready-to-use layout
+✅ **Claude Code optimized** - CLAUDE.md auto-loads context
+✅ **16 workflow guides** - Git, testing, secrets, CI/CD, and more
+✅ **Best practices built-in** - Security, code quality, documentation standards
+✅ **Task management** - Integrated TODOS.md workflow
+
+---
+
+## To Enable Template Mode (Repository Owner)
+
+1. Go to **Settings** → **General**
+2. Scroll to **Template repository**
+3. Check ✅ **Template repository**
+4. Save changes
+
+The "Use this template" button will now appear on your repository page!
+
+---
+
 # BaseProject - Claude Code Template
 
 A comprehensive project template with built-in Claude Code workflows, best practices, and extensive documentation for rapid development setup.
