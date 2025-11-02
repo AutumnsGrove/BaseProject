@@ -2,18 +2,37 @@
 
 ## Overview
 
-Git hooks are scripts that automatically run at specific points in your Git workflow. They help maintain code quality, enforce standards, and catch issues before they enter your repository. This guide covers installing and using the pre-commit hooks provided in this template.
+Git hooks are scripts that automatically run at specific points in your Git workflow. They help maintain code quality, enforce standards, and catch issues before they enter your repository. This guide covers installing and using the comprehensive hooks provided in this template.
+
+**New in this version:** Multi-language support, secrets scanning, automatic dependency management, and branch context injection.
 
 ## Quick Reference
 
 ```bash
-# Copy hooks to your project
-cp ClaudeUsage/pre_commit_hooks/commit-msg .git/hooks/
-cp ClaudeUsage/pre_commit_hooks/pre-commit .git/hooks/
+# RECOMMENDED: Use the installer script (interactive)
+./ClaudeUsage/pre_commit_hooks/install_hooks.sh
 
-# Make them executable
-chmod +x .git/hooks/commit-msg
-chmod +x .git/hooks/pre-commit
+# OR: Manual installation for specific language
+# Python project:
+cp ClaudeUsage/pre_commit_hooks/commit-msg .git/hooks/
+cp ClaudeUsage/pre_commit_hooks/pre-commit-python .git/hooks/pre-commit
+cp ClaudeUsage/pre_commit_hooks/pre-commit-secrets-scanner .git/hooks/pre-commit-secrets
+cp ClaudeUsage/pre_commit_hooks/pre-push .git/hooks/
+chmod +x .git/hooks/*
+
+# JavaScript project:
+cp ClaudeUsage/pre_commit_hooks/commit-msg .git/hooks/
+cp ClaudeUsage/pre_commit_hooks/pre-commit-javascript .git/hooks/pre-commit
+cp ClaudeUsage/pre_commit_hooks/pre-commit-secrets-scanner .git/hooks/pre-commit-secrets
+cp ClaudeUsage/pre_commit_hooks/pre-push .git/hooks/
+chmod +x .git/hooks/*
+
+# Multi-language project:
+cp ClaudeUsage/pre_commit_hooks/commit-msg .git/hooks/
+cp ClaudeUsage/pre_commit_hooks/pre-commit-multi-language .git/hooks/pre-commit
+cp ClaudeUsage/pre_commit_hooks/pre-commit-secrets-scanner .git/hooks/pre-commit-secrets
+cp ClaudeUsage/pre_commit_hooks/pre-push .git/hooks/
+chmod +x .git/hooks/*
 
 # Test without committing
 .git/hooks/pre-commit
@@ -30,28 +49,61 @@ Git hooks are executable scripts that Git runs automatically when certain events
 
 Hooks live in `.git/hooks/` and must be executable. They exit with code 0 (success) or non-zero (failure) to allow or block the Git operation.
 
+## Hook Selection Matrix
+
+Choose the right hooks for your project:
+
+| Project Type | Pre-Commit Hook | Additional Hooks | Security |
+|-------------|-----------------|------------------|----------|
+| **Python** | `pre-commit-python` | `pre-push`, `post-checkout` | `pre-commit-secrets-scanner` |
+| **JavaScript/Node** | `pre-commit-javascript` | `pre-push`, `post-checkout` | `pre-commit-secrets-scanner` |
+| **Go** | `pre-commit-go` | `pre-push`, `post-checkout` | `pre-commit-secrets-scanner` |
+| **Rust** | `pre-commit-multi-language` | `pre-push`, `post-checkout` | `pre-commit-secrets-scanner` |
+| **Multi-language** | `pre-commit-multi-language` | `pre-push`, `post-checkout` | `pre-commit-secrets-scanner` |
+| **Any project** | N/A (optional) | N/A | `pre-commit-secrets-scanner` ⭐ |
+
+**Always install:** `commit-msg` (validates commit format)
+**Highly recommended:** `pre-commit-secrets-scanner` (prevents leaked secrets)
+**Optional:** `prepare-commit-msg`, `post-commit` (convenience features)
+
+---
+
 ## Installation and Activation
 
-### Approach 1: Manual Installation
+### Approach 1: Interactive Installer (Recommended)
+
+The easiest way to install hooks is using the interactive installer script:
 
 ```bash
 # Navigate to your project root
 cd /path/to/your/project
 
-# Copy hook scripts
-cp /path/to/hook-script .git/hooks/hook-name
-
-# Make executable
-chmod +x .git/hooks/hook-name
+# Run the installer
+./ClaudeUsage/pre_commit_hooks/install_hooks.sh
 ```
 
-### Approach 2: Using This Template
+The installer will:
+1. Auto-detect your project type (Python, JavaScript, Go, etc.)
+2. Recommend appropriate hooks
+3. Back up existing hooks
+4. Install selected hooks
+5. Make them executable
+6. Verify installation
+
+### Approach 2: Manual Installation
+
+For more control, manually copy specific hooks:
 
 ```bash
-# From your project root
-# Copy all hooks at once
+# Navigate to your project root
+cd /path/to/your/project
+
+# Example: Python project
 cp ClaudeUsage/pre_commit_hooks/commit-msg .git/hooks/
-cp ClaudeUsage/pre_commit_hooks/pre-commit .git/hooks/
+cp ClaudeUsage/pre_commit_hooks/pre-commit-python .git/hooks/pre-commit
+cp ClaudeUsage/pre_commit_hooks/pre-commit-secrets-scanner .git/hooks/pre-commit-secrets
+cp ClaudeUsage/pre_commit_hooks/pre-push .git/hooks/
+cp ClaudeUsage/pre_commit_hooks/post-checkout .git/hooks/
 
 # Make them executable
 chmod +x .git/hooks/*
@@ -76,18 +128,86 @@ git commit -m "Test: verify hooks are working"
 
 ## Available Hooks in This Template
 
-### commit-msg Hook
-Validates commit message format according to project standards:
-- Checks for proper action verbs (Add, Update, Fix, etc.)
-- Validates message structure
-- Ensures Co-Authored-By line is present
+### Core Hooks (Recommended for All Projects)
 
-### pre-commit Hook
-Runs code quality checks before allowing commit:
-- **Black**: Python code formatting
-- **Ruff**: Fast Python linting
-- Automatically formats code when possible
-- Blocks commit if critical issues found
+#### commit-msg
+Validates commit message format according to conventional commits:
+- Checks for proper commit types (feat, fix, docs, etc.)
+- Validates message structure
+- Supports both conventional and custom formats
+- See `ClaudeUsage/git_guide.md` for format details
+
+#### pre-commit-secrets-scanner
+**CRITICAL SECURITY**: Scans for API keys and secrets before commit:
+- Detects Anthropic, OpenAI, AWS, GitHub tokens
+- Prevents accidental exposure of credentials
+- Checks for hardcoded passwords
+- Whitelists template files like `secrets_template.json`
+- **Recommended for ALL projects**
+
+### Language-Specific Pre-Commit Hooks
+
+#### pre-commit-python
+Python code quality checks:
+- **Black**: Code formatting
+- **Ruff**: Fast linting
+- Runs only on staged `.py` files
+- Auto-formats when possible
+
+#### pre-commit-javascript
+JavaScript/TypeScript code quality checks:
+- **Prettier**: Code formatting
+- **ESLint**: Linting and style rules
+- **TypeScript**: Type checking (if `tsconfig.json` present)
+- Supports `.js`, `.jsx`, `.ts`, `.tsx` files
+
+#### pre-commit-go
+Go code quality checks:
+- **gofmt**: Code formatting
+- **go vet**: Static analysis
+- **golint**: Style suggestions (optional)
+- **goimports**: Import management (if installed)
+- **go mod verify**: Dependency verification
+
+#### pre-commit-multi-language
+Comprehensive checks for mixed-language projects:
+- Detects file types automatically
+- Runs appropriate tools per language
+- Validates JSON and YAML syntax
+- Ideal for polyglot codebases
+
+### Test & Deploy Hooks
+
+#### pre-push
+Runs tests before pushing to remote:
+- Auto-detects test framework (pytest, npm test, go test, cargo test)
+- Prevents broken code from reaching remote
+- Non-blocking if no tests configured
+- **Recommended for all projects with tests**
+
+### Automation Hooks
+
+#### post-checkout
+Auto-updates dependencies when switching branches:
+- Detects changes in `package.json`, `pyproject.toml`, `go.mod`, etc.
+- Runs appropriate package manager (npm, uv, go mod, cargo)
+- Saves time and prevents "works on my branch" issues
+- **Recommended for team projects**
+
+#### prepare-commit-msg
+Adds context to commit messages automatically:
+- Extracts ticket number from branch name (ABC-123, #456)
+- Adds branch context to commits
+- Includes Claude co-authorship attribution
+- **Optional but useful for ticket-based workflows**
+
+#### post-commit
+Shows commit summary and scans for TODOs:
+- Displays commit details and stats
+- Scans committed files for TODO/FIXME comments
+- Shows project-wide TODO count
+- Reminds about pending push
+- **Optional, informational only**
 
 See `examples.md` for more hook examples and customization options.
 

@@ -2,28 +2,248 @@
 
 ## Overview
 
-This guide provides additional useful hook examples and introduces the pre-commit framework for managing hooks across projects.
+This guide provides examples of the comprehensive hooks included in BaseProject, customization patterns, and introduces the pre-commit framework for managing hooks across projects.
+
+**What's New:** This template now includes production-ready hooks for Python, JavaScript, Go, multi-language projects, secrets scanning, test automation, and dependency management.
 
 ---
 
-## Other Useful Hooks
+## Included Production Hooks
 
-### pre-push Hook
-Run tests before pushing to remote:
-```bash
-#!/bin/bash
-echo "Running tests before push..."
-pytest tests/ || exit 1
+BaseProject now includes these production-ready hooks out of the box:
+
+### Security Hooks
+
+#### pre-commit-secrets-scanner
+**Critical security hook** that prevents committing API keys, tokens, and credentials.
+
+**Features:**
+- Detects 15+ secret patterns (API keys, tokens, passwords)
+- Whitelists template files (`secrets_template.json`)
+- Checks for sensitive filenames (`.env`, `credentials.json`)
+- Provides actionable remediation steps
+
+**Example output when secret detected:**
+```
+🔍 Scanning for secrets and sensitive data...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❌ SECURITY WARNING: Possible secrets detected!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Found potential secrets:
+  • Anthropic API Key
+  • Hardcoded Password
+
+Recommended actions:
+  1. Remove the secret from your code
+  2. Store in secrets.json (which is gitignored)
+  3. Use environment variables for sensitive data
+  4. Check ClaudeUsage/secrets_management.md for guidance
 ```
 
-### post-checkout Hook
-Install dependencies after switching branches:
-```bash
-#!/bin/bash
-if [ -f "requirements.txt" ]; then
-    pip install -r requirements.txt
-fi
+---
+
+### Language-Specific Quality Hooks
+
+#### pre-commit-python
+Runs Black formatting and Ruff linting on Python files.
+
+**Example output:**
 ```
+📦 Checking Python files...
+Files: src/main.py src/utils.py
+
+  Running Black formatter...
+  ✓ Black formatting passed
+
+  Running Ruff linter...
+  ✓ Ruff linting passed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ All pre-commit checks passed!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### pre-commit-javascript
+Runs Prettier formatting, ESLint linting, and TypeScript type checking.
+
+**Example output:**
+```
+📦 Checking JavaScript/TypeScript files...
+Files: src/index.ts src/utils.js
+
+  Running Prettier formatter...
+  ✓ Prettier formatting passed
+
+  Running ESLint...
+  ✓ ESLint passed
+
+  Running TypeScript type check...
+  ✓ TypeScript type check passed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ All pre-commit checks passed!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### pre-commit-go
+Runs gofmt, go vet, golint, and go mod verify.
+
+**Example output:**
+```
+📦 Checking Go files...
+Files: main.go utils.go
+
+  Running gofmt...
+  ✓ gofmt formatting passed
+
+  Running go vet...
+  ✓ go vet passed
+
+  Running golint...
+  ✓ golint passed
+
+  Running go mod verify...
+  ✓ go mod verify passed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ All pre-commit checks passed!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### pre-commit-multi-language
+Automatically detects and checks Python, JavaScript, Go, Rust, JSON, and YAML files.
+
+**Example output:**
+```
+🔍 Running multi-language pre-commit checks...
+
+📦 Checking Python files...
+  ✓ Black formatting passed
+  ✓ Ruff linting passed
+
+📦 Checking JavaScript/TypeScript files...
+  ✓ Prettier formatting passed
+  ✓ ESLint passed
+
+📦 Validating JSON files...
+  ✓ All JSON files valid
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ All pre-commit checks passed!
+  Checked: 3 language(s)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+### Test Automation Hooks
+
+#### pre-push
+Auto-detects and runs tests before pushing to prevent broken builds.
+
+**Example output:**
+```
+🧪 Running tests before push...
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 Detected Python project
+Running pytest...
+
+tests/test_main.py ✓✓✓✓
+tests/test_utils.py ✓✓
+
+✓ Python tests passed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ All tests passed! Proceeding with push.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+### Automation & Convenience Hooks
+
+#### post-checkout
+Automatically updates dependencies when switching branches.
+
+**Example output:**
+```
+🔄 Post-checkout: Checking for dependency changes...
+
+📦 Python dependencies changed
+  Running 'uv sync'...
+  ✓ Python dependencies updated (uv)
+
+📦 Node dependencies changed
+  Running 'npm install'...
+  ✓ Node dependencies updated (npm)
+
+✅ Dependency updates complete
+```
+
+#### prepare-commit-msg
+Adds branch context and Claude attribution to commits automatically.
+
+**Example workflow:**
+```bash
+# Branch: feature/ABC-123-add-auth
+git commit -m "add JWT authentication"
+
+# Hook automatically prepends ticket number:
+# [ABC-123] add JWT authentication
+#
+# 🤖 Generated with Claude Code
+# via Happy
+#
+# Co-Authored-By: Claude <noreply@anthropic.com>
+# Co-Authored-By: Happy <yesreply@happy.engineering>
+```
+
+#### post-commit
+Shows commit summary and scans for TODO comments.
+
+**Example output:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Commit successful!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 Commit Details:
+
+  Hash:    a1b2c3d
+  Author:  Your Name
+  Message: feat: add user authentication
+
+  Files changed: 3
+
+  src/auth.py    | 45 +++++++++++++++
+  tests/test_auth.py | 32 +++++++++++
+  README.md      |  5 +++
+
+🔍 Scanning for TODO/FIXME comments in committed files...
+
+  TODO - src/auth.py:23
+    # TODO: Add refresh token support
+  FIXME - src/auth.py:45
+    # FIXME: Handle edge case for expired tokens
+
+Project-wide summary:
+  TODO comments:  12
+  FIXME comments: 3
+
+💡 Consider updating TODOS.md to track these items
+
+📤 You have 1 commit(s) ready to push
+   Run: git push
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## Additional Hook Ideas
 
 ### post-merge Hook
 Run database migrations after merging:
@@ -35,102 +255,46 @@ python manage.py migrate --check || python manage.py migrate
 
 ---
 
-## Testing Hook Example
+## Customization Examples
 
-Complete pre-push hook that runs pytest:
+All included hooks can be customized for your specific needs. Here are some common modifications:
 
-```bash
-#!/bin/bash
-# .git/hooks/pre-push
+### Adding Custom Secret Patterns
 
-echo "Running test suite before push..."
-echo "================================"
-
-# Run pytest with coverage
-pytest tests/ --cov=. --cov-report=term-missing
-
-# Capture exit code
-TEST_RESULT=$?
-
-if [ $TEST_RESULT -ne 0 ]; then
-    echo ""
-    echo "❌ Tests failed! Push aborted."
-    echo "Fix failing tests before pushing."
-    exit 1
-fi
-
-echo ""
-echo "✅ All tests passed! Proceeding with push."
-exit 0
-```
-
----
-
-## Secrets Scanning Hook
-
-Pre-commit hook that blocks commits containing API keys:
+Edit `pre-commit-secrets-scanner` to add your organization's secret patterns:
 
 ```bash
-#!/bin/bash
-# .git/hooks/pre-commit
-
-echo "Scanning for secrets..."
-
-# Patterns to detect
-PATTERNS=(
-    "sk-ant-api[0-9a-zA-Z-]+"          # Anthropic keys
-    "sk-[a-zA-Z0-9]{32,}"              # OpenAI keys
-    "AIza[0-9A-Za-z-_]{35}"            # Google API keys
-    "AKIA[0-9A-Z]{16}"                 # AWS Access Keys
-    "[a-f0-9]{32}"                     # Generic API tokens
+# Add to the PATTERNS array:
+declare -A PATTERNS=(
+    # ... existing patterns ...
+    ["Your Company API Key"]='yc-api-[0-9a-f]{32}'
+    ["Internal Token"]='internal_[a-zA-Z0-9]{40}'
 )
-
-# Check staged files
-for pattern in "${PATTERNS[@]}"; do
-    if git diff --cached | grep -E "$pattern" > /dev/null; then
-        echo ""
-        echo "❌ SECURITY WARNING: Possible API key detected!"
-        echo "Pattern matched: $pattern"
-        echo ""
-        echo "Please remove secrets and use secrets.json instead."
-        exit 1
-    fi
-done
-
-echo "✅ No secrets detected"
-exit 0
 ```
 
----
+### Customizing Code Quality Rules
 
-## TODO Tracking Hook
-
-Automatically update TODOS.md based on code comments:
-
+**Python (pre-commit-python):**
 ```bash
-#!/bin/bash
-# .git/hooks/post-commit
-
-echo "Updating TODOS.md from code comments..."
-
-# Find all TODO comments
-git grep -n "TODO:" > /tmp/todos.txt 2>/dev/null
-
-if [ -s /tmp/todos.txt ]; then
-    echo "" >> TODOS.md
-    echo "## Code TODOs (Auto-generated)" >> TODOS.md
-    echo "" >> TODOS.md
-
-    while IFS=: read -r file line content; do
-        echo "- [ ] $file:$line - $content" >> TODOS.md
-    done < /tmp/todos.txt
-
-    echo "✅ TODOS.md updated"
-else
-    echo "No TODO comments found"
+# Add mypy type checking
+if command -v mypy &> /dev/null; then
+    echo "  Running mypy..."
+    mypy $python_files || checks_failed=1
 fi
+```
 
-rm -f /tmp/todos.txt
+**JavaScript (pre-commit-javascript):**
+```bash
+# Add custom ESLint config
+eslint --config .eslintrc.custom.json $js_ts_files
+```
+
+### Modifying Test Timeout
+
+**pre-push:**
+```bash
+# Add timeout to prevent hanging tests
+timeout 300 pytest tests/ || tests_failed=1  # 5 minute timeout
 ```
 
 ---
