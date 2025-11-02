@@ -8,8 +8,7 @@ This directory contains comprehensive guides for working with Claude on developm
 
 | Guide | Description | When to Use |
 |-------|-------------|-------------|
-| [git_workflow.md](git_workflow.md) | Git operations, commits, branching | Every session with code changes |
-| [git_conventional_commits.md](git_conventional_commits.md) | Conventional commit message standards | Writing standardized commit messages |
+| [git_guide.md](git_guide.md) | Git operations, commits, branching, conventional commits | Every session with code changes |
 | [secrets_management.md](secrets_management.md) | API key handling, security patterns | Setting up projects with external APIs |
 | [secrets_advanced.md](secrets_advanced.md) | Advanced secrets patterns, rotation, auditing | Enterprise-grade security implementations |
 | [house_agents.md](house_agents.md) | Specialized agent usage (research, coding) | Complex searches or multi-file refactoring |
@@ -20,6 +19,7 @@ This directory contains comprehensive guides for working with Claude on developm
 
 | Guide | Description | When to Use |
 |-------|-------------|-------------|
+| [db_usage.md](db_usage.md) | SQLite database with database.py interface | Working with databases (MANDATORY) |
 | [uv_usage.md](uv_usage.md) | UV package manager workflows | Python dependency management |
 | [testing_strategies.md](testing_strategies.md) | Test patterns and frameworks | Writing or debugging tests |
 | [code_quality.md](code_quality.md) | Linting, formatting, standards | Setting up quality checks |
@@ -86,8 +86,8 @@ For new projects, reference these guides in order:
 
 1. **project_setup.md** - Initialize project from template
 2. **project_structure.md** - Set up directory layout
-3. **git_workflow.md** - Initialize version control
-4. **git_conventional_commits.md** - Learn commit message standards
+3. **git_guide.md** - Initialize version control and learn commit standards
+4. **db_usage.md** - Set up database interface (if using databases)
 5. **secrets_management.md** - Configure API keys
 6. **uv_usage.md** (Python) or relevant language guide
 7. **pre_commit_hooks/setup_guide.md** - Set up quality checks

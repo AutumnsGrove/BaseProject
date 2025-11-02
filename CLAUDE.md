@@ -39,32 +39,29 @@
 
 ### Git Workflow Essentials
 
-**Branch Strategy:**
-- Consider using a **dev/main branch strategy** for projects with production releases
-- See `ClaudeUsage/git_workflow.md` for details on when and how to implement
-- Keep development work in `dev`, merge to `main` when stable
-- This is optional - simple projects can use a single branch
+**After completing major changes, you MUST commit your work.**
 
-**After completing major changes, you MUST:**
-1. Check git status: `git status`
-2. Review recent commits for style: `git log --oneline -5`
-3. Stage changes: `git add .`
-4. Commit with proper message format (see below)
+**Conventional Commits Format:**
+```bash
+<type>: <brief description>
 
-**Commit Message Format:**
-```
-[Action] [Brief description]
-
-- [Specific change 1 with technical detail]
-- [Specific change 2 with technical detail]
-- [Additional implementation details]
+<optional body>
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-**Action Verbs**: Add, Update, Fix, Refactor, Remove, Enhance
+**Common Types:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`
+
+**Examples:**
+```bash
+feat: Add user authentication
+fix: Correct timezone bug
+docs: Update README
+```
+
+**For complete details:** See `ClaudeUsage/git_guide.md`
 
 ---
 
@@ -82,9 +79,15 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - **When managing Python dependencies** → Read `ClaudeUsage/uv_usage.md`
 
 ### Version Control
-- **Before making a git commit** → Read `ClaudeUsage/git_commit_guide.md`
-- **When initializing a new repo** → Read `ClaudeUsage/git_commit_guide.md`
-- **For git workflow details** → Read `ClaudeUsage/git_commit_guide.md`
+- **Before making a git commit** → Read `ClaudeUsage/git_guide.md`
+- **When initializing a new repo** → Read `ClaudeUsage/git_guide.md`
+- **For git workflow and branching** → Read `ClaudeUsage/git_guide.md`
+- **For conventional commits reference** → Read `ClaudeUsage/git_guide.md`
+
+### Database Management
+- **When working with databases** → Read `ClaudeUsage/db_usage.md`
+- **Before implementing data persistence** → Read `ClaudeUsage/db_usage.md`
+- **For database.py template** → Read `ClaudeUsage/db_usage.md`
 
 ### Search & Research
 - **When searching across 20+ files** → Read `ClaudeUsage/house_agents.md`

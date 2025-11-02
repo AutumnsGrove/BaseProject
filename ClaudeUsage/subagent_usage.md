@@ -386,7 +386,7 @@ git show [commit-hash]
 ## Related Guides
 
 - **`house_agents.md`** - Built-in house agents for simpler codebase searches
-- **`git_commit_guide.md`** - Detailed commit message standards
+- **`git_guide.md`** - Detailed commit message standards and git workflow
 - **`research_workflow.md`** - Deep dive into research phase best practices
 
 ---

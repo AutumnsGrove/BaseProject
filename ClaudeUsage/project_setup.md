@@ -463,7 +463,8 @@ echo 'console.log("Hello, World!");' > src/index.js
 Based on your tech stack, review:
 - [uv_usage.md](uv_usage.md) - Python/UV
 - [testing_strategies.md](testing_strategies.md) - Testing
-- [git_workflow.md](git_workflow.md) - Git practices
+- [git_guide.md](git_guide.md) - Git practices and commit standards
+- [db_usage.md](db_usage.md) - Database setup (if needed)
 - [house_agents.md](house_agents.md) - Claude workflows
 
 ## Common Issues
@@ -510,7 +511,8 @@ cargo clean
 ## Related Guides
 
 - [project_structure.md](project_structure.md) - Directory layouts and organization
-- [git_workflow.md](git_workflow.md) - Version control practices
+- [git_guide.md](git_guide.md) - Version control and commit standards
+- [db_usage.md](db_usage.md) - Database setup and patterns
 - [secrets_management.md](secrets_management.md) - API key handling
 - [uv_usage.md](uv_usage.md) - Python UV package manager
 - [testing_strategies.md](testing_strategies.md) - Test setup patterns

@@ -236,6 +236,6 @@ black "$file"
 
 ## Related Guides
 
-- **git_commit_guide.md**: Commit message standards and workflow
+- **git_guide.md**: Commit message standards and workflow
 - **code_quality.md**: Code quality tools and standards
 - **examples.md**: Additional hook examples and customization
