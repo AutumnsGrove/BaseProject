@@ -8,7 +8,7 @@ A comprehensive project template with built-in Claude Code workflows, best pract
 
 **One-liner in Claude Code:**
 ```
-Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp, copy to ~/Projects/[ASK ME PROJECT NAME] excluding (.git/), rename TEMPLATE_CLAUDE.md to CLAUDE.md, customize CLAUDE.md sections (Project Purpose, Tech Stack, API Keys List, Architecture Notes) and README.md (title, description, features) with my project details [ASK ME: name, description, tech stack, API keys needed], init language-specific dependencies (uv for Python, npm for JS, go mod for Go), create proper directory structure (src/ with __init__.py or index.js, tests/ with __init__.py), generate secrets_template.json with my API key placeholders, write TODOS.md with 3-5 initial tasks derived from project description, git init with user.name and user.email from global git config, optionally copy pre-commit hooks from ClaudeUsage/pre_commit_hooks/ [ASK ME], make initial commit "feat: initialize [PROJECT] from BaseProject template", display project summary and next steps
+Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp, copy to ~/Projects/[ASK ME PROJECT NAME] excluding (.git/), rename TEMPLATE_CLAUDE.md to CLAUDE.md, customize CLAUDE.md sections (Project Purpose, Tech Stack, API Keys List, Architecture Notes) and README.md (title, description, features) with my project details [ASK ME: name, description, tech stack, API keys needed], init language-specific dependencies (uv for Python, npm for JS, go mod for Go), create proper directory structure (src/ with __init__.py or index.js, tests/ with __init__.py), generate secrets_template.json with my API key placeholders, write TODOS.md with 3-5 initial tasks derived from project description, git init with user.name and user.email from global git config, ask if I want to install git hooks [ASK ME: Install git hooks for code quality and security? Recommended: yes], if yes then run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh interactively (it auto-detects project type and installs appropriate hooks: pre-commit-python/javascript/go/multi-language, pre-commit-secrets-scanner for security, pre-push for tests, post-checkout for auto-dependency updates), make initial commit "feat: initialize [PROJECT] from BaseProject template", display project summary and next steps including reminder about installed hooks
 ```
 
 Claude will interactively:
@@ -19,6 +19,11 @@ Claude will interactively:
 - Create proper project structure (src/, tests/)
 - Generate secrets_template.json with your needed API keys
 - Initialize git with proper configuration
+- **Install git hooks (recommended)** - auto-detects your language and installs:
+  - Code quality checks (Black/Ruff for Python, Prettier/ESLint for JS, gofmt for Go)
+  - Security scanner (prevents committing API keys/secrets)
+  - Test runner (blocks push if tests fail)
+  - Dependency auto-updater (runs on branch switch)
 - Create initial commit following our standards
 
 ---
@@ -28,7 +33,7 @@ Claude will interactively:
 **For projects already in progress with existing code, documentation, and git history:**
 
 ```
-Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp, analyze my project: read existing README.md/CLAUDE.md, scan git history for commit patterns, detect tech stack and package managers, identify project architecture (monorepo/single package/etc), read TODOS.md if exists, copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides), intelligently merge CLAUDE.md: if exists parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->", if new create from template with detected project details, enhance .gitignore by merging entries (preserve existing, add missing), analyze commit messages and suggest adopting BaseProject style if inconsistent, check if using branches like dev/main and suggest workflow if not, optionally setup pre-commit hooks [ASK ME], generate/update TODOS.md with project-aware tasks, create integration-summary.md report showing what was added/merged/skipped, backup modified files to ./.baseproject-backup-[TIMESTAMP]/, cleanup temp directory, display next steps
+Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp, analyze my project: read existing README.md/CLAUDE.md, scan git history for commit patterns, detect tech stack and package managers, identify project architecture (monorepo/single package/etc), read TODOS.md if exists, copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides), intelligently merge CLAUDE.md: if exists parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->", if new create from template with detected project details, enhance .gitignore by merging entries (preserve existing, add missing), analyze commit messages and suggest adopting BaseProject style if inconsistent, check if using branches like dev/main and suggest workflow if not, ask if I want to install git hooks [ASK ME: Install git hooks for code quality and security? They auto-detect your language], if yes run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh interactively (installs appropriate hooks based on detected tech stack, backs up any existing hooks first), generate/update TODOS.md with project-aware tasks, create integration-summary.md report showing what was added/merged/skipped, backup modified files to ./.baseproject-backup-[TIMESTAMP]/, cleanup temp directory, display next steps
 ```
 
 Claude will intelligently:
@@ -38,6 +43,7 @@ Claude will intelligently:
 - Merge CLAUDE.md sections with clear markers (preserves your content)
 - Append missing .gitignore entries without removing existing ones
 - Compare your commit style to BaseProject standards and offer suggestions
+- **Optionally install git hooks** - backs up existing hooks, auto-detects language, installs appropriate quality/security hooks
 - Create backup of all modified files before making changes
 - Generate integration-summary.md showing exactly what was changed
 - Respect your existing README.md (won't overwrite)
@@ -116,8 +122,12 @@ See [ClaudeUsage/house_agents.md](ClaudeUsage/house_agents.md) for usage pattern
 ### Instant Best Practices
 - **Git workflow patterns** - Conventional commits, unified git guide
 - **Database architecture** - SQLite with isolated database.py interface
-- **Security by default** - API key management, secrets handling
-- **Code quality** - Pre-commit hooks, linting patterns
+- **Security by default** - API key management, secrets scanning hooks
+- **Code quality hooks** - 8 production-ready git hooks for Python, JS, Go, multi-language
+  - `pre-commit-secrets-scanner` - Prevents committing API keys (15+ patterns)
+  - Language-specific formatters (Black, Prettier, gofmt) and linters
+  - Auto-run tests before push, auto-update deps on branch switch
+  - Interactive installer with auto-detection
 - **Testing strategies** - Unit, integration, and E2E test patterns
 - **CI/CD templates** - GitHub Actions workflows
 - **Documentation standards** - Consistent, scannable docs
@@ -182,11 +192,16 @@ After running setup:
    go mod init yourproject
    ```
 
-4. **Configure pre-commit hooks** (optional)
+4. **Install git hooks** (recommended)
    ```bash
-   cd ClaudeUsage/pre_commit_hooks/
-   chmod +x pre-commit commit-msg
-   cp pre-commit commit-msg ../../.git/hooks/
+   # Interactive installer (auto-detects your language)
+   ./ClaudeUsage/pre_commit_hooks/install_hooks.sh
+
+   # This installs:
+   # - Code quality checks (formatters + linters)
+   # - Security scanner (prevents API key leaks)
+   # - Test runner (blocks push if tests fail)
+   # - Dependency auto-updater
    ```
 
 5. **Update TODOS.md** - Add your specific tasks
@@ -224,7 +239,11 @@ After running setup:
 This template includes security best practices by default:
 
 - ✅ `secrets.json` in `.gitignore`
-- ✅ Pre-commit hooks to prevent secret commits
+- ✅ **Pre-commit secrets scanner** - Detects 15+ secret patterns before commit
+  - Anthropic, OpenAI, AWS, GitHub, Google API keys
+  - JWT tokens, bearer tokens, private keys
+  - Hardcoded passwords and database credentials
+  - Actionable fix instructions when secrets detected
 - ✅ Environment variable fallback patterns
 - ✅ Security audit guides in `secrets_advanced.md`
 
