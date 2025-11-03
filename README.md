@@ -1,6 +1,18 @@
+<!-- TEMPLATE: START - This section will be removed after setup -->
+
+# ⚡ Use This Template
+
+[![Use this template](https://img.shields.io/badge/Use_this_template-2ea44f?style=for-the-badge&logo=github)](https://github.com/AutumnsGrove/BaseProject/generate)
+
+**Quick Start:** Click the green button above → Clone your new repo → Run `bash setup.sh`
+
+---
+
 # BaseProject - Claude Code Template
 
 A comprehensive project template with built-in Claude Code workflows, best practices, and extensive documentation for rapid development setup.
+
+**What you get:** Git hooks • Multi-language support • Security defaults • 18 comprehensive guides • Claude-optimized workflows
 
 ## 🚀 Quick Start
 
@@ -51,7 +63,9 @@ Claude will intelligently:
 
 ### Manual Setup
 
-For full control over the setup process, see [NEW_PROJECT_SETUP.md](https://github.com/AutumnsGrove/BaseProject/blob/dev/TemplateDocs/NEW_PROJECT_SETUP.md) in the dev branch for detailed step-by-step instructions.
+For full control over the setup process, see [TEMPLATE_USAGE.md](TEMPLATE_USAGE.md) for detailed step-by-step instructions.
+
+<!-- TEMPLATE: END -->
 
 ---
 
@@ -59,7 +73,7 @@ For full control over the setup process, see [NEW_PROJECT_SETUP.md](https://gith
 
 ```
 BaseProject/
-├── TEMPLATE_CLAUDE.md          # Main project instructions (rename to CLAUDE.md)
+├── CLAUDE.md                   # Main project instructions file
 ├── ClaudeUsage/                # Comprehensive workflow guides
 │   ├── README.md               # Guide index
 │   ├── git_guide.md            # Unified git workflow and conventional commits
@@ -163,6 +177,8 @@ See [ClaudeUsage/README.md](ClaudeUsage/README.md) for the complete index.
 
 ---
 
+<!-- TEMPLATE: START -->
+
 ## 🛠️ Customization Workflow
 
 After running setup:
@@ -205,6 +221,8 @@ After running setup:
    ```
 
 5. **Update TODOS.md** - Add your specific tasks
+
+<!-- TEMPLATE: END -->
 
 ---
 
@@ -291,6 +309,8 @@ Recommended reading order for new projects:
 
 ## 🆘 Troubleshooting
 
+<!-- TEMPLATE: START -->
+
 ### "Git not initialized"
 ```bash
 git init
@@ -299,21 +319,21 @@ git commit -m "Initial commit"
 ```
 
 ### "CLAUDE.md not found"
-```bash
-# Rename the template
-mv TEMPLATE_CLAUDE.md CLAUDE.md
+If you see this error, the setup script may not have run properly. Make sure you've run `bash setup.sh` in your project directory.
 
-# Customize it
-nano CLAUDE.md
-```
+<!-- TEMPLATE: END -->
 
 ### "Pre-commit hooks not working"
 ```bash
 chmod +x ClaudeUsage/pre_commit_hooks/*
-cp ClaudeUsage/pre_commit_hooks/* .git/hooks/
+./ClaudeUsage/pre_commit_hooks/install_hooks.sh
 ```
 
+See [ClaudeUsage/pre_commit_hooks/TROUBLESHOOTING.md](ClaudeUsage/pre_commit_hooks/TROUBLESHOOTING.md) for comprehensive hook troubleshooting.
+
 ---
+
+<!-- TEMPLATE: START -->
 
 ## 🔄 Keeping BaseProject Updated
 
@@ -335,8 +355,6 @@ git add ClaudeUsage/
 git commit -m "Update ClaudeUsage guides from BaseProject"
 ```
 
----
-
 ## 🎉 What's Next?
 
 After setup:
@@ -345,6 +363,8 @@ After setup:
 2. **Explore** - Read guides in ClaudeUsage/ directory
 3. **Build** - Start coding with Claude Code
 4. **Iterate** - Update TODOS.md and guides as needed
+
+<!-- TEMPLATE: END -->
 
 ---
 

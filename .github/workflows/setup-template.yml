@@ -115,7 +115,7 @@ jobs:
           fi
           
           # Remove template-specific files
-          rm -f setup_new_project.sh NEW_PROJECT_SETUP.md
+          rm -f setup_new_project.sh NEW_PROJECT_SETUP.md TEMPLATE_USAGE.md setup.sh
           echo "✓ Removed template setup files"
           
           # Remove this workflow file itself (one-time setup)
@@ -133,8 +133,8 @@ jobs:
           - Renamed TEMPLATE_CLAUDE.md to CLAUDE.md
           - Created project-specific TODOS.md
           - Updated README.md with project details
-          - Removed template setup files
-          
+          - Removed template files (setup.sh, TEMPLATE_USAGE.md, workflows)
+
           Project: ${{ inputs.project_name }}
           Description: ${{ inputs.project_description }}"
           
