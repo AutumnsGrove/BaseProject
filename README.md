@@ -18,9 +18,27 @@ A comprehensive project template with built-in Claude Code workflows, best pract
 
 ### Option 1: New Project Setup
 
-**One-liner in Claude Code:**
+**Copy this prompt into Claude Code:**
 ```
-Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp, copy to ~/Projects/[ASK ME PROJECT NAME] excluding (.git/), rename TEMPLATE_CLAUDE.md to CLAUDE.md, customize CLAUDE.md sections (Project Purpose, Tech Stack, API Keys List, Architecture Notes) and README.md (title, description, features) with my project details [ASK ME: name, description, tech stack, API keys needed], init language-specific dependencies (uv init for Python creates pyproject.toml, npm init for JS creates package.json, go mod init for Go creates go.mod), create proper directory structure (src/ with __init__.py or index.js, tests/ with __init__.py), generate secrets_template.json with my API key placeholders, write TODOS.md with 3-5 initial tasks derived from project description, git init with user.name and user.email from global git config, ask if I want to install git hooks [ASK ME: Install git hooks for code quality and security? Recommended: yes], if yes then run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh (auto-detects from pyproject.toml/package.json/go.mod created above, installs language-appropriate hooks), make initial commit "feat: initialize [PROJECT] from BaseProject template", display project summary and next steps including reminder about installed hooks
+I want to create a new project from the BaseProject template. Follow this workflow:
+
+1. First, ask me for: project name, description, tech stack (Python/JS/Go), and what API keys I'll need
+2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp
+3. Copy to ~/Projects/[PROJECT_NAME] (exclude .git/)
+4. Rename TEMPLATE_CLAUDE.md to CLAUDE.md
+5. Customize CLAUDE.md with my project details (Purpose, Tech Stack, Architecture)
+6. Update README.md with project-specific info (title, description, features)
+7. Init language dependencies (uv init for Python, npm init for JS, go mod init for Go)
+8. Create directory structure: src/ and tests/ with proper init files for the chosen language
+9. Generate secrets_template.json with my API key placeholders
+10. Create TODOS.md with 3-5 starter tasks based on the project description
+11. Run git init using global git config (user.name and user.email)
+12. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 7)
+13. If yes, run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh
+14. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
+15. Display project summary and next steps including reminder about installed hooks
+
+Start by asking me for the project details.
 ```
 
 Claude will interactively:
@@ -42,10 +60,27 @@ Claude will interactively:
 
 ### Option 2: Add to Existing Project
 
-**For projects already in progress with existing code, documentation, and git history:**
+**Copy this prompt into Claude Code (run in your project directory):**
 
 ```
-Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp, analyze my project: read existing README.md/CLAUDE.md, scan git history for commit patterns, detect tech stack and package managers, identify project architecture (monorepo/single package/etc), read TODOS.md if exists, copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides), intelligently merge CLAUDE.md: if exists parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->", if new create from template with detected project details, enhance .gitignore by merging entries (preserve existing, add missing), analyze commit messages and suggest adopting BaseProject style if inconsistent, check if using branches like dev/main and suggest workflow if not, ask if I want to install git hooks [ASK ME: Install git hooks for code quality and security? They auto-detect your language], if yes run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh interactively (installs appropriate hooks based on detected tech stack, backs up any existing hooks first), generate/update TODOS.md with project-aware tasks, create integration-summary.md report showing what was added/merged/skipped, backup modified files to ./.baseproject-backup-[TIMESTAMP]/, cleanup temp directory, display next steps
+I want to add BaseProject structure to my CURRENT project. Follow this workflow:
+
+1. Analyze my existing project: read README.md, CLAUDE.md, git history for commit patterns, detect tech stack and package managers, identify architecture (monorepo/single/etc), read TODOS.md if exists
+2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp
+3. Copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides)
+4. Intelligently merge CLAUDE.md: if exists, parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->". If doesn't exist, create from template with detected project details
+5. Enhance .gitignore by merging entries (preserve existing, add missing from BaseProject)
+6. Analyze commit messages and suggest adopting BaseProject conventional commit style if inconsistent
+7. Check if using branches like dev/main and suggest workflow if not
+8. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
+9. If yes, run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh interactively
+10. Generate/update TODOS.md with project-aware tasks
+11. Create integration-summary.md report showing what was added/merged/skipped
+12. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
+13. Cleanup /tmp/bp
+14. Display next steps
+
+Start by analyzing my current project.
 ```
 
 Claude will intelligently:
