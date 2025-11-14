@@ -1,7 +1,7 @@
 # TODOs for BaseProject
 
 ## Setup Tasks
-- [ ] Review and customize CLAUDE.md with project-specific details
+- [ ] Review and customize AGENT.md with project-specific details
 - [ ] Set up project dependencies (uv, npm, go mod, etc.)
 - [ ] Configure secrets if needed (see ClaudeUsage/secrets_management.md)
 - [ ] Set up pre-commit hooks (optional, see ClaudeUsage/pre_commit_hooks/)

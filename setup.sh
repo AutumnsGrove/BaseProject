@@ -184,13 +184,13 @@ main() {
 
     # Create backup
     mkdir -p "$BACKUP_DIR"
-    cp CLAUDE.md "$BACKUP_DIR/" 2>/dev/null || true
+    cp AGENT.md "$BACKUP_DIR/" 2>/dev/null || true
     cp README.md "$BACKUP_DIR/" 2>/dev/null || true
     cp TODOS.md "$BACKUP_DIR/" 2>/dev/null || true
     print_success "Created backup at $BACKUP_DIR/"
 
-    # Update CLAUDE.md
-    update_claude_md
+    # Update AGENT.md
+    update_agent_md
 
     # Transform README.md
     transform_readme
@@ -226,18 +226,18 @@ main() {
     show_completion
 }
 
-# Function to update CLAUDE.md
-update_claude_md() {
-    # Replace placeholders in CLAUDE.md
-    sed -i.bak "s|\[Fill in: What this project does - 1-2 sentences\]|$PROJECT_DESCRIPTION|g" CLAUDE.md
-    sed -i.bak "s|\[Fill in: Technologies, frameworks, and languages used\]||g" CLAUDE.md
-    sed -i.bak "s|^- Language:$|- Language: $PRIMARY_LANG|g" CLAUDE.md
-    sed -i.bak "s|\[Fill in: Key architectural decisions, patterns, or structure\]|Standard project structure following BaseProject template guidelines|g" CLAUDE.md
+# Function to update AGENT.md
+update_agent_md() {
+    # Replace placeholders in AGENT.md
+    sed -i.bak "s|\[Fill in: What this project does - 1-2 sentences\]|$PROJECT_DESCRIPTION|g" AGENT.md
+    sed -i.bak "s|\[Fill in: Technologies, frameworks, and languages used\]||g" AGENT.md
+    sed -i.bak "s|^- Language:$|- Language: $PRIMARY_LANG|g" AGENT.md
+    sed -i.bak "s|\[Fill in: Key architectural decisions, patterns, or structure\]|Standard project structure following BaseProject template guidelines|g" AGENT.md
 
     # Remove backup file
-    rm -f CLAUDE.md.bak
+    rm -f AGENT.md.bak
 
-    print_success "Updated CLAUDE.md with project details"
+    print_success "Updated AGENT.md with project details"
 }
 
 # Function to transform README.md
@@ -267,7 +267,7 @@ This project was created from the [BaseProject template](https://github.com/Autu
 
 ## Quick Start
 
-1. **Review project instructions:** Check \`CLAUDE.md\` for project context
+1. **Review project instructions:** Check \`AGENT.md\` for project context
 2. **Check tasks:** See \`TODOS.md\` for pending tasks
 3. **Set up secrets** (if needed):
    \`\`\`bash
@@ -283,7 +283,8 @@ This project was created from the [BaseProject template](https://github.com/Autu
 
 \`\`\`
 $PROJECT_NAME/
-├── CLAUDE.md                   # Project instructions for Claude Code
+├── CLAUDE.md                   # Redirect to AGENT.md
+├── AGENT.md                    # Main project instructions
 ├── src/                        # Source code
 ├── tests/                      # Test files
 ├── ClaudeUsage/               # Comprehensive workflow guides
@@ -533,7 +534,7 @@ create_todos() {
 
 ## Setup Tasks
 - [x] Run BaseProject setup script
-- [ ] Review and finalize CLAUDE.md customizations
+- [ ] Review and finalize AGENT.md customizations
 - [ ] Set up secrets (copy secrets_template.json to secrets.json)
 - [ ] Install additional dependencies for $PRIMARY_LANG
 - [ ] Configure development environment
@@ -618,7 +619,7 @@ initialize_git() {
     git commit -m "feat: initialize $PROJECT_NAME from BaseProject template
 
 - Set up project structure for $PRIMARY_LANG
-- Configured CLAUDE.md with project details
+- Configured AGENT.md with project details
 - Added workflow guides in ClaudeUsage/
 $([ ${#API_KEYS[@]} -gt 0 ] && echo "- Created secrets template for API keys")
 $([ "$INSTALL_HOOKS" = "y" ] && echo "- Installed git hooks for code quality")
@@ -662,7 +663,7 @@ show_completion() {
     [ ${#API_KEYS[@]} -gt 0 ] && echo -e "${BOLD}API Keys:${NC} ${API_KEYS[*]}"
 
     echo -e "\n${BOLD}${CYAN}Next steps:${NC}\n"
-    echo "1. Review CLAUDE.md - Your project instructions for Claude Code"
+    echo "1. Review AGENT.md - Your main project instructions"
     echo "2. Check TODOS.md - Initial tasks have been added"
 
     if [ ${#API_KEYS[@]} -gt 0 ]; then

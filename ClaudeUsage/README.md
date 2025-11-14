@@ -59,7 +59,7 @@ This directory contains comprehensive guides for working with Claude on developm
 1. **On-Demand Reference**: Read guides when you need specific knowledge
 2. **Self-Contained**: Each guide stands alone with complete information
 3. **Cross-Referenced**: Related topics link to each other
-4. **Start with TEMPLATE_CLAUDE.md**: Check parent directory for trigger patterns
+4. **Start with AGENT.md**: Check parent directory for trigger patterns
 
 ## Guide Structure
 

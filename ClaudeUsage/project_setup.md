@@ -31,7 +31,7 @@ bash setup_new_project.sh
 
 **The script handles:**
 - Removes old git history
-- Renames TEMPLATE_CLAUDE.md → CLAUDE.md
+- Updates AGENT.md with project details
 - Creates fresh TODOS.md
 - Initializes new git repository
 - Prompts for project details
@@ -54,14 +54,12 @@ cd ~/Projects/YourProjectName/
 rm -rf .git
 ```
 
-### Step 3: Customize CLAUDE.md
+### Step 3: Customize AGENT.md
 
 ```bash
-# Rename template to active file
-mv TEMPLATE_CLAUDE.md CLAUDE.md
-
 # Edit with your project details
 # Fill in: Project Purpose, Tech Stack, Architecture Notes
+nano AGENT.md
 ```
 
 **Example customization:**
@@ -98,7 +96,7 @@ git add .
 git commit -m "Initial commit: Setup YourProjectName from BaseProject
 
 - Copied BaseProject structure with ClaudeUsage guides
-- Configured CLAUDE.md for this specific project
+- Configured AGENT.md for this specific project
 - Initialized git repository
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
@@ -405,8 +403,8 @@ After setup, verify these items:
 # ✅ Git initialized and clean
 git status
 
-# ✅ CLAUDE.md customized (no [Fill in:] markers)
-grep "\[Fill in:" CLAUDE.md
+# ✅ AGENT.md customized (no [Fill in:] markers)
+grep "\[Fill in:" AGENT.md
 
 # ✅ TODOS.md exists with project tasks
 cat TODOS.md
@@ -524,7 +522,7 @@ cargo clean
 
 **Key Takeaways:**
 - Use automated setup script for standard projects
-- Customize CLAUDE.md with project-specific details
+- Customize AGENT.md with project-specific details
 - Set up secrets management before writing code
 - Initialize git early and commit often
 - Choose setup method based on project complexity
