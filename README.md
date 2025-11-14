@@ -34,8 +34,10 @@ I want to create a new project from the BaseProject template. Follow this workfl
 10. Run git init using global git config (user.name and user.email)
 11. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 6)
 12. If yes, run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh
-13. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
-14. Display project summary and next steps including reminder about installed hooks
+13. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
+14. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
+15. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
+16. Display project summary and next steps including reminder about installed hooks and agents
 
 Start by asking me for the project details.
 ```
@@ -53,6 +55,10 @@ Claude will interactively:
   - Security scanner (prevents committing API keys/secrets)
   - Test runner (blocks push if tests fail)
   - Dependency auto-updater (runs on branch switch)
+- **Install house-agents (recommended)** - includes all 5 specialized agents:
+  - house-research, house-git, house-bash (from upstream)
+  - house-coder, house-planner (from AutumnsGrove fork)
+  - Skips if agents already installed
 - Create initial commit following our standards
 
 ---
@@ -73,11 +79,13 @@ I want to add BaseProject structure to my CURRENT project. Follow this workflow:
 7. Check if using branches like dev/main and suggest workflow if not
 8. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
 9. If yes, run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh interactively
-10. Generate/update TODOS.md with project-aware tasks
-11. Create integration-summary.md report showing what was added/merged/skipped
-12. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
-13. Cleanup /tmp/bp
-14. Display next steps
+10. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
+11. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
+12. Generate/update TODOS.md with project-aware tasks
+13. Create integration-summary.md report showing what was added/merged/skipped
+14. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
+15. Cleanup /tmp/bp
+16. Display next steps
 
 Start by analyzing my current project.
 ```
@@ -90,6 +98,7 @@ Claude will intelligently:
 - Append missing .gitignore entries without removing existing ones
 - Compare your commit style to BaseProject standards and offer suggestions
 - **Optionally install git hooks** - backs up existing hooks, auto-detects language, installs appropriate quality/security hooks
+- **Optionally install house-agents** - includes house-coder and house-planner, skips if already installed
 - Create backup of all modified files before making changes
 - Generate integration-summary.md showing exactly what was changed
 - Respect your existing README.md (won't overwrite)
@@ -131,7 +140,7 @@ BaseProject/
 
 ## 🏠 House Agents Integration
 
-This template works seamlessly with [house-agents](https://github.com/houseworthe/house-agents) - specialized Claude Code sub-agents that keep your context clean.
+This template works seamlessly with [house-agents](https://github.com/AutumnsGrove/house-agents) - specialized Claude Code sub-agents that keep your context clean.
 
 ### What Are House Agents?
 
@@ -139,20 +148,31 @@ Specialized sub-agents that run heavy operations in separate context windows:
 - **house-research** - Search 70k+ tokens across files, return 3k summary (95% savings)
 - **house-git** - Analyze 43k token diffs, return 500 token summary (98% savings)
 - **house-bash** - Process 21k+ command output, return 700 token summary (97% savings)
+- **house-coder** - Small code patches (0-250 lines), instant TODO implementations
+- **house-planner** - Task orchestration & planning for multi-file changes
 
 ### Quick Install
 
 **Project-Level (this project only):**
 ```bash
-git clone https://github.com/houseworthe/house-agents.git /tmp/house-agents
+# Clone the fork with house-coder and house-planner agents
+git clone https://github.com/AutumnsGrove/house-agents.git /tmp/house-agents
 cp -r /tmp/house-agents/.claude .
 ```
 
 **User-Wide (all projects):**
 ```bash
-git clone https://github.com/houseworthe/house-agents.git /tmp/house-agents
+# Clone the fork with house-coder and house-planner agents
+git clone https://github.com/AutumnsGrove/house-agents.git /tmp/house-agents
 mkdir -p ~/.claude/agents
-cp /tmp/house-agents/.claude/agents/*.md ~/.claude/agents/
+
+# Skip if agents already exist, otherwise copy them
+if [ ! -f ~/.claude/agents/house-research.md ]; then
+  cp /tmp/house-agents/.claude/agents/*.md ~/.claude/agents/
+  echo "House agents installed successfully!"
+else
+  echo "House agents already exist, skipping installation"
+fi
 ```
 
 **Test Installation:**
@@ -162,7 +182,7 @@ Use house-research to find all TODO comments in the codebase
 
 See [ClaudeUsage/house_agents.md](ClaudeUsage/house_agents.md) for usage patterns and examples.
 
-**Credit:** House Agents by [@houseworthe](https://github.com/houseworthe/house-agents) (v0.2.0-beta)
+**Credit:** House Agents originally by [@houseworthe](https://github.com/houseworthe/house-agents), enhanced fork with house-coder and house-planner by [@AutumnsGrove](https://github.com/AutumnsGrove/house-agents)
 
 ---
 
