@@ -160,7 +160,7 @@ Main Claude → done!
 
 - **subagent_usage.md** - Different use cases and patterns
 - **git_guide.md** - Git commit standards and workflows
-- **CLAUDE.md** - Project coding standards
+- **../AGENT.md** - Project coding standards
 
 ---
 

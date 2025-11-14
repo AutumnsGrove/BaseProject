@@ -70,7 +70,7 @@ The script will:
    - Whether to install git hooks
 
 2. **Automatically configure**:
-   - Update `CLAUDE.md` with your project details
+   - Update `AGENT.md` with your project details
    - Create `README.md` with your project name
    - Generate `secrets_template.json` for your API keys
    - Initialize language-specific dependencies
@@ -122,7 +122,7 @@ Project Configuration
 Setting up your project...
 
 ✓ Created backup at .backup-20250119-143022/
-✓ Updated CLAUDE.md with project details
+✓ Updated AGENT.md with project details
 ✓ Transformed README.md (removed template sections)
 ✓ Created secrets_template.json with Anthropic and OpenRouter keys
 ✓ Initialized Python project with UV (pyproject.toml created)
@@ -139,7 +139,7 @@ Setting up your project...
 
 Your project is ready. Next steps:
 
-1. Review CLAUDE.md - Your project instructions for Claude Code
+1. Review AGENT.md - Your main project instructions
 2. Check TODOS.md - Initial tasks have been added
 3. Set up secrets:
    cp secrets_template.json secrets.json
@@ -159,9 +159,9 @@ Happy coding! 🚀
 
 If you prefer full control or the automated script isn't working, follow these manual steps:
 
-### 1. Customize CLAUDE.md
+### 1. Customize AGENT.md
 
-Open `CLAUDE.md` and fill in the placeholders:
+Open `AGENT.md` and fill in the placeholders:
 
 ```markdown
 ## Project Purpose
@@ -321,9 +321,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ## Customization Guide
 
-### CLAUDE.md Customization
+### AGENT.md Customization
 
-The `CLAUDE.md` file is your project's instruction manual for Claude Code. Customize these sections:
+The `AGENT.md` file is your project's main instruction manual for AI agents. Customize these sections:
 
 #### Project Purpose
 Be specific about what your project does:
@@ -562,7 +562,7 @@ If your project uses a database, follow the `database.py` pattern:
    - Function-based interface for the rest of your app
    - See guide for complete template
 
-3. **Update CLAUDE.md:**
+3. **Update AGENT.md:**
    ```markdown
    ## Architecture Notes
    - SQLite database with isolated database.py interface
@@ -578,7 +578,7 @@ To add Docker to your project:
    cat ClaudeUsage/docker_guide.md
    ```
 
-2. **Add to CLAUDE.md:**
+2. **Add to AGENT.md:**
    ```markdown
    ## Architecture Notes
    - Containerized with Docker for consistent environments
@@ -611,7 +611,8 @@ To add GitHub Actions:
 
 | File | Purpose | Customize? |
 |------|---------|------------|
-| `CLAUDE.md` | Main instructions for Claude Code | ✅ Yes - Fill placeholders |
+| `CLAUDE.md` | Redirect to AGENT.md | ❌ No - Keep as-is |
+| `AGENT.md` | Main instructions for AI agents | ✅ Yes - Fill placeholders |
 | `README.md` | Project documentation | ✅ Yes - After setup |
 | `TODOS.md` | Task tracking | ✅ Yes - Add your tasks |
 | `.gitignore` | Files to exclude from git | ✅ Maybe - Add project-specific patterns |
@@ -687,7 +688,7 @@ bash install_hooks.sh
 
 ### Configuration Issues
 
-#### "CLAUDE.md not updating"
+#### "AGENT.md not updating"
 Make sure you've replaced the `[Fill in: ...]` placeholders with actual text.
 
 #### "Secrets not loading"
@@ -769,7 +770,7 @@ git config user.email "your.email@example.com"
 
 Once setup is complete:
 
-1. **Review your CLAUDE.md** - Make sure all sections are filled in
+1. **Review your AGENT.md** - Make sure all sections are filled in
 2. **Check TODOS.md** - Initial tasks should be listed
 3. **Set up real secrets** - Copy secrets_template.json to secrets.json and add real API keys
 4. **Explore the guides** - Read ClaudeUsage/README.md for the guide index
