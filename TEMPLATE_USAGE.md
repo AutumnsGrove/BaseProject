@@ -148,7 +148,7 @@ Your project is ready. Next steps:
 4. Start developing:
    claude "your task here"
 
-5. Explore guides in ClaudeUsage/ directory
+5. Explore guides in AgentUsage/ directory
 
 Happy coding! 🚀
 ```
@@ -243,7 +243,7 @@ touch tests/test_example.py     # Example test
 ### 5. Install Git Hooks (Optional but Recommended)
 
 ```bash
-cd ClaudeUsage/pre_commit_hooks
+cd AgentUsage/pre_commit_hooks
 bash install_hooks.sh
 
 # Follow the prompts - the installer will:
@@ -314,7 +314,7 @@ git commit -m "feat: initialize project from BaseProject template
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
-Co-Authored-By: Claude <noreply@anthropic.com>"
+Co-Authored-By: [Model Name] <agent@localhost>"
 ```
 
 ---
@@ -423,9 +423,9 @@ YourProject/
 **Git Hooks:** Black (formatter), Ruff (linter), pytest (tests)
 
 **Guides:**
-- `ClaudeUsage/uv_usage.md` - UV package manager
-- `ClaudeUsage/db_usage.md` - Database patterns
-- `ClaudeUsage/testing_strategies.md` - Python testing
+- `AgentUsage/uv_usage.md` - UV package manager
+- `AgentUsage/db_usage.md` - Database patterns
+- `AgentUsage/testing_strategies.md` - Python testing
 
 ### JavaScript/TypeScript Projects
 
@@ -450,7 +450,7 @@ YourProject/
 **Git Hooks:** Prettier (formatter), ESLint (linter), Jest (tests)
 
 **Guides:**
-- `ClaudeUsage/multi_language_guide.md` - JavaScript patterns
+- `AgentUsage/multi_language_guide.md` - JavaScript patterns
 
 ### Go Projects
 
@@ -501,7 +501,7 @@ If your project uses multiple languages (e.g., Python backend + JavaScript front
 1. **Run setup for each language** in their respective directories
 2. **Install multi-language git hooks:**
    ```bash
-   cd ClaudeUsage/pre_commit_hooks
+   cd AgentUsage/pre_commit_hooks
    cp pre-commit-multi-language ../../.git/hooks/pre-commit
    chmod +x ../../.git/hooks/pre-commit
    ```
@@ -539,12 +539,12 @@ Git hooks provide automatic code quality checks. Choose what to install:
 
 **Install all:**
 ```bash
-./ClaudeUsage/pre_commit_hooks/install_hooks.sh
+./AgentUsage/pre_commit_hooks/install_hooks.sh
 ```
 
 **Install specific hooks:**
 ```bash
-cp ClaudeUsage/pre_commit_hooks/pre-commit-secrets-scanner .git/hooks/pre-commit
+cp AgentUsage/pre_commit_hooks/pre-commit-secrets-scanner .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
@@ -554,7 +554,7 @@ If your project uses a database, follow the `database.py` pattern:
 
 1. **Read the guide:**
    ```bash
-   cat ClaudeUsage/db_usage.md
+   cat AgentUsage/db_usage.md
    ```
 
 2. **Create database.py:**
@@ -575,7 +575,7 @@ To add Docker to your project:
 
 1. **Read the guide:**
    ```bash
-   cat ClaudeUsage/docker_guide.md
+   cat AgentUsage/docker_guide.md
    ```
 
 2. **Add to AGENT.md:**
@@ -596,7 +596,7 @@ To add GitHub Actions:
 
 1. **Read the guide:**
    ```bash
-   cat ClaudeUsage/ci_cd_patterns.md
+   cat AgentUsage/ci_cd_patterns.md
    ```
 
 2. **Create `.github/workflows/` directory**
@@ -621,7 +621,7 @@ To add GitHub Actions:
 | `TEMPLATE_USAGE.md` | This file | ❌ No - Auto-deleted |
 | `setup.sh` | Setup script | ❌ No - Auto-deleted |
 
-### ClaudeUsage/ Directory
+### AgentUsage/ Directory
 
 | Guide | When to Read |
 |-------|-------------|
@@ -637,7 +637,7 @@ To add GitHub Actions:
 
 **Keep this directory as-is** - it's reference material.
 
-### ClaudeUsage/templates/
+### AgentUsage/templates/
 
 Templates for common configuration files:
 - `secrets_template.json` - API keys template
@@ -646,7 +646,7 @@ Templates for common configuration files:
 
 Copy and customize as needed.
 
-### ClaudeUsage/pre_commit_hooks/
+### AgentUsage/pre_commit_hooks/
 
 Git hooks for code quality and security:
 - `install_hooks.sh` - Interactive installer
@@ -679,10 +679,10 @@ python -m pip install uv
 #### "Git hooks installation failed"
 ```bash
 # Make hooks executable
-chmod +x ClaudeUsage/pre_commit_hooks/*
+chmod +x AgentUsage/pre_commit_hooks/*
 
 # Run installer manually
-cd ClaudeUsage/pre_commit_hooks
+cd AgentUsage/pre_commit_hooks
 bash install_hooks.sh
 ```
 
@@ -748,12 +748,12 @@ git config user.email "your.email@example.com"
 
 1. **Check hooks troubleshooting:**
    ```bash
-   cat ClaudeUsage/pre_commit_hooks/TROUBLESHOOTING.md
+   cat AgentUsage/pre_commit_hooks/TROUBLESHOOTING.md
    ```
 
 2. **Review language-specific guide:**
    ```bash
-   cat ClaudeUsage/multi_language_guide.md
+   cat AgentUsage/multi_language_guide.md
    ```
 
 3. **Ask Claude Code for help:**
@@ -773,7 +773,7 @@ Once setup is complete:
 1. **Review your AGENT.md** - Make sure all sections are filled in
 2. **Check TODOS.md** - Initial tasks should be listed
 3. **Set up real secrets** - Copy secrets_template.json to secrets.json and add real API keys
-4. **Explore the guides** - Read ClaudeUsage/README.md for the guide index
+4. **Explore the guides** - Read AgentUsage/README.md for the guide index
 5. **Start coding!** - Use `claude "your task"` to begin development
 
 ---

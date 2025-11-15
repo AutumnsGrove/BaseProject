@@ -33,7 +33,7 @@ I want to create a new project from the BaseProject template. Follow this workfl
 9. Create TODOS.md with 3-5 starter tasks based on the project description
 10. Run git init using global git config (user.name and user.email)
 11. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 6)
-12. If yes, run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh
+12. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
 13. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
 14. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
 15. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
@@ -72,13 +72,13 @@ I want to add BaseProject structure to my CURRENT project. Follow this workflow:
 
 1. Analyze my existing project: read README.md, AGENT.md, git history for commit patterns, detect tech stack and package managers, identify architecture (monorepo/single/etc), read TODOS.md if exists
 2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp
-3. Copy ClaudeUsage/ to my project (preserve any existing ClaudeUsage/ files, only add new guides)
+3. Copy AgentUsage/ to my project (preserve any existing AgentUsage/ files, only add new guides)
 4. Intelligently merge AGENT.md: if exists, parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->". If doesn't exist, create from template with detected project details
 5. Enhance .gitignore by merging entries (preserve existing, add missing from BaseProject)
 6. Analyze commit messages and suggest adopting BaseProject conventional commit style if inconsistent
 7. Check if using branches like dev/main and suggest workflow if not
 8. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
-9. If yes, run ./ClaudeUsage/pre_commit_hooks/install_hooks.sh interactively
+9. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh interactively
 10. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
 11. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
 12. Generate/update TODOS.md with project-aware tasks
@@ -93,7 +93,7 @@ Start by analyzing my current project.
 Claude will intelligently:
 - Analyze your existing project structure and conventions
 - Detect tech stack from package files (package.json, pyproject.toml, etc.)
-- Copy ClaudeUsage/ guides without overwriting existing files
+- Copy AgentUsage/ guides without overwriting existing files
 - Merge AGENT.md sections with clear markers (preserves your content)
 - Append missing .gitignore entries without removing existing ones
 - Compare your commit style to BaseProject standards and offer suggestions
@@ -118,7 +118,7 @@ For full control over the setup process, see [TEMPLATE_USAGE.md](TEMPLATE_USAGE.
 BaseProject/
 ├── CLAUDE.md                   # Redirect to AGENT.md
 ├── AGENT.md                    # Main project instructions file
-├── ClaudeUsage/                # Comprehensive workflow guides
+├── AgentUsage/                # Comprehensive workflow guides
 │   ├── README.md               # Guide index
 │   ├── git_guide.md            # Unified git workflow and conventional commits
 │   ├── db_usage.md             # SQLite database with database.py interface
@@ -180,7 +180,7 @@ fi
 Use house-research to find all TODO comments in the codebase
 ```
 
-See [ClaudeUsage/house_agents.md](ClaudeUsage/house_agents.md) for usage patterns and examples.
+See [AgentUsage/house_agents.md](AgentUsage/house_agents.md) for usage patterns and examples.
 
 **Credit:** House Agents originally by [@houseworthe](https://github.com/houseworthe/house-agents), enhanced fork with house-coder and house-planner by [@AutumnsGrove](https://github.com/AutumnsGrove/house-agents)
 
@@ -247,7 +247,7 @@ All guides follow a consistent, scannable format:
 5. **Common Pitfalls** - What to avoid
 6. **Related Guides** - Cross-references
 
-See [ClaudeUsage/README.md](ClaudeUsage/README.md) for the complete index.
+See [AgentUsage/README.md](AgentUsage/README.md) for the complete index.
 
 ---
 
@@ -265,7 +265,7 @@ After running setup:
 2. **Create secrets files** (if needed)
    ```bash
    # For Python projects
-   cp ClaudeUsage/templates/secrets_template.json secrets_template.json
+   cp AgentUsage/templates/secrets_template.json secrets_template.json
    cp secrets_template.json secrets.json
    # Edit secrets.json with real API keys
    ```
@@ -285,7 +285,7 @@ After running setup:
 4. **Install git hooks** (recommended)
    ```bash
    # Interactive installer (auto-detects your language)
-   ./ClaudeUsage/pre_commit_hooks/install_hooks.sh
+   ./AgentUsage/pre_commit_hooks/install_hooks.sh
 
    # This installs:
    # - Code quality checks (formatters + linters)
@@ -309,18 +309,18 @@ After running setup:
 4. Update TODOS.md as you progress
 
 ### Managing Secrets
-1. Read `ClaudeUsage/secrets_management.md`
+1. Read `AgentUsage/secrets_management.md`
 2. Create `secrets.json` (gitignored)
 3. Provide `secrets_template.json` for team
 4. Use environment variable fallbacks
 
 ### Large Codebase Search
 1. Use house-research agent for 20+ file searches
-2. Check `ClaudeUsage/house_agents.md` for patterns
+2. Check `AgentUsage/house_agents.md` for patterns
 3. Use subagents for complex multi-step tasks
 
 ### Writing Tests
-1. Review `ClaudeUsage/testing_strategies.md`
+1. Review `AgentUsage/testing_strategies.md`
 2. Follow framework-specific patterns
 3. Use test-strategist agent for planning
 
@@ -371,13 +371,13 @@ claude "Add user authentication with JWT tokens"
 
 Recommended reading order for new projects:
 
-1. [project_structure.md](ClaudeUsage/project_structure.md) - Directory layouts
-2. [git_guide.md](ClaudeUsage/git_guide.md) - Version control and conventional commits
-3. [db_usage.md](ClaudeUsage/db_usage.md) - Database setup (if using databases)
-4. [secrets_management.md](ClaudeUsage/secrets_management.md) - API keys
-5. [uv_usage.md](ClaudeUsage/uv_usage.md) - Python dependencies (if applicable)
-6. [testing_strategies.md](ClaudeUsage/testing_strategies.md) - Test setup
-7. [house_agents.md](ClaudeUsage/house_agents.md) - Advanced workflows
+1. [project_structure.md](AgentUsage/project_structure.md) - Directory layouts
+2. [git_guide.md](AgentUsage/git_guide.md) - Version control and conventional commits
+3. [db_usage.md](AgentUsage/db_usage.md) - Database setup (if using databases)
+4. [secrets_management.md](AgentUsage/secrets_management.md) - API keys
+5. [uv_usage.md](AgentUsage/uv_usage.md) - Python dependencies (if applicable)
+6. [testing_strategies.md](AgentUsage/testing_strategies.md) - Test setup
+7. [house_agents.md](AgentUsage/house_agents.md) - Advanced workflows
 
 ---
 
@@ -399,11 +399,11 @@ If you see this error, the setup script may not have run properly. Make sure you
 
 ### "Pre-commit hooks not working"
 ```bash
-chmod +x ClaudeUsage/pre_commit_hooks/*
-./ClaudeUsage/pre_commit_hooks/install_hooks.sh
+chmod +x AgentUsage/pre_commit_hooks/*
+./AgentUsage/pre_commit_hooks/install_hooks.sh
 ```
 
-See [ClaudeUsage/pre_commit_hooks/TROUBLESHOOTING.md](ClaudeUsage/pre_commit_hooks/TROUBLESHOOTING.md) for comprehensive hook troubleshooting.
+See [AgentUsage/pre_commit_hooks/TROUBLESHOOTING.md](AgentUsage/pre_commit_hooks/TROUBLESHOOTING.md) for comprehensive hook troubleshooting.
 
 ---
 
@@ -416,17 +416,17 @@ To get updates from BaseProject while preserving your customizations:
 ```bash
 # In your project directory
 # Option 1: Manual merge of specific guides
-cp /path/to/BaseProject/ClaudeUsage/new_guide.md ClaudeUsage/
+cp /path/to/BaseProject/AgentUsage/new_guide.md AgentUsage/
 
 # Option 2: Update all guides (careful - review diffs first)
-rsync -av --exclude='AGENT.md' /path/to/BaseProject/ClaudeUsage/ ClaudeUsage/
+rsync -av --exclude='AGENT.md' /path/to/BaseProject/AgentUsage/ AgentUsage/
 
 # Review changes
 git diff
 
 # Commit updates
-git add ClaudeUsage/
-git commit -m "Update ClaudeUsage guides from BaseProject"
+git add AgentUsage/
+git commit -m "Update AgentUsage guides from BaseProject"
 ```
 
 ## 🎉 What's Next?
@@ -434,7 +434,7 @@ git commit -m "Update ClaudeUsage guides from BaseProject"
 After setup:
 
 1. **Customize** - Edit AGENT.md with your project details
-2. **Explore** - Read guides in ClaudeUsage/ directory
+2. **Explore** - Read guides in AgentUsage/ directory
 3. **Build** - Start coding with Claude Code
 4. **Iterate** - Update TODOS.md and guides as needed
 
@@ -457,9 +457,9 @@ This template uses a **two-branch strategy**:
 4. Test thoroughly before merging to main
 
 ### For Quick Improvements:
-1. Add your guide to `ClaudeUsage/`
-2. Update `ClaudeUsage/README.md` index
-3. Follow the documentation standards in `ClaudeUsage/documentation_standards.md`
+1. Add your guide to `AgentUsage/`
+2. Update `AgentUsage/README.md` index
+3. Follow the documentation standards in `AgentUsage/documentation_standards.md`
 4. Commit with proper message format
 
 ---

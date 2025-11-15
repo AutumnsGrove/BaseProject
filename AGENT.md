@@ -1,6 +1,6 @@
-# Project Instructions - Claude Code
+# Project Instructions - Agent Workflows
 
-> **Note**: This is the main orchestrator file. For detailed guides, see `ClaudeUsage/README.md`
+> **Note**: This is the main orchestrator file. For detailed guides, see `AgentUsage/README.md`
 
 ---
 
@@ -49,7 +49,7 @@
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: [Model Name] <agent@localhost>
 ```
 
 **Common Types:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`
@@ -61,54 +61,54 @@ fix: Correct timezone bug
 docs: Update README
 ```
 
-**For complete details:** See `ClaudeUsage/git_guide.md`
+**For complete details:** See `AgentUsage/git_guide.md`
 
 ---
 
 ## When to Read Specific Guides
 
-**Read the full guide in `ClaudeUsage/` when you encounter these situations:**
+**Read the full guide in `AgentUsage/` when you encounter these situations:**
 
 ### Secrets & API Keys
-- **When managing API keys or secrets** → Read `ClaudeUsage/secrets_management.md`
-- **Before implementing secrets loading** → Read `ClaudeUsage/secrets_management.md`
+- **When managing API keys or secrets** → Read `AgentUsage/secrets_management.md`
+- **Before implementing secrets loading** → Read `AgentUsage/secrets_management.md`
 
 ### Package Management
-- **When using UV package manager** → Read `ClaudeUsage/uv_usage.md`
-- **Before creating pyproject.toml** → Read `ClaudeUsage/uv_usage.md`
-- **When managing Python dependencies** → Read `ClaudeUsage/uv_usage.md`
+- **When using UV package manager** → Read `AgentUsage/uv_usage.md`
+- **Before creating pyproject.toml** → Read `AgentUsage/uv_usage.md`
+- **When managing Python dependencies** → Read `AgentUsage/uv_usage.md`
 
 ### Version Control
-- **Before making a git commit** → Read `ClaudeUsage/git_guide.md`
-- **When initializing a new repo** → Read `ClaudeUsage/git_guide.md`
-- **For git workflow and branching** → Read `ClaudeUsage/git_guide.md`
-- **For conventional commits reference** → Read `ClaudeUsage/git_guide.md`
+- **Before making a git commit** → Read `AgentUsage/git_guide.md`
+- **When initializing a new repo** → Read `AgentUsage/git_guide.md`
+- **For git workflow and branching** → Read `AgentUsage/git_guide.md`
+- **For conventional commits reference** → Read `AgentUsage/git_guide.md`
 
 ### Database Management
-- **When working with databases** → Read `ClaudeUsage/db_usage.md`
-- **Before implementing data persistence** → Read `ClaudeUsage/db_usage.md`
-- **For database.py template** → Read `ClaudeUsage/db_usage.md`
+- **When working with databases** → Read `AgentUsage/db_usage.md`
+- **Before implementing data persistence** → Read `AgentUsage/db_usage.md`
+- **For database.py template** → Read `AgentUsage/db_usage.md`
 
 ### Search & Research
-- **When searching across 20+ files** → Read `ClaudeUsage/house_agents.md`
-- **When finding patterns in codebase** → Read `ClaudeUsage/house_agents.md`
-- **When locating TODOs/FIXMEs** → Read `ClaudeUsage/house_agents.md`
+- **When searching across 20+ files** → Read `AgentUsage/house_agents.md`
+- **When finding patterns in codebase** → Read `AgentUsage/house_agents.md`
+- **When locating TODOs/FIXMEs** → Read `AgentUsage/house_agents.md`
 
 ### Testing
-- **Before writing tests** → Read `ClaudeUsage/testing_strategies.md`
-- **When implementing test coverage** → Read `ClaudeUsage/testing_strategies.md`
-- **For test organization** → Read `ClaudeUsage/testing_strategies.md`
+- **Before writing tests** → Read `AgentUsage/testing_strategies.md`
+- **When implementing test coverage** → Read `AgentUsage/testing_strategies.md`
+- **For test organization** → Read `AgentUsage/testing_strategies.md`
 
 
 ### Code Quality
-- **When refactoring code** → Read `ClaudeUsage/code_style_guide.md`
-- **Before major code changes** → Read `ClaudeUsage/code_style_guide.md`
-- **For style guidelines** → Read `ClaudeUsage/code_style_guide.md`
+- **When refactoring code** → Read `AgentUsage/code_style_guide.md`
+- **Before major code changes** → Read `AgentUsage/code_style_guide.md`
+- **For style guidelines** → Read `AgentUsage/code_style_guide.md`
 
 ### Project Setup
-- **When starting a new project** → Read `ClaudeUsage/project_setup.md`
-- **For directory structure** → Read `ClaudeUsage/project_setup.md`
-- **Setting up CI/CD** → Read `ClaudeUsage/project_setup.md`
+- **When starting a new project** → Read `AgentUsage/project_setup.md`
+- **For directory structure** → Read `AgentUsage/project_setup.md`
+- **Setting up CI/CD** → Read `AgentUsage/project_setup.md`
 
 ---
 
@@ -162,7 +162,7 @@ docs: Update README
 
 ## Complete Guide Index
 For all detailed guides, workflows, and examples, see:
-**`ClaudeUsage/README.md`** - Master index of all documentation
+**`AgentUsage/README.md`** - Master index of all documentation
 
 ---
 

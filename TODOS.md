@@ -3,8 +3,8 @@
 ## Setup Tasks
 - [ ] Review and customize AGENT.md with project-specific details
 - [ ] Set up project dependencies (uv, npm, go mod, etc.)
-- [ ] Configure secrets if needed (see ClaudeUsage/secrets_management.md)
-- [ ] Set up pre-commit hooks (optional, see ClaudeUsage/pre_commit_hooks/)
+- [ ] Configure secrets if needed (see AgentUsage/secrets_management.md)
+- [ ] Set up pre-commit hooks (optional, see AgentUsage/pre_commit_hooks/)
 - [ ] Add initial project structure
 
 ## Development Tasks
