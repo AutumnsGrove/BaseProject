@@ -95,14 +95,14 @@ cat .gitignore
 git add .
 git commit -m "Initial commit: Setup YourProjectName from BaseProject
 
-- Copied BaseProject structure with ClaudeUsage guides
+- Copied BaseProject structure with AgentUsage guides
 - Configured AGENT.md for this specific project
 - Initialized git repository
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 via [Happy](https://happy.engineering)
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: [Model Name] <agent@localhost>
 Co-Authored-By: Happy <yesreply@happy.engineering>"
 ```
 
@@ -144,7 +144,7 @@ EOF
 uv init
 
 # 2. Create pyproject.toml (use template as base)
-cp ClaudeUsage/templates/pyproject.toml.example pyproject.toml
+cp AgentUsage/templates/pyproject.toml.example pyproject.toml
 
 # Edit pyproject.toml with your project details
 nano pyproject.toml
@@ -236,7 +236,7 @@ cargo build
 
 ```bash
 # Use provided template or create custom
-cp ClaudeUsage/templates/secrets_template.json secrets_template.json
+cp AgentUsage/templates/secrets_template.json secrets_template.json
 
 # Edit with your required keys
 nano secrets_template.json
@@ -305,7 +305,7 @@ API_KEY = SECRETS.get("api_key", os.getenv("API_KEY", ""))
 
 ```bash
 # 1. Navigate to hooks directory
-cd ClaudeUsage/pre_commit_hooks/
+cd AgentUsage/pre_commit_hooks/
 
 # 2. Make hooks executable
 chmod +x pre-commit commit-msg
@@ -390,7 +390,7 @@ mkdir -p .github/workflows
 touch .github/workflows/ci.yml
 
 # 3. Configure based on your stack
-# See ClaudeUsage/ci_cd_patterns.md for examples
+# See AgentUsage/ci_cd_patterns.md for examples
 ```
 
 **See:** [ci_cd_patterns.md](ci_cd_patterns.md) for detailed workflows
@@ -471,7 +471,7 @@ Based on your tech stack, review:
 
 ```bash
 chmod +x setup_new_project.sh
-chmod +x ClaudeUsage/pre_commit_hooks/*
+chmod +x AgentUsage/pre_commit_hooks/*
 ```
 
 ### Git commit fails

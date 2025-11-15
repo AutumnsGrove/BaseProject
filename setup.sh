@@ -260,7 +260,7 @@ $PROJECT_DESCRIPTION
 
 This project was created from the [BaseProject template](https://github.com/AutumnsGrove/BaseProject) and includes:
 
-- Comprehensive workflow guides in \`ClaudeUsage/\`
+- Comprehensive workflow guides in \`AgentUsage/\`
 - Git hooks for code quality and security
 - Claude Code optimized workflows
 - Multi-language support
@@ -287,7 +287,7 @@ $PROJECT_NAME/
 ├── AGENT.md                    # Main project instructions
 ├── src/                        # Source code
 ├── tests/                      # Test files
-├── ClaudeUsage/               # Comprehensive workflow guides
+├── AgentUsage/               # Comprehensive workflow guides
 │   ├── README.md              # Guide index
 │   ├── git_guide.md           # Git workflow and conventional commits
 │   └── ... (18 total guides)
@@ -569,17 +569,17 @@ EOF
 
 # Function to install git hooks
 install_git_hooks() {
-    if [ -f "ClaudeUsage/pre_commit_hooks/install_hooks.sh" ]; then
+    if [ -f "AgentUsage/pre_commit_hooks/install_hooks.sh" ]; then
         print_info "Installing git hooks..."
 
         # Make the installer executable
-        chmod +x ClaudeUsage/pre_commit_hooks/install_hooks.sh
+        chmod +x AgentUsage/pre_commit_hooks/install_hooks.sh
 
         # Run the installer non-interactively
-        cd ClaudeUsage/pre_commit_hooks
+        cd AgentUsage/pre_commit_hooks
         bash install_hooks.sh --auto 2>/dev/null || {
             print_warning "Git hooks installer encountered an issue. You can run it manually later:"
-            print_info "  ./ClaudeUsage/pre_commit_hooks/install_hooks.sh"
+            print_info "  ./AgentUsage/pre_commit_hooks/install_hooks.sh"
         }
         cd ../..
 
@@ -620,13 +620,13 @@ initialize_git() {
 
 - Set up project structure for $PRIMARY_LANG
 - Configured AGENT.md with project details
-- Added workflow guides in ClaudeUsage/
+- Added workflow guides in AgentUsage/
 $([ ${#API_KEYS[@]} -gt 0 ] && echo "- Created secrets template for API keys")
 $([ "$INSTALL_HOOKS" = "y" ] && echo "- Installed git hooks for code quality")
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
-Co-Authored-By: Claude <noreply@anthropic.com>" > /dev/null 2>&1
+Co-Authored-By: [Model Name] <agent@localhost>" > /dev/null 2>&1
 
     print_success "Git initialized with initial commit"
 }
@@ -676,7 +676,7 @@ show_completion() {
     echo "4. Start developing:"
     echo "   ${CYAN}claude \"implement [your feature]\"${NC}"
     echo ""
-    echo "5. Explore guides in ClaudeUsage/ directory"
+    echo "5. Explore guides in AgentUsage/ directory"
     echo ""
 
     print_info "Useful commands:"

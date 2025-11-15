@@ -1,6 +1,6 @@
-# Claude Usage Guide Index
+# Agent Usage Guide Index
 
-This directory contains comprehensive guides for working with Claude on development projects. Each guide is self-contained and focused on specific workflows or technologies.
+This directory contains comprehensive guides for working with AI agents on development projects. Each guide is self-contained and focused on specific workflows or technologies.
 
 ## Quick Reference
 
