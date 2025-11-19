@@ -26,6 +26,7 @@ This directory contains comprehensive guides for working with AI agents on devel
 | [code_style_guide.md](code_style_guide.md) | General code style principles | Writing clean, maintainable code |
 | [project_structure.md](project_structure.md) | Directory layouts, file organization | Starting new projects |
 | [project_setup.md](project_setup.md) | Project initialization patterns | Setting up new projects from template |
+| [rich_formatting.md](rich_formatting.md) | Terminal output with Rich library | Building CLI tools, enhancing print output |
 
 ### Documentation
 
@@ -97,4 +98,4 @@ For new projects, reference these guides in order:
 ---
 
 *Last updated: 2025-10-19*
-*Total guides: 18*
+*Total guides: 19*
