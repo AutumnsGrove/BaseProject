@@ -196,32 +196,6 @@ table.add_row("3", "Charlie", "charlie@example.com", "✗ Inactive")
 console.print(table)
 ```
 
-**Dynamic Tables from Data:**
-
-```python
-def display_users(users: list[dict]):
-    """Display user data as a formatted table."""
-    table = Table(title="Users")
-
-    # Add columns from first item's keys
-    if users:
-        for key in users[0].keys():
-            table.add_column(key.title(), style="cyan")
-
-        # Add rows
-        for user in users:
-            table.add_row(*[str(v) for v in user.values()])
-
-    console.print(table)
-
-# Usage
-users = [
-    {"id": 1, "name": "Alice", "role": "Admin"},
-    {"id": 2, "name": "Bob", "role": "User"},
-]
-display_users(users)
-```
-
 ### Panels for Important Messages
 
 Highlight important information with panels:
@@ -312,28 +286,6 @@ syntax = Syntax(code, "python", theme="monokai", line_numbers=True)
 console.print(syntax)
 ```
 
-**Display File Contents:**
-
-```python
-from rich.syntax import Syntax
-from pathlib import Path
-
-def show_file(filepath: str, start_line: int = 1, end_line: int = None):
-    """Display a file with syntax highlighting."""
-    path = Path(filepath)
-    code = path.read_text()
-
-    syntax = Syntax(
-        code,
-        path.suffix.lstrip('.') or "text",
-        theme="monokai",
-        line_numbers=True,
-        start_line=start_line,
-        line_range=(start_line, end_line) if end_line else None
-    )
-    console.print(syntax)
-```
-
 ### Tree Displays
 
 Show hierarchical data like file structures:
@@ -363,83 +315,28 @@ tests.add("conftest.py")
 console.print(tree)
 ```
 
-**Dynamic Tree from Directory:**
-
-```python
-from pathlib import Path
-from rich.tree import Tree
-
-def build_tree(directory: Path, tree: Tree) -> None:
-    """Recursively build a tree from directory contents."""
-    paths = sorted(
-        directory.iterdir(),
-        key=lambda p: (p.is_file(), p.name.lower())
-    )
-
-    for path in paths:
-        if path.name.startswith('.'):
-            continue
-
-        if path.is_dir():
-            branch = tree.add(f"[bold blue]{path.name}/[/]")
-            build_tree(path, branch)
-        else:
-            tree.add(f"[green]{path.name}[/]")
-
-# Usage
-root = Path(".")
-tree = Tree(f"[bold]{root.resolve().name}/[/]")
-build_tree(root, tree)
-console.print(tree)
-```
-
 ### Combining Features
 
-Create rich output combining multiple elements:
+Wrap a table in a panel for polished output:
 
 ```python
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.text import Text
 
 console = Console()
 
-def show_deployment_status(services: list[dict]):
-    """Display deployment status with combined Rich elements."""
+# Create table
+table = Table(show_header=True, header_style="bold magenta")
+table.add_column("Service", style="cyan")
+table.add_column("Status")
 
-    # Create status table
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Service", style="cyan")
-    table.add_column("Status")
-    table.add_column("Version")
-    table.add_column("Uptime")
+table.add_row("api", "[green]● Running[/]")
+table.add_row("worker", "[green]● Running[/]")
+table.add_row("scheduler", "[red]● Stopped[/]")
 
-    for service in services:
-        status = "[green]● Running[/]" if service["running"] else "[red]● Stopped[/]"
-        table.add_row(
-            service["name"],
-            status,
-            service["version"],
-            service["uptime"]
-        )
-
-    # Wrap in panel
-    panel = Panel(
-        table,
-        title="[bold]Deployment Status[/]",
-        border_style="blue"
-    )
-
-    console.print(panel)
-
-# Usage
-services = [
-    {"name": "api", "running": True, "version": "2.1.0", "uptime": "3d 4h"},
-    {"name": "worker", "running": True, "version": "2.1.0", "uptime": "3d 4h"},
-    {"name": "scheduler", "running": False, "version": "2.0.5", "uptime": "0s"},
-]
-show_deployment_status(services)
+# Wrap in panel
+console.print(Panel(table, title="[bold]Status[/]", border_style="blue"))
 ```
 
 ---
@@ -557,37 +454,11 @@ else:
 
 ## Performance Considerations
 
-### When Rich Adds Overhead
-
-- **High-frequency output**: Thousands of prints per second
-- **Large tables**: Tables with thousands of rows
-- **Piped output**: When output goes to file/pipe
-
-### Optimization Strategies
+Rich adds overhead for high-frequency output (thousands of prints/second) or very large tables. For non-interactive use, disable formatting:
 
 ```python
-# 1. Batch table updates
-table = Table()
-# Add all rows, then print once
-for row in data:
-    table.add_row(*row)
-console.print(table)
-
-# 2. Disable for non-interactive use
 import sys
-console = Console(
-    force_terminal=sys.stdout.isatty(),
-    no_color=not sys.stdout.isatty()
-)
-
-# 3. Use simpler output for large datasets
-if len(data) > 1000:
-    # Fall back to CSV or plain output
-    for row in data:
-        print(",".join(str(v) for v in row))
-else:
-    # Use Rich table
-    display_table(data)
+console = Console(force_terminal=sys.stdout.isatty())
 ```
 
 ---
@@ -600,6 +471,7 @@ else:
 # myapp/cli.py
 import click
 from rich.console import Console
+from rich.panel import Panel
 
 console = Console()
 
@@ -618,71 +490,9 @@ def process(filename):
         result = do_processing(filename)
 
     if result.success:
-        console.print(Panel(
-            f"[green]Processed {result.count} items[/]",
-            title="Success"
-        ))
+        console.print(Panel(f"[green]Processed {result.count} items[/]", title="Success"))
     else:
         console.print(f"[red]Error:[/] {result.error}")
-```
-
-### Module-Level Console
-
-```python
-# myapp/output.py
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
-
-# Single console instance for the module
-console = Console()
-
-def print_success(message: str):
-    """Print a success message."""
-    console.print(f"[green]✓[/] {message}")
-
-def print_error(message: str):
-    """Print an error message."""
-    console.print(f"[red]✗[/] {message}")
-
-def print_table(title: str, data: list[dict]):
-    """Print data as a formatted table."""
-    if not data:
-        console.print("[yellow]No data to display[/]")
-        return
-
-    table = Table(title=title)
-    for key in data[0].keys():
-        table.add_column(key.title())
-
-    for row in data:
-        table.add_row(*[str(v) for v in row.values()])
-
-    console.print(table)
-```
-
-### Test Output Enhancement
-
-```python
-# tests/conftest.py
-import pytest
-from rich.console import Console
-
-console = Console()
-
-@pytest.fixture
-def rich_output():
-    """Provide Rich console for test output."""
-    return console
-
-# tests/test_example.py
-def test_user_creation(rich_output):
-    user = create_user("test@example.com")
-
-    # Rich output for debugging
-    rich_output.print(f"[cyan]Created user:[/] {user.id}")
-
-    assert user.email == "test@example.com"
 ```
 
 ---
