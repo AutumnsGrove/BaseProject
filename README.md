@@ -104,6 +104,121 @@ Claude will intelligently:
 - Respect your existing README.md (won't overwrite)
 - Adapt to your project's existing structure
 
+---
+
+### Option 3: Update/Sync Existing BaseProject Installation
+
+**Already using BaseProject? Keep your AgentUsage docs and hooks up to date!**
+
+This option is for projects that already have BaseProject installed and want to sync with the latest updates.
+
+**Quick Update (Automated Script):**
+
+```bash
+# In your project directory
+curl -sSL https://raw.githubusercontent.com/AutumnsGrove/BaseProject/main/update_baseproject.sh | bash
+
+# OR if you have BaseProject cloned locally:
+bash /path/to/BaseProject/update_baseproject.sh
+```
+
+**What the Update Script Does:**
+
+1. **Detects and migrates old folders**:
+   - Finds old `ClaudeUsage` folders and migrates them to `AgentUsage`
+   - Backs up everything before making changes
+
+2. **Syncs AgentUsage folder**:
+   - Updates all documentation guides with latest versions
+   - Refreshes git hooks with newest implementations
+   - Updates templates and examples
+   - Shows detailed summary of added/updated/unchanged files
+
+3. **Merges .gitignore entries**:
+   - Adds new patterns from BaseProject
+   - Preserves all your existing entries
+
+4. **Preserves your customizations**:
+   - ✅ Keeps your `AGENT.md` (project instructions)
+   - ✅ Keeps your `README.md` (project documentation)
+   - ✅ Keeps your `TODOS.md` (task list)
+   - ✅ Keeps your `secrets.json` and `secrets_template.json`
+   - ✅ Keeps all language-specific files (pyproject.toml, package.json, etc.)
+   - ✅ Keeps all your source code
+
+5. **Provides update summary**:
+   - Creates `baseproject-update-summary.md` with detailed changes
+   - Creates backup in `.baseproject-backup-[TIMESTAMP]/`
+   - Shows exactly what was changed and why
+
+**Manual Update (via Claude Code):**
+
+```
+I want to update my BaseProject installation. Follow this workflow:
+
+1. Check current directory for existing AgentUsage or old ClaudeUsage folders
+2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp-update
+3. Create backup of existing AgentUsage to .baseproject-backup-[TIMESTAMP]/
+4. If ClaudeUsage folder exists, migrate it to AgentUsage (preserve custom files, merge intelligently)
+5. Sync AgentUsage folder from BaseProject:
+   - Compare each file (add new, update changed, preserve unchanged)
+   - Show summary of added/updated/unchanged files
+   - Keep any custom guides I've added
+6. Update .gitignore by merging new entries (don't remove my existing entries)
+7. Ask if I want to reinstall git hooks with latest versions
+8. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
+9. Generate baseproject-update-summary.md report showing all changes
+10. DO NOT touch: AGENT.md, README.md, TODOS.md, secrets files, language configs, source code
+11. Cleanup /tmp/bp-update
+12. Display summary and next steps
+
+Start the update process.
+```
+
+**When to Use This Option:**
+
+- ✅ Your project already has BaseProject installed (AgentUsage folder exists)
+- ✅ You want to get the latest documentation guides and git hooks
+- ✅ You're migrating from old "ClaudeUsage" naming to "AgentUsage"
+- ✅ You want to keep your project setup but refresh the docs
+
+**Example Output:**
+
+```bash
+$ bash update_baseproject.sh
+
+╔══════════════════════════════════════════════════════════════╗
+║         BaseProject Update/Sync Tool                        ║
+╚══════════════════════════════════════════════════════════════╝
+
+Checking for Old Folders
+─────────────────────────
+⚠ Found old 'ClaudeUsage' folder
+✓ Backed up ClaudeUsage to .baseproject-backup-20251119-143500/
+✓ Renamed ClaudeUsage → AgentUsage
+
+Syncing AgentUsage Folder
+──────────────────────────
+✓ Added: house_agents.md
+✓ Updated: git_guide.md
+✓ Updated: pre_commit_hooks/pre-commit-secrets-scanner
+
+Sync Summary:
+✓ Added: 3 files
+✓ Updated: 8 files
+ℹ Unchanged: 12 files
+
+Updating .gitignore
+───────────────────
+✓ Added 4 new entries to .gitignore
+
+Update Complete!
+────────────────
+✓ AgentUsage folder synced with latest BaseProject
+✓ Backup saved to: .baseproject-backup-20251119-143500/
+✓ Update summary: baseproject-update-summary.md
+```
+
 ### Manual Setup
 
 For full control over the setup process, see [TEMPLATE_USAGE.md](TEMPLATE_USAGE.md) for detailed step-by-step instructions.
@@ -411,22 +526,35 @@ See [AgentUsage/pre_commit_hooks/TROUBLESHOOTING.md](AgentUsage/pre_commit_hooks
 
 ## 🔄 Keeping BaseProject Updated
 
-To get updates from BaseProject while preserving your customizations:
+To get updates from BaseProject while preserving your customizations, use the **automated update script** (see [Option 3](#option-3-updatesync-existing-baseproject-installation) above):
 
 ```bash
-# In your project directory
-# Option 1: Manual merge of specific guides
+# Recommended: Use the update script
+bash update_baseproject.sh
+
+# OR download and run directly:
+curl -sSL https://raw.githubusercontent.com/AutumnsGrove/BaseProject/main/update_baseproject.sh | bash
+```
+
+**What gets updated:**
+- ✅ AgentUsage/ guides and documentation
+- ✅ Git hooks in AgentUsage/pre_commit_hooks/
+- ✅ .gitignore entries (merged, not replaced)
+
+**What stays unchanged:**
+- ✅ Your AGENT.md, README.md, TODOS.md
+- ✅ Your secrets files
+- ✅ Your source code and configs
+
+**Manual update (for specific files only):**
+```bash
+# Copy a specific guide
 cp /path/to/BaseProject/AgentUsage/new_guide.md AgentUsage/
 
-# Option 2: Update all guides (careful - review diffs first)
-rsync -av --exclude='AGENT.md' /path/to/BaseProject/AgentUsage/ AgentUsage/
-
-# Review changes
-git diff
-
-# Commit updates
+# Review and commit
+git diff AgentUsage/
 git add AgentUsage/
-git commit -m "Update AgentUsage guides from BaseProject"
+git commit -m "chore: update specific AgentUsage guide"
 ```
 
 ## 🎉 What's Next?
