@@ -159,7 +159,9 @@ I want to update my BaseProject installation. Follow this workflow:
 1. Check current directory for existing AgentUsage or old ClaudeUsage folders
 2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp-update
 3. Create backup of existing AgentUsage to .baseproject-backup-[TIMESTAMP]/
-4. If ClaudeUsage folder exists, migrate it to AgentUsage (preserve custom files, merge intelligently)
+4. If ClaudeUsage folder exists:
+   - Back it up to .baseproject-backup-[TIMESTAMP]/
+   - Migrate contents to AgentUsage (preserve custom files, merge intelligently)
 5. Sync AgentUsage folder from BaseProject:
    - Compare each file (add new, update changed, preserve unchanged)
    - Show summary of added/updated/unchanged files
@@ -169,8 +171,11 @@ I want to update my BaseProject installation. Follow this workflow:
 8. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
 9. Generate baseproject-update-summary.md report showing all changes
 10. DO NOT touch: AGENT.md, README.md, TODOS.md, secrets files, language configs, source code
-11. Cleanup /tmp/bp-update
-12. Display summary and next steps
+11. Cleanup phase:
+    - Delete old ClaudeUsage folder (if it was migrated)
+    - Cleanup /tmp/bp-update
+12. Commit the updates with message "chore: sync BaseProject AgentUsage guides" (do NOT include baseproject-update-summary.md in the commit - only commit the actual file changes)
+13. Display summary and next steps
 
 Start the update process.
 ```
