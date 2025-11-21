@@ -27,6 +27,7 @@ This directory contains comprehensive guides for working with AI agents on devel
 | [project_structure.md](project_structure.md) | Directory layouts, file organization | Starting new projects |
 | [project_setup.md](project_setup.md) | Project initialization patterns | Setting up new projects from template |
 | [rich_formatting.md](rich_formatting.md) | Terminal output with Rich library | Building CLI tools, enhancing print output |
+| [svelte5_guide.md](svelte5_guide.md) | Svelte 5 with runes and SvelteKit | Building Svelte web applications |
 
 ### Documentation
 
@@ -98,4 +99,4 @@ For new projects, reference these guides in order:
 ---
 
 *Last updated: 2025-10-19*
-*Total guides: 19*
+*Total guides: 20*
