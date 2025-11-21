@@ -168,6 +168,8 @@ project/
 - Build tools and bundlers
 - JavaScript/TypeScript projects
 
+**See Also**: [Svelte 5 Guide](svelte5_guide.md) for Svelte-specific patterns and SvelteKit
+
 ### Project Setup
 
 ```bash
