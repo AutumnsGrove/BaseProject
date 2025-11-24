@@ -72,6 +72,12 @@ docs: Update README
 ### Secrets & API Keys
 - **When managing API keys or secrets** → Read `AgentUsage/secrets_management.md`
 - **Before implementing secrets loading** → Read `AgentUsage/secrets_management.md`
+- **When integrating external APIs** → Read `AgentUsage/api_usage.md`
+
+### Cloudflare Development
+- **When deploying to Cloudflare** → Read `AgentUsage/cloudflare_guide.md`
+- **Before using Cloudflare Workers, KV, R2, or D1** → Read `AgentUsage/cloudflare_guide.md`
+- **When setting up Cloudflare MCP server** → Read `AgentUsage/cloudflare_guide.md`
 
 ### Package Management
 - **When using UV package manager** → Read `AgentUsage/uv_usage.md`
@@ -166,5 +172,5 @@ For all detailed guides, workflows, and examples, see:
 
 ---
 
-*Last updated: 2025-10-19*
+*Last updated: 2025-11-24*
 *Model: Claude Sonnet 4.5*

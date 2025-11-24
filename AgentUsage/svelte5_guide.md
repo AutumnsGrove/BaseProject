@@ -858,7 +858,8 @@ export default {
 - **[git_guide.md](git_guide.md)** - Version control workflow
 - **[testing_strategies.md](testing_strategies.md)** - Test organization and patterns
 - **[code_style_guide.md](code_style_guide.md)** - Code formatting guidelines
+- **[cloudflare_guide.md](cloudflare_guide.md)** - Deploying SvelteKit to Cloudflare Pages
 
 ---
 
-*Last updated: 2025-11-21*
+*Last updated: 2025-11-24*
