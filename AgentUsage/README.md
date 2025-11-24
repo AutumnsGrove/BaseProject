@@ -11,6 +11,7 @@ This directory contains comprehensive guides for working with AI agents on devel
 | [git_guide.md](git_guide.md) | Git operations, commits, branching, conventional commits | Every session with code changes |
 | [secrets_management.md](secrets_management.md) | API key handling, security patterns | Setting up projects with external APIs |
 | [secrets_advanced.md](secrets_advanced.md) | Advanced secrets patterns, rotation, auditing | Enterprise-grade security implementations |
+| [api_usage.md](api_usage.md) | Respectful public API usage, rate limiting, auth | Integrating external APIs |
 | [house_agents.md](house_agents.md) | Specialized agent usage (research, coding) | Complex searches or multi-file refactoring |
 | [subagent_usage.md](subagent_usage.md) | Creating focused task agents | Breaking down large tasks into subtasks |
 | [research_workflow.md](research_workflow.md) | Codebase analysis patterns | Understanding unfamiliar codebases |
@@ -39,6 +40,7 @@ This directory contains comprehensive guides for working with AI agents on devel
 
 | Guide | Description | When to Use |
 |-------|-------------|-------------|
+| [cloudflare_guide.md](cloudflare_guide.md) | Cloudflare Workers, KV, R2, D1, MCP server | Deploying to Cloudflare, serverless apps |
 | [docker_guide.md](docker_guide.md) | Container setup and workflows | Dockerizing applications |
 | [ci_cd_patterns.md](ci_cd_patterns.md) | GitHub Actions, automation | Setting up CI/CD pipelines |
 | [database_setup.md](database_setup.md) | Database configuration patterns | Working with databases |
@@ -98,5 +100,5 @@ For new projects, reference these guides in order:
 
 ---
 
-*Last updated: 2025-10-19*
-*Total guides: 20*
+*Last updated: 2025-11-24*
+*Total guides: 22*
