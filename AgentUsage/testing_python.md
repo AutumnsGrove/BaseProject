@@ -1,10 +1,12 @@
-# Testing Strategies with Pytest
+# Python Testing Guide
 
 ## Overview
 
 Testing is essential for maintaining code quality, catching bugs early, and enabling confident refactoring. **pytest** is the de facto standard testing framework for Python, offering simple syntax, powerful fixtures, excellent plugins, and detailed failure reports.
 
 This guide focuses on practical pytest usage with modern Python (3.10+).
+
+**See also**: [testing_javascript.md](testing_javascript.md) for JS/TS testing, [testing_go.md](testing_go.md) for Go, [testing_rust.md](testing_rust.md) for Rust.
 
 ---
 
@@ -358,6 +360,9 @@ For automated testing in CI/CD pipelines, see [ci_cd_patterns.md](ci_cd_patterns
 
 ## Related Guides
 
+- **[testing_javascript.md](testing_javascript.md)** - JavaScript/TypeScript testing (Vitest, Jest)
+- **[testing_go.md](testing_go.md)** - Go testing
+- **[testing_rust.md](testing_rust.md)** - Rust testing
 - **[uv_usage.md](uv_usage.md)** - Dependency management
 - **[code_quality.md](code_quality.md)** - Linting and formatting
 - **[ci_cd_patterns.md](ci_cd_patterns.md)** - CI/CD pipelines
@@ -365,4 +370,4 @@ For automated testing in CI/CD pipelines, see [ci_cd_patterns.md](ci_cd_patterns
 
 ---
 
-*Last updated: 2025-10-19*
+*Last updated: 2025-11-28*
