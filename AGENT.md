@@ -101,9 +101,10 @@ docs: Update README
 - **When locating TODOs/FIXMEs** → Read `AgentUsage/house_agents.md`
 
 ### Testing
-- **Before writing tests** → Read `AgentUsage/testing_strategies.md`
-- **When implementing test coverage** → Read `AgentUsage/testing_strategies.md`
-- **For test organization** → Read `AgentUsage/testing_strategies.md`
+- **Before writing Python tests** → Read `AgentUsage/testing_python.md`
+- **Before writing JavaScript/TypeScript tests** → Read `AgentUsage/testing_javascript.md`
+- **Before writing Go tests** → Read `AgentUsage/testing_go.md`
+- **Before writing Rust tests** → Read `AgentUsage/testing_rust.md`
 
 
 ### Code Quality
@@ -172,5 +173,5 @@ For all detailed guides, workflows, and examples, see:
 
 ---
 
-*Last updated: 2025-11-24*
+*Last updated: 2025-11-28*
 *Model: Claude Sonnet 4.5*
