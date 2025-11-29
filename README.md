@@ -224,6 +224,104 @@ Update Complete!
 ✓ Update summary: baseproject-update-summary.md
 ```
 
+---
+
+### Option 4: Project Content Imported - Build From What's Here
+
+**Already copied your project files in but still have all the template scaffolding? Use this!**
+
+This is for when you've imported your existing project content (specs, license, scripts, tools, etc.) but the BaseProject template files (AGENT.md, README.md, TODOS.md) still have placeholder text.
+
+**Copy this prompt into Claude Code:**
+```
+I've imported my project content into the BaseProject template, but the template files still have placeholders. Analyze everything and build out the project properly. Follow this workflow:
+
+1. Deep Analysis Phase:
+   - Read ALL files in the project to understand what exists
+   - Identify: project specs, documentation, licenses, scripts, tools, configs
+   - Detect tech stack from existing files (package.json, pyproject.toml, go.mod, etc.)
+   - Map the current file structure and identify what belongs where
+   - Note any existing README, SPEC, or documentation files that should replace template placeholders
+
+2. Create Reorganization Plan:
+   - Propose a clean directory structure based on what you found
+   - Plan where specs/docs should live (e.g., move SPEC.md to docs/)
+   - Identify which template files to replace vs. populate
+   - List all files that will be created, moved, or modified
+   - Present the plan and ask for confirmation before proceeding
+
+3. Execute the Plan (after confirmation):
+   - Create necessary directories (src/, docs/, tests/, etc.)
+   - Move/reorganize files according to the plan
+   - Update all file path references in moved files
+   - Replace template AGENT.md with real project details extracted from specs
+   - Replace template README.md with project-appropriate content
+   - Generate TODOS.md with actual next steps based on project state
+   - Update .gitignore for the detected tech stack
+   - Create any missing standard files (LICENSE, CONTRIBUTING.md, etc. if content exists)
+
+4. Cross-Reference & Validation:
+   - Verify all internal links/references are updated
+   - Check for orphaned files or broken references
+   - Ensure no duplicate documentation exists
+   - Validate directory structure matches tech stack conventions
+
+5. Finalize:
+   - Initialize/update language dependencies if needed
+   - Offer to install git hooks appropriate for detected tech stack
+   - Create initial commit with message "feat: scaffold project from imported content"
+   - Display summary of changes: files created, moved, modified, deleted
+   - List recommended next steps
+
+Start by reading everything in the project directory.
+```
+
+Claude will:
+- Discover your project by reading all imported files
+- Understand specs, docs, scripts, and architecture from what you've brought in
+- Create a tailored reorganization plan (asks for approval first)
+- Move files to proper locations (specs → docs/, source → src/, etc.)
+- Update all references in moved files so nothing breaks
+- Transform template placeholders into real project documentation
+- Generate actionable TODOS.md based on actual project state
+- Set up proper structure for your detected tech stack
+- Optionally install appropriate git hooks
+
+**When to Use This Option:**
+- ✅ You copied an existing project into the BaseProject template
+- ✅ Template files (AGENT.md, README.md) still have placeholder text
+- ✅ You have specs, licenses, scripts, or tools that need proper organization
+- ✅ You want Claude to figure out the structure from what's there
+- ✅ Files need to be reorganized (e.g., SPEC.md should move to docs/)
+
+**Example Scenario:**
+```
+Your imported content:
+├── SPEC.md              # Full project specification
+├── my-tool.py           # Main script
+├── LICENSE              # Your real license
+├── ProjectReadme.md     # Your actual readme (not the template one)
+├── config.yaml          # Project config
+├── AGENT.md             # ← Still has template placeholders
+├── README.md            # ← Still the template README
+└── AgentUsage/          # Template guides
+
+After running the prompt:
+├── docs/
+│   └── SPEC.md          # Moved, references updated
+├── src/
+│   └── my-tool.py       # Organized into src/
+├── config.yaml
+├── LICENSE
+├── AGENT.md             # ← Populated with real project details from SPEC
+├── README.md            # ← Replaced with ProjectReadme.md content + enhancements
+├── TODOS.md             # ← Generated from actual project state
+├── AgentUsage/
+└── pyproject.toml       # Created for detected Python project
+```
+
+---
+
 ### Manual Setup
 
 For full control over the setup process, see [TEMPLATE_USAGE.md](TEMPLATE_USAGE.md) for detailed step-by-step instructions.
