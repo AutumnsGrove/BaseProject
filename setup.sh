@@ -622,11 +622,7 @@ initialize_git() {
 - Configured AGENT.md with project details
 - Added workflow guides in AgentUsage/
 $([ ${#API_KEYS[@]} -gt 0 ] && echo "- Created secrets template for API keys")
-$([ "$INSTALL_HOOKS" = "y" ] && echo "- Installed git hooks for code quality")
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: [Model Name] <agent@localhost>" > /dev/null 2>&1
+$([ "$INSTALL_HOOKS" = "y" ] && echo "- Installed git hooks for code quality")" > /dev/null 2>&1
 
     print_success "Git initialized with initial commit"
 }

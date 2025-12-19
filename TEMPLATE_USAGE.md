@@ -310,11 +310,7 @@ git commit -m "feat: initialize project from BaseProject template
 - Set up project structure
 - Configured CLAUDE.md with project details
 - Added secrets management
-- Installed git hooks
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: [Model Name] <agent@localhost>"
+- Installed git hooks"
 ```
 
 ---
