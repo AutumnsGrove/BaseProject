@@ -46,10 +46,6 @@
 <type>: <brief description>
 
 <optional body>
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: [Model Name] <agent@localhost>
 ```
 
 **Common Types:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`

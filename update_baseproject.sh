@@ -307,9 +307,7 @@ A backup of your previous setup has been saved to:
 
    - Updated documentation guides
    - Refreshed git hooks
-   - Merged new .gitignore entries
-
-   🤖 Generated with [Claude Code](https://claude.ai/code)"
+   - Merged new .gitignore entries"
    \`\`\`
 
 4. If you encounter issues, restore from backup:
