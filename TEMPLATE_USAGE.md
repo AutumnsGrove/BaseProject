@@ -148,7 +148,9 @@ Your project is ready. Next steps:
 4. Start developing:
    claude "your task here"
 
-5. Explore guides in AgentUsage/ directory
+5. Skills are automatically available! Use them when needed:
+   - secrets-management, database-management, git-workflows, etc.
+   - See AGENT.md for the full list of available skills
 
 Happy coding! 🚀
 ```
@@ -548,15 +550,15 @@ chmod +x .git/hooks/pre-commit
 
 If your project uses a database, follow the `database.py` pattern:
 
-1. **Read the guide:**
-   ```bash
-   cat AgentUsage/db_usage.md
+1. **Use the skill:**
+   ```
+   skill: "database-management"
    ```
 
 2. **Create database.py:**
    - All SQL isolated in one file
    - Function-based interface for the rest of your app
-   - See guide for complete template
+   - The skill provides the complete template
 
 3. **Update AGENT.md:**
    ```markdown
@@ -569,9 +571,9 @@ If your project uses a database, follow the `database.py` pattern:
 
 To add Docker to your project:
 
-1. **Read the guide:**
-   ```bash
-   cat AgentUsage/docker_guide.md
+1. **Use the skill:**
+   ```
+   skill: "docker-workflows"
    ```
 
 2. **Add to AGENT.md:**
@@ -581,23 +583,24 @@ To add Docker to your project:
    - Multi-stage builds for production optimization
    ```
 
-3. **Use slash command:**
-   ```bash
-   claude "/setup-docker-containers --development"
-   ```
+3. **The skill will guide you through:**
+   - Dockerfile creation
+   - docker-compose configuration
+   - Multi-stage builds for production
 
 ### CI/CD Workflows
 
 To add GitHub Actions:
 
-1. **Read the guide:**
-   ```bash
-   cat AgentUsage/ci_cd_patterns.md
+1. **Use the skill:**
+   ```
+   skill: "cicd-automation"
    ```
 
-2. **Create `.github/workflows/` directory**
-
-3. **Add workflow files** (see guide for templates)
+2. **The skill will help you:**
+   - Create `.github/workflows/` directory
+   - Set up testing workflows
+   - Configure linting and deployment pipelines
 
 ---
 
@@ -617,21 +620,27 @@ To add GitHub Actions:
 | `TEMPLATE_USAGE.md` | This file | ❌ No - Auto-deleted |
 | `setup.sh` | Setup script | ❌ No - Auto-deleted |
 
-### AgentUsage/ Directory
+### .claude/skills/ Directory (Skills)
 
-| Guide | When to Read |
-|-------|-------------|
-| `README.md` | Start here - index of all guides |
-| `git_guide.md` | Before making commits |
-| `secrets_management.md` | When handling API keys |
-| `db_usage.md` | When adding database |
-| `uv_usage.md` | For Python projects |
-| `testing_strategies.md` | Before writing tests |
-| `house_agents.md` | For complex codebase searches |
-| `docker_guide.md` | When containerizing |
-| `ci_cd_patterns.md` | When setting up automation |
+This project uses **Claude Code Skills** for specialized workflows. Skills are invoked automatically when needed.
 
-**Keep this directory as-is** - it's reference material.
+| Skill | Purpose |
+|-------|---------|
+| `secrets-management` | API keys, credentials |
+| `database-management` | SQLite, database.py patterns |
+| `git-workflows` | Commits, branching |
+| `uv-package-manager` | Python dependencies |
+| `python-testing` | pytest patterns |
+| `docker-workflows` | Containerization |
+| `cicd-automation` | GitHub Actions |
+
+**Skills are the primary mechanism** - use them via the Skill tool.
+
+### AgentUsage/ Directory (Extended Reference)
+
+Extended documentation for when you need more detail than skills provide.
+
+**Keep this directory as-is** - it's reference material for deep dives.
 
 ### AgentUsage/templates/
 
@@ -742,15 +751,14 @@ git config user.email "your.email@example.com"
 
 ### Still Having Issues?
 
-1. **Check hooks troubleshooting:**
-   ```bash
-   cat AgentUsage/pre_commit_hooks/TROUBLESHOOTING.md
-   ```
+1. **Use relevant skills:**
+   - `skill: "git-hooks"` for hook issues
+   - `skill: "python-testing"` for test issues
+   - Other skills as appropriate
 
-2. **Review language-specific guide:**
-   ```bash
-   cat AgentUsage/multi_language_guide.md
-   ```
+2. **Check extended documentation:**
+   - `AgentUsage/pre_commit_hooks/TROUBLESHOOTING.md` for hook issues
+   - `AgentUsage/multi_language_guide.md` for language-specific help
 
 3. **Ask Claude Code for help:**
    ```bash
@@ -769,13 +777,13 @@ Once setup is complete:
 1. **Review your AGENT.md** - Make sure all sections are filled in
 2. **Check TODOS.md** - Initial tasks should be listed
 3. **Set up real secrets** - Copy secrets_template.json to secrets.json and add real API keys
-4. **Explore the guides** - Read AgentUsage/README.md for the guide index
+4. **Use Skills** - Skills are automatically available for specialized workflows (see AGENT.md for list)
 5. **Start coding!** - Use `claude "your task"` to begin development
 
 ---
 
-**Template Version:** 1.0.0
-**Last Updated:** 2025-11-02
+**Template Version:** 1.1.0
+**Last Updated:** 2025-12-22
 **Questions?** Open an issue at https://github.com/AutumnsGrove/BaseProject/issues
 
 ---
