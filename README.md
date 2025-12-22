@@ -25,19 +25,20 @@ I want to create a new project from the BaseProject template. Follow this workfl
 1. First, ask me for: project name, description, tech stack (Python/JS/Go), and what API keys I'll need
 2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp
 3. Copy to ~/Projects/[PROJECT_NAME] (exclude .git/)
-4. Customize AGENT.md with my project details (Purpose, Tech Stack, Architecture)
-5. Update README.md with project-specific info (title, description, features)
-6. Init language dependencies (uv init for Python, npm init for JS, go mod init for Go)
-7. Create directory structure: src/ and tests/ with proper init files for the chosen language
-8. Generate secrets_template.json with my API key placeholders
-9. Create TODOS.md with 3-5 starter tasks based on the project description
-10. Run git init using global git config (user.name and user.email)
-11. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 6)
-12. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
-13. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
-14. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
-15. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
-16. Display project summary and next steps including reminder about installed hooks and agents
+4. Copy .claude/skills/ folder (Claude Code Skills are the primary workflow mechanism)
+5. Customize AGENT.md with my project details (Purpose, Tech Stack, Architecture)
+6. Update README.md with project-specific info (title, description, features)
+7. Init language dependencies (uv init for Python, npm init for JS, go mod init for Go)
+8. Create directory structure: src/ and tests/ with proper init files for the chosen language
+9. Generate secrets_template.json with my API key placeholders
+10. Create TODOS.md with 3-5 starter tasks based on the project description
+11. Run git init using global git config (user.name and user.email)
+12. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 7)
+13. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
+14. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
+15. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
+16. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
+17. Display project summary including available skills and next steps
 
 Start by asking me for the project details.
 ```
@@ -45,6 +46,7 @@ Start by asking me for the project details.
 Claude will interactively:
 - Ask for project name, tech stack, and requirements
 - Copy BaseProject template to your chosen location
+- **Install Claude Code Skills** - the primary mechanism for specialized workflows
 - Customize AGENT.md with your project details
 - Set up language-specific dependencies (pyproject.toml, package.json, etc.)
 - Create proper project structure (src/, tests/)
@@ -72,20 +74,21 @@ I want to add BaseProject structure to my CURRENT project. Follow this workflow:
 
 1. Analyze my existing project: read README.md, AGENT.md, git history for commit patterns, detect tech stack and package managers, identify architecture (monorepo/single/etc), read TODOS.md if exists
 2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp
-3. Copy AgentUsage/ to my project (preserve any existing AgentUsage/ files, only add new guides)
-4. Intelligently merge AGENT.md: if exists, parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->". If doesn't exist, create from template with detected project details
-5. Enhance .gitignore by merging entries (preserve existing, add missing from BaseProject)
-6. Analyze commit messages and suggest adopting BaseProject conventional commit style if inconsistent
-7. Check if using branches like dev/main and suggest workflow if not
-8. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
-9. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh interactively
-10. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
-11. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
-12. Generate/update TODOS.md with project-aware tasks
-13. Create integration-summary.md report showing what was added/merged/skipped
-14. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
-15. Cleanup /tmp/bp
-16. Display next steps
+3. Copy .claude/skills/ folder to my project (Claude Code Skills are the primary workflow mechanism)
+4. Copy AgentUsage/ to my project (preserve any existing AgentUsage/ files, only add new guides - these serve as extended reference)
+5. Intelligently merge AGENT.md: if exists, parse sections and merge BaseProject sections using markers like "<!-- BaseProject: Git Workflow -->". If doesn't exist, create from template with detected project details. Ensure skills usage instructions are included.
+6. Enhance .gitignore by merging entries (preserve existing, add missing from BaseProject)
+7. Analyze commit messages and suggest adopting BaseProject conventional commit style if inconsistent
+8. Check if using branches like dev/main and suggest workflow if not
+9. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
+10. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh interactively
+11. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
+12. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
+13. Generate/update TODOS.md with project-aware tasks
+14. Create integration-summary.md report showing what was added/merged/skipped (including skills list)
+15. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
+16. Cleanup /tmp/bp
+17. Display next steps including available skills
 
 Start by analyzing my current project.
 ```
@@ -93,14 +96,15 @@ Start by analyzing my current project.
 Claude will intelligently:
 - Analyze your existing project structure and conventions
 - Detect tech stack from package files (package.json, pyproject.toml, etc.)
-- Copy AgentUsage/ guides without overwriting existing files
-- Merge AGENT.md sections with clear markers (preserves your content)
+- **Install Claude Code Skills** - the primary mechanism for specialized workflows
+- Copy AgentUsage/ guides without overwriting existing files (extended reference docs)
+- Merge AGENT.md sections with clear markers (preserves your content, adds skills instructions)
 - Append missing .gitignore entries without removing existing ones
 - Compare your commit style to BaseProject standards and offer suggestions
 - **Optionally install git hooks** - backs up existing hooks, auto-detects language, installs appropriate quality/security hooks
 - **Optionally install house-agents** - includes house-coder and house-planner, skips if already installed
 - Create backup of all modified files before making changes
-- Generate integration-summary.md showing exactly what was changed
+- Generate integration-summary.md showing exactly what was changed (including available skills)
 - Respect your existing README.md (won't overwrite)
 - Adapt to your project's existing structure
 
@@ -128,17 +132,22 @@ bash /path/to/BaseProject/update_baseproject.sh
    - Finds old `ClaudeUsage` folders and migrates them to `AgentUsage`
    - Backs up everything before making changes
 
-2. **Syncs AgentUsage folder**:
+2. **Syncs Claude Code Skills** (Primary):
+   - Updates all skills in `.claude/skills/` with latest versions
+   - Skills are the primary mechanism for specialized workflows
+   - Lists all available skills after sync
+
+3. **Syncs AgentUsage folder** (Extended Reference):
    - Updates all documentation guides with latest versions
    - Refreshes git hooks with newest implementations
    - Updates templates and examples
    - Shows detailed summary of added/updated/unchanged files
 
-3. **Merges .gitignore entries**:
+4. **Merges .gitignore entries**:
    - Adds new patterns from BaseProject
    - Preserves all your existing entries
 
-4. **Preserves your customizations**:
+5. **Preserves your customizations**:
    - ✅ Keeps your `AGENT.md` (project instructions)
    - ✅ Keeps your `README.md` (project documentation)
    - ✅ Keeps your `TODOS.md` (task list)
@@ -146,8 +155,9 @@ bash /path/to/BaseProject/update_baseproject.sh
    - ✅ Keeps all language-specific files (pyproject.toml, package.json, etc.)
    - ✅ Keeps all your source code
 
-5. **Provides update summary**:
+6. **Provides update summary**:
    - Creates `baseproject-update-summary.md` with detailed changes
+   - Lists available skills and their purposes
    - Creates backup in `.baseproject-backup-[TIMESTAMP]/`
    - Shows exactly what was changed and why
 
@@ -156,26 +166,30 @@ bash /path/to/BaseProject/update_baseproject.sh
 ```
 I want to update my BaseProject installation. Follow this workflow:
 
-1. Check current directory for existing AgentUsage or old ClaudeUsage folders
+1. Check current directory for existing .claude/skills/, AgentUsage, or old ClaudeUsage folders
 2. Clone https://github.com/AutumnsGrove/BaseProject (main branch) to /tmp/bp-update
-3. Create backup of existing AgentUsage to .baseproject-backup-[TIMESTAMP]/
+3. Create backup of existing files to .baseproject-backup-[TIMESTAMP]/
 4. If ClaudeUsage folder exists:
    - Back it up to .baseproject-backup-[TIMESTAMP]/
    - Migrate contents to AgentUsage (preserve custom files, merge intelligently)
-5. Sync AgentUsage folder from BaseProject:
+5. Sync .claude/skills/ folder from BaseProject (Skills are the PRIMARY workflow mechanism):
+   - Compare each file (add new, update changed, preserve unchanged)
+   - Show summary of added/updated/unchanged skills
+   - List all available skills after sync
+6. Sync AgentUsage folder from BaseProject (Extended reference docs):
    - Compare each file (add new, update changed, preserve unchanged)
    - Show summary of added/updated/unchanged files
    - Keep any custom guides I've added
-6. Update .gitignore by merging new entries (don't remove my existing entries)
-7. Ask if I want to reinstall git hooks with latest versions
-8. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
-9. Generate baseproject-update-summary.md report showing all changes
-10. DO NOT touch: AGENT.md, README.md, TODOS.md, secrets files, language configs, source code
-11. Cleanup phase:
+7. Update .gitignore by merging new entries (don't remove my existing entries)
+8. Ask if I want to reinstall git hooks with latest versions
+9. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
+10. Generate baseproject-update-summary.md report showing all changes including available skills
+11. DO NOT touch: AGENT.md, README.md, TODOS.md, secrets files, language configs, source code
+12. Cleanup phase:
     - Delete old ClaudeUsage folder (if it was migrated)
     - Cleanup /tmp/bp-update
-12. Commit the updates with message "chore: sync BaseProject AgentUsage guides" (do NOT include baseproject-update-summary.md in the commit - only commit the actual file changes)
-13. Display summary and next steps
+13. Commit the updates with message "chore: sync BaseProject skills and docs" (do NOT include baseproject-update-summary.md in the commit - only commit the actual file changes)
+14. Display summary including available skills and next steps
 
 Start the update process.
 ```
@@ -202,11 +216,28 @@ Checking for Old Folders
 ✓ Backed up ClaudeUsage to .baseproject-backup-20251119-143500/
 ✓ Renamed ClaudeUsage → AgentUsage
 
+Syncing Claude Code Skills
+───────────────────────────
+✓ Added: research-strategy/SKILL.md
+✓ Updated: database-management/SKILL.md
+
+Skills Sync Summary:
+✓ Added: 2 files
+✓ Updated: 3 files
+ℹ Unchanged: 13 files
+
+Available skills:
+  • api-integration
+  • database-management
+  • git-workflows
+  • python-testing
+  • secrets-management
+  ... (18 total)
+
 Syncing AgentUsage Folder
 ──────────────────────────
 ✓ Added: house_agents.md
 ✓ Updated: git_guide.md
-✓ Updated: pre_commit_hooks/pre-commit-secrets-scanner
 
 Sync Summary:
 ✓ Added: 3 files
@@ -219,6 +250,7 @@ Updating .gitignore
 
 Update Complete!
 ────────────────
+✓ Skills folder synced with latest BaseProject
 ✓ AgentUsage folder synced with latest BaseProject
 ✓ Backup saved to: .baseproject-backup-20251119-143500/
 ✓ Update summary: baseproject-update-summary.md
@@ -336,23 +368,27 @@ For full control over the setup process, see [TEMPLATE_USAGE.md](TEMPLATE_USAGE.
 BaseProject/
 ├── CLAUDE.md                   # Redirect to AGENT.md
 ├── AGENT.md                    # Main project instructions file
-├── AgentUsage/                # Comprehensive workflow guides
-│   ├── README.md               # Guide index
-│   ├── git_guide.md            # Unified git workflow and conventional commits
-│   ├── db_usage.md             # SQLite database with database.py interface
-│   ├── secrets_management.md  # API key handling
-│   ├── code_style_guide.md    # Code style principles
-│   ├── project_setup.md       # Project initialization patterns
-│   ├── uv_usage.md            # Python UV package manager
-│   ├── testing_strategies.md  # Test patterns
-│   ├── docker_guide.md        # Containerization
-│   ├── ci_cd_patterns.md      # GitHub Actions
-│   ├── house_agents.md        # Claude subagent usage
+├── .claude/
+│   └── skills/                 # Claude Code Skills (PRIMARY workflow mechanism)
+│       ├── secrets-management/ # API keys, credentials
+│       ├── database-management/# SQLite, database.py patterns
+│       ├── git-workflows/      # Commits, branching
+│       ├── python-testing/     # pytest patterns
+│       └── ... (18 total skills)
+├── AgentUsage/                # Extended reference documentation
+│   ├── README.md               # Guide index with skill mapping
+│   ├── git_guide.md            # Detailed git workflow
+│   ├── db_usage.md             # Complete database patterns
+│   ├── secrets_management.md  # Advanced API key handling
 │   ├── pre_commit_hooks/      # Git hooks for code quality
 │   ├── templates/             # Template files for common configs
-│   └── ... (18 total guides)
+│   └── ... (25 total guides)
 └── .gitignore                  # Comprehensive gitignore
 ```
+
+**Skills vs AgentUsage:**
+- **Skills** (`.claude/skills/`) - Primary mechanism, concise and actionable, invoke via Skill tool
+- **AgentUsage** - Extended reference for when you need more detail than skills provide
 
 ---
 
@@ -640,7 +676,8 @@ curl -sSL https://raw.githubusercontent.com/AutumnsGrove/BaseProject/main/update
 ```
 
 **What gets updated:**
-- ✅ AgentUsage/ guides and documentation
+- ✅ .claude/skills/ folder (Claude Code Skills - primary mechanism)
+- ✅ AgentUsage/ guides and documentation (extended reference)
 - ✅ Git hooks in AgentUsage/pre_commit_hooks/
 - ✅ .gitignore entries (merged, not replaced)
 
@@ -651,13 +688,16 @@ curl -sSL https://raw.githubusercontent.com/AutumnsGrove/BaseProject/main/update
 
 **Manual update (for specific files only):**
 ```bash
+# Copy a specific skill
+cp -r /path/to/BaseProject/.claude/skills/new-skill .claude/skills/
+
 # Copy a specific guide
 cp /path/to/BaseProject/AgentUsage/new_guide.md AgentUsage/
 
 # Review and commit
-git diff AgentUsage/
-git add AgentUsage/
-git commit -m "chore: update specific AgentUsage guide"
+git diff .claude/skills/ AgentUsage/
+git add .claude/skills/ AgentUsage/
+git commit -m "chore: update BaseProject skills and guides"
 ```
 
 ## 🎉 What's Next?
@@ -665,9 +705,9 @@ git commit -m "chore: update specific AgentUsage guide"
 After setup:
 
 1. **Customize** - Edit AGENT.md with your project details
-2. **Explore** - Read guides in AgentUsage/ directory
+2. **Use Skills** - Skills are automatically available for specialized workflows (see AGENT.md for list)
 3. **Build** - Start coding with Claude Code
-4. **Iterate** - Update TODOS.md and guides as needed
+4. **Iterate** - Update TODOS.md as needed
 
 <!-- TEMPLATE: END -->
 
@@ -701,6 +741,6 @@ This template is provided as-is for use with Claude Code. Customize freely for y
 
 ---
 
-**Last updated:** 2025-10-19
+**Last updated:** 2025-12-22
 **Maintained for:** Claude Code CLI
-**Guides:** 16 comprehensive workflow documents
+**Skills:** 18 Claude Code Skills | **Guides:** 25 extended reference documents

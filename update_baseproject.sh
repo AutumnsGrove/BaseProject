@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # BaseProject Update/Sync Script
-# Syncs AgentUsage folder and git hooks from the latest BaseProject version
+# Syncs AgentUsage folder, skills, and git hooks from the latest BaseProject version
 # Handles migration from old ClaudeUsage folders
 
 set -euo pipefail
@@ -183,6 +183,65 @@ sync_agent_usage() {
     log_info "  Unchanged: $unchanged files"
 }
 
+# Sync skills folder
+sync_skills() {
+    log_section "Syncing Claude Code Skills"
+
+    local added=0
+    local updated=0
+    local unchanged=0
+
+    # Create .claude/skills directory if it doesn't exist
+    mkdir -p .claude/skills
+
+    # Check if source skills exist
+    if [ ! -d "$TEMP_DIR/.claude/skills" ]; then
+        log_warning "No skills found in BaseProject"
+        return
+    fi
+
+    # Sync skills from BaseProject
+    while IFS= read -r -d '' file; do
+        relative_path="${file#$TEMP_DIR/.claude/skills/}"
+        target_file=".claude/skills/$relative_path"
+
+        # Create directory if needed
+        mkdir -p "$(dirname "$target_file")"
+
+        # Check if file exists and compare
+        if [ ! -f "$target_file" ]; then
+            cp "$file" "$target_file"
+            log_success "Added: $relative_path"
+            ((added++))
+        else
+            # Compare files
+            if ! cmp -s "$file" "$target_file"; then
+                cp "$file" "$target_file"
+                log_success "Updated: $relative_path"
+                ((updated++))
+            else
+                ((unchanged++))
+            fi
+        fi
+    done < <(find "$TEMP_DIR/.claude/skills" -type f -print0)
+
+    echo ""
+    log_info "Skills Sync Summary:"
+    log_success "  Added: $added files"
+    log_success "  Updated: $updated files"
+    log_info "  Unchanged: $unchanged files"
+
+    # List available skills
+    echo ""
+    log_info "Available skills:"
+    for skill_dir in .claude/skills/*/; do
+        if [ -d "$skill_dir" ]; then
+            skill_name=$(basename "$skill_dir")
+            echo "  • $skill_name"
+        fi
+    done
+}
+
 # Merge .gitignore entries
 merge_gitignore() {
     log_section "Updating .gitignore"
@@ -263,8 +322,13 @@ generate_summary() {
 
 ## What Was Updated
 
-### AgentUsage Folder
-- All documentation guides have been synced with the latest BaseProject version
+### Claude Code Skills (Primary)
+- Skills in \`.claude/skills/\` have been synced with the latest BaseProject version
+- **Skills are the primary mechanism** for accessing specialized knowledge
+- Use skills via the Skill tool (e.g., \`skill: "database-management"\`)
+
+### AgentUsage Folder (Extended Reference)
+- Extended documentation guides have been synced
 - Git hooks in \`AgentUsage/pre_commit_hooks/\` have been updated
 - Templates in \`AgentUsage/templates/\` have been refreshed
 
@@ -291,7 +355,7 @@ A backup of your previous setup has been saved to:
 
 1. Review the changes:
    \`\`\`bash
-   git diff AgentUsage/
+   git diff .claude/skills/ AgentUsage/
    \`\`\`
 
 2. If you updated git hooks, test them:
@@ -302,10 +366,11 @@ A backup of your previous setup has been saved to:
 
 3. If everything looks good, commit the updates:
    \`\`\`bash
-   git add AgentUsage/ .gitignore
-   git commit -m "chore: sync AgentUsage from BaseProject
+   git add .claude/skills/ AgentUsage/ .gitignore
+   git commit -m "chore: sync skills and docs from BaseProject
 
-   - Updated documentation guides
+   - Updated Claude Code Skills
+   - Updated extended documentation
    - Refreshed git hooks
    - Merged new .gitignore entries"
    \`\`\`
@@ -316,12 +381,22 @@ A backup of your previous setup has been saved to:
    cp -r $BACKUP_DIR/AgentUsage .
    \`\`\`
 
-## Documentation Updates
+## Available Skills
 
-Check these guides for new content:
-- \`AgentUsage/README.md\` - Index of all guides
+Skills are invoked using the Skill tool when you encounter relevant situations:
+- \`secrets-management\` - API keys, credentials
+- \`database-management\` - SQLite, database.py patterns
+- \`git-workflows\` - Commits, branching
+- \`python-testing\` - pytest patterns
+- \`docker-workflows\` - Containerization
+- \`cicd-automation\` - GitHub Actions
+- See \`.claude/skills/\` for the full list
+
+## Extended Documentation
+
+For in-depth reference beyond what skills provide:
+- \`AgentUsage/README.md\` - Index of all guides with skill mapping
 - \`AgentUsage/git_guide.md\` - Git workflow patterns
-- \`AgentUsage/house_agents.md\` - Subagent usage
 - \`AgentUsage/pre_commit_hooks/\` - Latest hook implementations
 
 ---
@@ -340,11 +415,12 @@ main() {
     echo -e "${BOLD}║         BaseProject Update/Sync Tool                        ║${NC}"
     echo -e "${BOLD}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo "This script will update your AgentUsage folder with the latest"
-    echo "documentation, guides, and git hooks from BaseProject."
+    echo "This script will update your project with the latest documentation,"
+    echo "skills, guides, and git hooks from BaseProject."
     echo ""
     echo -e "${YELLOW}What will be updated:${NC}"
-    echo "  • AgentUsage/ folder (guides, hooks, templates)"
+    echo "  • .claude/skills/ folder (Claude Code Skills)"
+    echo "  • AgentUsage/ folder (extended reference docs)"
     echo "  • .gitignore entries (merged, not replaced)"
     echo ""
     echo -e "${GREEN}What will NOT be changed:${NC}"
@@ -368,6 +444,7 @@ main() {
     clone_baseproject
     migrate_old_folders
     backup_existing
+    sync_skills
     sync_agent_usage
     merge_gitignore
     update_git_hooks
@@ -376,13 +453,14 @@ main() {
     # Final summary
     log_section "Update Complete!"
 
+    echo -e "${GREEN}✓${NC} Skills folder has been synced with latest BaseProject"
     echo -e "${GREEN}✓${NC} AgentUsage folder has been synced with latest BaseProject"
     echo -e "${GREEN}✓${NC} Backup saved to: $BACKUP_DIR/"
     echo -e "${GREEN}✓${NC} Update summary saved to: $SUMMARY_FILE"
     echo ""
     echo "Next steps:"
     echo "  1. Review changes: ${YELLOW}cat $SUMMARY_FILE${NC}"
-    echo "  2. Check diffs: ${YELLOW}git diff AgentUsage/${NC}"
+    echo "  2. Check diffs: ${YELLOW}git diff .claude/skills/ AgentUsage/${NC}"
     echo "  3. Commit updates: ${YELLOW}git add . && git commit${NC}"
     echo ""
     echo -e "${BLUE}Happy coding! 🚀${NC}"
