@@ -391,9 +391,9 @@ EOF
             fi
             ;;
         "JavaScript")
-            if command_exists npm; then
-                print_info "Initializing JavaScript project with npm..."
-                npm init -y > /dev/null 2>&1
+            if command_exists pnpm; then
+                print_info "Initializing JavaScript project with pnpm..."
+                pnpm init > /dev/null 2>&1
                 # Update package.json with project details
                 if command_exists node; then
                     node -e "
@@ -404,8 +404,12 @@ EOF
                     " 2>/dev/null || true
                 fi
                 print_success "Initialized JavaScript project (package.json created)"
+            elif command_exists npm; then
+                print_info "Initializing JavaScript project with npm..."
+                npm init -y > /dev/null 2>&1
+                print_success "Initialized JavaScript project (package.json created)"
             else
-                print_warning "npm not found. Skipping JavaScript initialization."
+                print_warning "pnpm/npm not found. Skipping JavaScript initialization."
             fi
             ;;
         "Go")
@@ -682,8 +686,8 @@ show_completion() {
             echo "  ${CYAN}uv run pytest${NC}         - Run tests"
             ;;
         "JavaScript")
-            echo "  ${CYAN}npm install <package>${NC} - Add JavaScript dependency"
-            echo "  ${CYAN}npm test${NC}               - Run tests"
+            echo "  ${CYAN}pnpm add <package>${NC}     - Add JavaScript dependency"
+            echo "  ${CYAN}pnpm test${NC}               - Run tests"
             ;;
         "Go")
             echo "  ${CYAN}go get <package>${NC}      - Add Go dependency"

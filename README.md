@@ -28,7 +28,7 @@ I want to create a new project from the BaseProject template. Follow this workfl
 4. Copy .claude/skills/ folder (Claude Code Skills are the primary workflow mechanism)
 5. Customize AGENT.md with my project details (Purpose, Tech Stack, Architecture)
 6. Update README.md with project-specific info (title, description, features)
-7. Init language dependencies (uv init for Python, npm init for JS, go mod init for Go)
+7. Init language dependencies (uv init for Python, pnpm init for JS, go mod init for Go)
 8. Create directory structure: src/ and tests/ with proper init files for the chosen language
 9. Generate secrets_template.json with my API key placeholders
 10. Create TODOS.md with 3-5 starter tasks based on the project description
@@ -530,7 +530,7 @@ After running setup:
    uv init
 
    # JavaScript/Node
-   npm init -y
+   pnpm init
 
    # Go
    go mod init yourproject
