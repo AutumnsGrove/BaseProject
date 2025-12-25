@@ -27,7 +27,7 @@ Before you begin, make sure you have:
 - **Claude Code CLI** installed ([Installation guide](https://docs.claude.com/en/docs/claude-code))
 - **Language tools** for your project (optional):
   - Python: [UV](https://github.com/astral-sh/uv) or pip
-  - JavaScript/TypeScript: Node.js and npm/yarn
+  - JavaScript/TypeScript: Node.js and pnpm/npm
   - Go: Go toolchain
   - Rust: Cargo
 
@@ -211,7 +211,7 @@ uv init
 
 #### JavaScript/TypeScript
 ```bash
-npm init -y
+pnpm init
 # This creates package.json
 ```
 
@@ -429,8 +429,8 @@ YourProject/
 
 **Setup:**
 ```bash
-npm init -y
-npm install express typescript @types/node
+pnpm init
+pnpm add express typescript @types/node
 ```
 
 **Structure:**
@@ -726,9 +726,9 @@ pip install -r requirements.txt
 
 #### JavaScript: "Cannot find module"
 ```bash
-npm install
+pnpm install
 # OR
-yarn install
+npm install
 ```
 
 #### Go: "Package not found"
