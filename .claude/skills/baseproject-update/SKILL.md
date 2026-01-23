@@ -62,6 +62,14 @@ Compare `AgentUsage/` with `/tmp/bp-update/AgentUsage/`:
 - **Preserve** unchanged files (skip if identical)
 - Report: added, updated, unchanged, custom-preserved counts
 
+### Step 5b: Sync Scripts
+Compare `scripts/` with `/tmp/bp-update/scripts/`:
+- **Add** new scripts that don't exist locally
+- **Update** existing scripts where upstream content has changed
+- **Preserve** custom scripts that only exist locally
+- **Preserve** unchanged scripts (skip if identical)
+- Report: added, updated, unchanged counts
+
 ### Step 6: Merge .gitignore
 ```bash
 # Add any new entries from upstream that aren't already present
@@ -82,7 +90,7 @@ rm -rf /tmp/bp-update
 
 ### Step 9: Commit
 ```bash
-git add .claude/skills/ AgentUsage/ .gitignore AGENT.md
+git add .claude/skills/ AgentUsage/ scripts/ .gitignore AGENT.md
 git commit -m "chore: sync BaseProject skills, docs, and agent config"
 ```
 
@@ -100,6 +108,7 @@ Show:
 |--------|--------|
 | `.claude/skills/` | Sync all skills from upstream |
 | `AgentUsage/` | Sync docs, preserve custom files |
+| `scripts/` | Sync utility scripts (grove-find.sh), preserve custom scripts |
 | `.gitignore` | Merge new entries |
 | `AGENT.md` | Merge template sections, preserve custom content |
 

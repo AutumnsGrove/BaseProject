@@ -33,12 +33,16 @@ I want to create a new project from the BaseProject template. Follow this workfl
 9. Generate secrets_template.json with my API key placeholders
 10. Create TODOS.md with 3-5 starter tasks based on the project description
 11. Run git init using global git config (user.name and user.email)
-12. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 7)
-13. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
-14. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
-15. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
-16. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
-17. Display project summary including available skills and next steps
+12. Source grove-find.sh for the user's shell (adds powerful code search commands):
+    - Detect shell type (~/.bashrc or ~/.zshrc)
+    - Add: source /path/to/project/scripts/repo/grove-find.sh
+    - Inform user to restart their shell or run `source ~/.bashrc` / `source ~/.zshrc`
+13. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 7)
+14. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
+15. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
+16. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
+17. Make initial commit: "feat: initialize [PROJECT] from BaseProject template"
+18. Display project summary including available skills and next steps
 
 Start by asking me for the project details.
 ```
@@ -52,6 +56,7 @@ Claude will interactively:
 - Create proper project structure (src/, tests/)
 - Generate secrets_template.json with your needed API keys
 - Initialize git with proper configuration
+- **Source grove-find.sh** - adds powerful code search commands (`gf`, `gfc`, `gff`, etc.) to your shell
 - **Install git hooks (recommended)** - auto-detects your language and installs:
   - Code quality checks (Black/Ruff for Python, Prettier/ESLint for JS, gofmt for Go)
   - Security scanner (prevents committing API keys/secrets)
@@ -80,15 +85,20 @@ I want to add BaseProject structure to my CURRENT project. Follow this workflow:
 6. Enhance .gitignore by merging entries (preserve existing, add missing from BaseProject)
 7. Analyze commit messages and suggest adopting BaseProject conventional commit style if inconsistent
 8. Check if using branches like dev/main and suggest workflow if not
-9. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
-10. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh interactively
-11. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
-12. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
-13. Generate/update TODOS.md with project-aware tasks
-14. Create integration-summary.md report showing what was added/merged/skipped (including skills list)
-15. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
-16. Cleanup /tmp/bp
-17. Display next steps including available skills
+9. Copy scripts/repo/ folder to the project (grove-find.sh code search utility)
+10. Source grove-find.sh for the user's shell:
+    - Detect shell config (~/.bashrc or ~/.zshrc)
+    - Add: source /path/to/project/scripts/repo/grove-find.sh
+    - Inform user to restart their shell or run `source ~/.bashrc` / `source ~/.zshrc`
+11. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
+12. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh interactively
+13. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
+14. If yes, check if ~/.claude/agents/house-research.md exists; if not, clone https://github.com/AutumnsGrove/house-agents.git and copy agents to ~/.claude/agents/
+15. Generate/update TODOS.md with project-aware tasks
+16. Create integration-summary.md report showing what was added/merged/skipped (including skills list)
+17. Backup all modified files to ./.baseproject-backup-[TIMESTAMP]/
+18. Cleanup /tmp/bp
+19. Display next steps including available skills
 
 Start by analyzing my current project.
 ```
@@ -98,6 +108,8 @@ Claude will intelligently:
 - Detect tech stack from package files (package.json, pyproject.toml, etc.)
 - **Install Claude Code Skills** - the primary mechanism for specialized workflows
 - Copy AgentUsage/ guides without overwriting existing files (extended reference docs)
+- Copy scripts/repo/ (grove-find.sh code search utility)
+- **Source grove-find.sh** - adds powerful code search commands to your shell
 - Merge AGENT.md sections with clear markers (preserves your content, adds skills instructions)
 - Append missing .gitignore entries without removing existing ones
 - Compare your commit style to BaseProject standards and offer suggestions
@@ -143,11 +155,16 @@ bash /path/to/BaseProject/update_baseproject.sh
    - Updates templates and examples
    - Shows detailed summary of added/updated/unchanged files
 
-4. **Merges .gitignore entries**:
+4. **Syncs scripts/ folder** (Utility Scripts):
+   - Updates `scripts/repo/grove-find.sh` (code search utility)
+   - Adds any new utility scripts from upstream
+   - Preserves custom scripts you've added
+
+5. **Merges .gitignore entries**:
    - Adds new patterns from BaseProject
    - Preserves all your existing entries
 
-5. **Preserves your customizations**:
+6. **Preserves your customizations**:
    - ✅ Keeps your `AGENT.md` (project instructions)
    - ✅ Keeps your `README.md` (project documentation)
    - ✅ Keeps your `TODOS.md` (task list)
@@ -155,7 +172,7 @@ bash /path/to/BaseProject/update_baseproject.sh
    - ✅ Keeps all language-specific files (pyproject.toml, package.json, etc.)
    - ✅ Keeps all your source code
 
-6. **Provides update summary**:
+7. **Provides update summary**:
    - Creates `baseproject-update-summary.md` with detailed changes
    - Lists available skills and their purposes
    - Creates backup in `.baseproject-backup-[TIMESTAMP]/`
@@ -180,16 +197,20 @@ I want to update my BaseProject installation. Follow this workflow:
    - Compare each file (add new, update changed, preserve unchanged)
    - Show summary of added/updated/unchanged files
    - Keep any custom guides I've added
-7. Update .gitignore by merging new entries (don't remove my existing entries)
-8. Ask if I want to reinstall git hooks with latest versions
-9. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
-10. Generate baseproject-update-summary.md report showing all changes including available skills
-11. DO NOT touch: AGENT.md, README.md, TODOS.md, secrets files, language configs, source code
-12. Cleanup phase:
+7. Sync scripts/ folder from BaseProject (utility scripts like grove-find.sh):
+   - Compare each file (add new, update changed, preserve unchanged)
+   - Show summary of added/updated/unchanged scripts
+   - Keep any custom scripts I've added
+8. Update .gitignore by merging new entries (don't remove my existing entries)
+9. Ask if I want to reinstall git hooks with latest versions
+10. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
+11. Generate baseproject-update-summary.md report showing all changes including available skills
+12. DO NOT touch: AGENT.md, README.md, TODOS.md, secrets files, language configs, source code
+13. Cleanup phase:
     - Delete old ClaudeUsage folder (if it was migrated)
     - Cleanup /tmp/bp-update
-13. Commit the updates with message "chore: sync BaseProject skills and docs" (do NOT include baseproject-update-summary.md in the commit - only commit the actual file changes)
-14. Display summary including available skills and next steps
+14. Commit the updates with message "chore: sync BaseProject skills and docs" (do NOT include baseproject-update-summary.md in the commit - only commit the actual file changes)
+15. Display summary including available skills and next steps
 
 Start the update process.
 ```
@@ -383,6 +404,9 @@ BaseProject/
 │   ├── pre_commit_hooks/      # Git hooks for code quality
 │   ├── templates/             # Template files for common configs
 │   └── ... (25 total guides)
+├── scripts/
+│   └── repo/
+│       └── grove-find.sh      # Code search & repo analysis utility
 └── .gitignore                  # Comprehensive gitignore
 ```
 
@@ -678,6 +702,7 @@ curl -sSL https://raw.githubusercontent.com/AutumnsGrove/BaseProject/main/update
 **What gets updated:**
 - ✅ .claude/skills/ folder (Claude Code Skills - primary mechanism)
 - ✅ AgentUsage/ guides and documentation (extended reference)
+- ✅ scripts/ folder (grove-find.sh code search utility)
 - ✅ Git hooks in AgentUsage/pre_commit_hooks/
 - ✅ .gitignore entries (merged, not replaced)
 
