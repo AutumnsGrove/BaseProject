@@ -242,27 +242,33 @@ sync_skills() {
     done
 }
 
-# Sync scripts folder
-sync_scripts() {
-    log_section "Syncing Scripts"
+# Sync tools folder
+sync_tools() {
+    log_section "Syncing Tools"
 
     local added=0
     local updated=0
     local unchanged=0
 
-    # Check if source scripts exist
-    if [ ! -d "$TEMP_DIR/scripts" ]; then
-        log_warning "No scripts found in BaseProject"
+    # Check if source tools exist
+    if [ ! -d "$TEMP_DIR/tools" ]; then
+        log_warning "No tools found in BaseProject"
         return
     fi
 
-    # Create scripts directory if it doesn't exist
-    mkdir -p scripts
+    # Create tools directory if it doesn't exist
+    mkdir -p tools
 
-    # Sync scripts from BaseProject
+    # Sync tools from BaseProject (excluding uv.lock which is per-project)
     while IFS= read -r -d '' file; do
-        relative_path="${file#$TEMP_DIR/scripts/}"
-        target_file="scripts/$relative_path"
+        relative_path="${file#$TEMP_DIR/tools/}"
+
+        # Skip lock files
+        if [[ "$relative_path" == *.lock ]]; then
+            continue
+        fi
+
+        target_file="tools/$relative_path"
 
         # Create directory if needed
         mkdir -p "$(dirname "$target_file")"
@@ -270,33 +276,31 @@ sync_scripts() {
         # Check if file exists and compare
         if [ ! -f "$target_file" ]; then
             cp "$file" "$target_file"
-            chmod +x "$target_file"
-            log_success "Added: scripts/$relative_path"
+            log_success "Added: tools/$relative_path"
             ((added++))
         else
             # Compare files
             if ! cmp -s "$file" "$target_file"; then
                 cp "$file" "$target_file"
-                chmod +x "$target_file"
-                log_success "Updated: scripts/$relative_path"
+                log_success "Updated: tools/$relative_path"
                 ((updated++))
             else
                 ((unchanged++))
             fi
         fi
-    done < <(find "$TEMP_DIR/scripts" -type f -print0)
+    done < <(find "$TEMP_DIR/tools" -type f -print0)
 
     echo ""
-    log_info "Scripts Sync Summary:"
+    log_info "Tools Sync Summary:"
     log_success "  Added: $added files"
     log_success "  Updated: $updated files"
     log_info "  Unchanged: $unchanged files"
 
-    # Remind about sourcing
+    # Remind about installing
     if [ $added -gt 0 ] || [ $updated -gt 0 ]; then
         echo ""
-        log_info "To use grove-find.sh, add to your shell config:"
-        echo -e "  ${YELLOW}source $(pwd)/scripts/repo/grove-find.sh${NC}"
+        log_info "To install/update grove-find CLI:"
+        echo -e "  ${YELLOW}uv tool install --editable tools/grove-find${NC}"
     fi
 }
 
@@ -390,9 +394,9 @@ generate_summary() {
 - Git hooks in \`AgentUsage/pre_commit_hooks/\` have been updated
 - Templates in \`AgentUsage/templates/\` have been refreshed
 
-### Scripts Folder (Utility Scripts)
-- \`scripts/repo/grove-find.sh\` - Code search & repo analysis utility
-- To use: \`source scripts/repo/grove-find.sh\` (add to ~/.bashrc or ~/.zshrc)
+### Tools Folder (CLI Tools)
+- \`tools/grove-find/\` - grove-find CLI search tool (Python/typer)
+- To install: \`uv tool install --editable tools/grove-find\`
 
 ### .gitignore
 - New entries from BaseProject have been merged
@@ -417,7 +421,7 @@ A backup of your previous setup has been saved to:
 
 1. Review the changes:
    \`\`\`bash
-   git diff .claude/skills/ AgentUsage/ scripts/
+   git diff .claude/skills/ AgentUsage/ tools/
    \`\`\`
 
 2. If you updated git hooks, test them:
@@ -428,12 +432,12 @@ A backup of your previous setup has been saved to:
 
 3. If everything looks good, commit the updates:
    \`\`\`bash
-   git add .claude/skills/ AgentUsage/ scripts/ .gitignore
-   git commit -m "chore: sync skills, docs, and scripts from BaseProject
+   git add .claude/skills/ AgentUsage/ tools/ .gitignore
+   git commit -m "chore: sync skills, docs, and tools from BaseProject
 
    - Updated Claude Code Skills
    - Updated extended documentation
-   - Updated utility scripts (grove-find.sh)
+   - Updated CLI tools (grove-find)
    - Refreshed git hooks
    - Merged new .gitignore entries"
    \`\`\`
@@ -484,7 +488,7 @@ main() {
     echo -e "${YELLOW}What will be updated:${NC}"
     echo "  • .claude/skills/ folder (Claude Code Skills)"
     echo "  • AgentUsage/ folder (extended reference docs)"
-    echo "  • scripts/ folder (grove-find.sh code search utility)"
+    echo "  • tools/ folder (grove-find CLI search tool)"
     echo "  • .gitignore entries (merged, not replaced)"
     echo ""
     echo -e "${GREEN}What will NOT be changed:${NC}"
@@ -510,7 +514,7 @@ main() {
     backup_existing
     sync_skills
     sync_agent_usage
-    sync_scripts
+    sync_tools
     merge_gitignore
     update_git_hooks
     generate_summary
@@ -520,13 +524,13 @@ main() {
 
     echo -e "${GREEN}✓${NC} Skills folder has been synced with latest BaseProject"
     echo -e "${GREEN}✓${NC} AgentUsage folder has been synced with latest BaseProject"
-    echo -e "${GREEN}✓${NC} Scripts folder has been synced with latest BaseProject"
+    echo -e "${GREEN}✓${NC} Tools folder has been synced with latest BaseProject"
     echo -e "${GREEN}✓${NC} Backup saved to: $BACKUP_DIR/"
     echo -e "${GREEN}✓${NC} Update summary saved to: $SUMMARY_FILE"
     echo ""
     echo "Next steps:"
     echo "  1. Review changes: ${YELLOW}cat $SUMMARY_FILE${NC}"
-    echo "  2. Check diffs: ${YELLOW}git diff .claude/skills/ AgentUsage/ scripts/${NC}"
+    echo "  2. Check diffs: ${YELLOW}git diff .claude/skills/ AgentUsage/ tools/${NC}"
     echo "  3. Commit updates: ${YELLOW}git add . && git commit${NC}"
     echo ""
     echo -e "${BLUE}Happy coding! 🚀${NC}"

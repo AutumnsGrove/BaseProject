@@ -33,10 +33,9 @@ I want to create a new project from the BaseProject template. Follow this workfl
 9. Generate secrets_template.json with my API key placeholders
 10. Create TODOS.md with 3-5 starter tasks based on the project description
 11. Run git init using global git config (user.name and user.email)
-12. Source grove-find.sh for the user's shell (adds powerful code search commands):
-    - Detect shell type (~/.bashrc or ~/.zshrc)
-    - Add: source /path/to/project/scripts/repo/grove-find.sh
-    - Inform user to restart their shell or run `source ~/.bashrc` / `source ~/.zshrc`
+12. Install grove-find CLI tool (adds powerful code search commands):
+    - Run: uv tool install --editable tools/grove-find
+    - Verify: gf --help
 13. Ask if I want to install git hooks (recommended: yes, auto-detects language from files created in step 7)
 14. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
 15. Ask if I want to install house-agents (recommended: yes, includes house-coder and house-planner)
@@ -56,7 +55,7 @@ Claude will interactively:
 - Create proper project structure (src/, tests/)
 - Generate secrets_template.json with your needed API keys
 - Initialize git with proper configuration
-- **Source grove-find.sh** - adds powerful code search commands (`gf`, `gfc`, `gff`, etc.) to your shell
+- **Install grove-find** - adds the `gf` CLI for powerful code search (`gf search`, `gf class`, `gf func`, etc.)
 - **Install git hooks (recommended)** - auto-detects your language and installs:
   - Code quality checks (Black/Ruff for Python, Prettier/ESLint for JS, gofmt for Go)
   - Security scanner (prevents committing API keys/secrets)
@@ -85,11 +84,10 @@ I want to add BaseProject structure to my CURRENT project. Follow this workflow:
 6. Enhance .gitignore by merging entries (preserve existing, add missing from BaseProject)
 7. Analyze commit messages and suggest adopting BaseProject conventional commit style if inconsistent
 8. Check if using branches like dev/main and suggest workflow if not
-9. Copy scripts/repo/ folder to the project (grove-find.sh code search utility)
-10. Source grove-find.sh for the user's shell:
-    - Detect shell config (~/.bashrc or ~/.zshrc)
-    - Add: source /path/to/project/scripts/repo/grove-find.sh
-    - Inform user to restart their shell or run `source ~/.bashrc` / `source ~/.zshrc`
+9. Copy tools/grove-find/ folder to the project (grove-find CLI search tool)
+10. Install grove-find CLI tool:
+    - Run: uv tool install --editable tools/grove-find
+    - Verify: gf --help
 11. Ask if I want to install git hooks (they auto-detect my language and back up existing hooks first)
 12. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh interactively
 13. Ask if I want to install house-agents (includes house-coder and house-planner for enhanced workflows)
@@ -108,8 +106,8 @@ Claude will intelligently:
 - Detect tech stack from package files (package.json, pyproject.toml, etc.)
 - **Install Claude Code Skills** - the primary mechanism for specialized workflows
 - Copy AgentUsage/ guides without overwriting existing files (extended reference docs)
-- Copy scripts/repo/ (grove-find.sh code search utility)
-- **Source grove-find.sh** - adds powerful code search commands to your shell
+- Copy tools/grove-find/ (grove-find CLI search tool)
+- **Install grove-find** - adds the `gf` CLI for powerful code search
 - Merge AGENT.md sections with clear markers (preserves your content, adds skills instructions)
 - Append missing .gitignore entries without removing existing ones
 - Compare your commit style to BaseProject standards and offer suggestions
@@ -155,10 +153,10 @@ bash /path/to/BaseProject/update_baseproject.sh
    - Updates templates and examples
    - Shows detailed summary of added/updated/unchanged files
 
-4. **Syncs scripts/ folder** (Utility Scripts):
-   - Updates `scripts/repo/grove-find.sh` (code search utility)
-   - Adds any new utility scripts from upstream
-   - Preserves custom scripts you've added
+4. **Syncs tools/ folder** (CLI Tools):
+   - Updates `tools/grove-find/` (grove-find CLI search tool)
+   - Adds any new tools from upstream
+   - Preserves custom tools you've added
 
 5. **Merges .gitignore entries**:
    - Adds new patterns from BaseProject
@@ -197,10 +195,10 @@ I want to update my BaseProject installation. Follow this workflow:
    - Compare each file (add new, update changed, preserve unchanged)
    - Show summary of added/updated/unchanged files
    - Keep any custom guides I've added
-7. Sync scripts/ folder from BaseProject (utility scripts like grove-find.sh):
+7. Sync tools/ folder from BaseProject (CLI tools like grove-find):
    - Compare each file (add new, update changed, preserve unchanged)
-   - Show summary of added/updated/unchanged scripts
-   - Keep any custom scripts I've added
+   - Show summary of added/updated/unchanged tools
+   - Keep any custom tools I've added
 8. Update .gitignore by merging new entries (don't remove my existing entries)
 9. Ask if I want to reinstall git hooks with latest versions
 10. If yes, run ./AgentUsage/pre_commit_hooks/install_hooks.sh
@@ -404,9 +402,10 @@ BaseProject/
 │   ├── pre_commit_hooks/      # Git hooks for code quality
 │   ├── templates/             # Template files for common configs
 │   └── ... (25 total guides)
-├── scripts/
-│   └── repo/
-│       └── grove-find.sh      # Code search & repo analysis utility
+├── tools/
+│   └── grove-find/             # grove-find CLI search tool (Python/typer)
+│       ├── pyproject.toml      # Package config (install via uv tool install)
+│       └── src/grove_find/     # Source code
 └── .gitignore                  # Comprehensive gitignore
 ```
 
@@ -702,7 +701,7 @@ curl -sSL https://raw.githubusercontent.com/AutumnsGrove/BaseProject/main/update
 **What gets updated:**
 - ✅ .claude/skills/ folder (Claude Code Skills - primary mechanism)
 - ✅ AgentUsage/ guides and documentation (extended reference)
-- ✅ scripts/ folder (grove-find.sh code search utility)
+- ✅ tools/ folder (grove-find CLI search tool)
 - ✅ Git hooks in AgentUsage/pre_commit_hooks/
 - ✅ .gitignore entries (merged, not replaced)
 
