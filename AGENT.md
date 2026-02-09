@@ -105,6 +105,45 @@ Write a brief description of what the PR does and why. No specific format requir
 - **For git workflow and branching** → Use skill: `git-workflows`
 - **When setting up git hooks** → Use skill: `git-hooks`
 
+### Project Organization
+- **Triage GitHub project issues** → Use skill: `badger-triage`
+- **Create issues from TODOs or brain dumps** → Use skill: `bee-collect`
+- **Organize backlog and plan sprints** → Use skill: `badger-triage`
+- **Explore codebase to understand patterns** → Use skill: `bloodhound-scout`
+- **Design system architecture** → Use skill: `eagle-architect`
+- **Implement multi-file features** → Use skill: `elephant-build`
+
+### Code Quality & Testing
+- **Decide what to test and write tests** → Use skill: `beaver-build`
+- **Fix specific bugs precisely** → Use skill: `panther-strike`
+- **Debug issues systematically** → Use skill: `lynx-repair`
+- **Optimize code for performance** → Use skill: `deer-sense` / `fox-optimize`
+- **Security audit and hardening** → Use skill: `raccoon-audit` / `hawk-survey` / `turtle-harden`
+
+### Data & Database
+- **Migrate data between systems** → Use skill: `bear-migrate`
+- **Database operations and management** → Use skill: `druid`
+
+### UI & Design
+- **Design UI with glassmorphism and seasonal themes** → Use skill: `chameleon-adapt`
+- **Design system components** → Use skill: `swan-design`
+
+### Documentation & Knowledge
+- **Document systems for team knowledge** → Use skill: `owl-archive`
+- **Create user guides and onboarding** → Use skill: `robin-guide`
+
+### Integration & Cleanup
+- **Weave systems together** → Use skill: `spider-weave`
+- **Clean up deprecated code** → Use skill: `vulture-sweep`
+
+### Gathering Workflows
+- **Gather architectural insights** → Use skill: `gathering-architecture`
+- **Gather feature requirements** → Use skill: `gathering-feature`
+- **Gather migration context** → Use skill: `gathering-migration`
+- **Gather planning information** → Use skill: `gathering-planning`
+- **Gather security context** → Use skill: `gathering-security`
+- **Gather UI requirements** → Use skill: `gathering-ui`
+
 ### Database Management
 - **When working with databases** → Use skill: `database-management`
 - **Before implementing data persistence** → Use skill: `database-management`
@@ -196,7 +235,7 @@ Skills are invoked using the Skill tool. When a situation matches a skill trigge
 | `secrets-management` | API keys, credentials, secrets.json |
 | `api-integration` | External REST API integration |
 | `database-management` | SQLite, database.py patterns |
-| `git-workflows` | Commits, branching, conventional commits |
+| `git-workflows` | Commits, branching, conventional commits (via GW tool) |
 | `git-hooks` | Pre-commit hooks setup |
 | `uv-package-manager` | Python dependencies with UV |
 | `grove-testing` | Testing philosophy, what/when to test |
@@ -218,6 +257,40 @@ Skills are invoked using the Skill tool. When a situation matches a skill trigge
 | `walking-through-the-grove` | Finding Grove-themed names for new services |
 | `npm-publish` | npm package publishing workflow |
 | `research-strategy` | Systematic research |
+| **Project Organization** | |
+| `badger-triage` | GitHub project board triage, issue sizing, prioritization |
+| `bee-collect` | Create GitHub issues from TODOs, brain dumps |
+| `bloodhound-scout` | Code exploration, pattern tracking, dependency mapping |
+| `eagle-architect` | High-level system design, architecture planning |
+| `elephant-build` | Multi-file feature implementation, coordinated changes |
+| **Code Quality & Testing** | |
+| `beaver-build` | Test strategy, what/how to test, building test suites |
+| `panther-strike` | Precise bug fixes, targeted repairs |
+| `lynx-repair` | Systematic debugging, issue diagnosis |
+| `deer-sense` | Performance optimization, speed improvements |
+| `fox-optimize` | Code optimization, efficiency gains |
+| `raccoon-audit` | Security auditing, vulnerability assessment |
+| `hawk-survey` | Security review, threat analysis |
+| `turtle-harden` | Security hardening, defense in depth |
+| **Data & Database** | |
+| `bear-migrate` | Data migration, schema transformation |
+| `druid` | Database operations, queries, D1 management |
+| **UI & Design** | |
+| `chameleon-adapt` | Glassmorphism, seasonal themes, Grove UI design |
+| `swan-design` | Design system components, visual design |
+| **Documentation** | |
+| `owl-archive` | Documentation, knowledge management, team docs |
+| `robin-guide` | User guides, onboarding, walkthroughs |
+| **Integration & Cleanup** | |
+| `spider-weave` | System integration, weaving components together |
+| `vulture-sweep` | Cleanup, deprecated code removal, maintenance |
+| **Gathering Workflows** | |
+| `gathering-architecture` | Gather architectural insights, system context |
+| `gathering-feature` | Gather feature requirements, user needs |
+| `gathering-migration` | Gather migration context, data mapping |
+| `gathering-planning` | Gather planning information, project context |
+| `gathering-security` | Gather security context, threat model |
+| `gathering-ui` | Gather UI requirements, design constraints |
 
 ---
 
@@ -260,6 +333,53 @@ Skills are located in `.claude/skills/` and provide concise, actionable guidance
 ### Extended Documentation
 For in-depth reference beyond what skills provide, see:
 **`AgentUsage/README.md`** - Master index of detailed documentation
+
+---
+
+## Grove Wrap (gw) Tool
+
+This project uses **Grove Wrap (`gw`)** as the primary CLI tool for git operations, GitHub interactions, Cloudflare development, and more. The `gw` tool provides agent-safe defaults with safety tiers for all operations.
+
+### Installation
+
+```bash
+cd tools/gw
+uv sync
+```
+
+The `gw` command is now available. You can add an alias to your shell:
+```bash
+alias gw="uv run --project ~/path/to/tools/gw gw"
+```
+
+### Key Commands
+
+| Command | What it does | Safety |
+|---------|--------------|--------|
+| `gw git status` | Enhanced git status | ✅ Always safe |
+| `gw git commit --write -m "..."` | Commit changes | ⚠️ Needs `--write` |
+| `gw git push --write` | Push to remote | ⚠️ Needs `--write` |
+| `gw gh pr list` | List pull requests | ✅ Always safe |
+| `gw gh pr create --write` | Create PR | ⚠️ Needs `--write` |
+| `gw health` | Health check all components | ✅ Always safe |
+| `gw deploy --write` | Deploy to Cloudflare | ⚠️ Needs `--write` |
+
+### Safety System
+
+The `--write` flag is required for any operation that modifies data:
+- **READ operations** (status, list, view) - Always safe, no flag needed
+- **WRITE operations** (commit, push, create) - Need `--write` flag
+- **DANGEROUS operations** (force push, hard reset) - Need `--write --force`
+
+### Git Workflows Integration
+
+The `git-workflows` skill uses `gw` for all git and GitHub operations. This provides:
+- Conventional commits validation
+- Protected branch guards
+- Audit logging for agent mode
+- Consistent error handling
+
+See `tools/gw/README.md` for complete documentation.
 
 ---
 
