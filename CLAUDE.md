@@ -16,17 +16,17 @@ The `AGENT.md` file contains all project-specific instructions, workflows, and g
 gf --help
 ```
 
-If the command is not found, install it:
+If the command is not found, install the Go binary:
 
 ```bash
-uv tool install --editable tools/grove-find
+bash tools/grove-find-go/install.sh
 ```
 
-Once installed, `gf` is available directly — no `uv run` prefix needed.
+This installs a single native binary to `~/.local/bin/gf` — no runtime dependencies needed.
 
 ### Codebase Search (gf)
 
-`gf` is a fast codebase search tool. Use `--agent` for clean output (no colors/emoji).
+`gf` is a fast, native Go codebase search tool. Use `--agent` for clean output (no colors/emoji).
 
 **Key commands:**
 - `gf --agent search "pattern"` — Search entire codebase
@@ -38,6 +38,11 @@ Once installed, `gf` is available directly — no `uv run` prefix needed.
 - `gf --agent engine` — Find engine imports
 - `gf --agent todo` — Find TODO/FIXME/HACK comments
 - `gf --agent git churn` — Most frequently changed files
+- `gf --agent impact "file"` — Impact analysis for a file
+- `gf --agent stats` — Project statistics and language breakdown
+- `gf --agent orphaned` — Find unused components
+- `gf --agent cf` — Cloudflare bindings overview
+- `gf --agent github issue` — View/list GitHub issues
 
 Run `gf --help` for full command list.
 

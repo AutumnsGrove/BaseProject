@@ -38,6 +38,7 @@ CATEGORIES: Dict[str, Tuple[str, str, List[Tuple[str, str]]]] = {
             ("do", "Durable Objects"),
             ("cache", "Cache management"),
             ("backup", "D1 database backups"),
+            ("export", "Zip data exports"),
             ("email", "Email routing"),
             ("social", "Social cross-posting"),
         ],
@@ -76,6 +77,13 @@ CATEGORIES: Dict[str, Tuple[str, str, List[Tuple[str, str]]]] = {
         [
             ("auth", "Authentication management"),
             ("secret", "Encrypted secrets vault"),
+        ],
+    ),
+    "agent": (
+        "🤖 Agent Tools",
+        GROVE_COLORS["moss"],
+        [
+            ("context", "Work session snapshot (start here)"),
         ],
     ),
     "system": (

@@ -103,6 +103,10 @@ OPERATION_TIERS: dict[str, GitSafetyTier] = {
     "stash_list": GitSafetyTier.READ,
     "remote_list": GitSafetyTier.READ,
     "fetch": GitSafetyTier.READ,  # Read-only, fetches refs without changing working tree
+    "reflog": GitSafetyTier.READ,
+    "shortlog": GitSafetyTier.READ,
+    "tag_list": GitSafetyTier.READ,
+    "config_get": GitSafetyTier.READ,
     # Tier 2: Write operations (require --write)
     "add": GitSafetyTier.WRITE,
     "commit": GitSafetyTier.WRITE,
@@ -122,12 +126,22 @@ OPERATION_TIERS: dict[str, GitSafetyTier] = {
     "undo": GitSafetyTier.WRITE,  # Grove shortcut
     "amend": GitSafetyTier.WRITE,  # Grove shortcut
     "sync": GitSafetyTier.WRITE,  # Grove shortcut
+    "cherry_pick": GitSafetyTier.WRITE,
+    "ship": GitSafetyTier.WRITE,  # Grove workflow
+    "restore": GitSafetyTier.WRITE,
+    "tag_create": GitSafetyTier.WRITE,
+    "tag_delete": GitSafetyTier.WRITE,
+    "remote_add": GitSafetyTier.WRITE,
+    "remote_remove": GitSafetyTier.WRITE,
+    "remote_rename": GitSafetyTier.WRITE,
+    "config_set": GitSafetyTier.WRITE,
     # Worktree operations
     "worktree_list": GitSafetyTier.READ,
     "worktree_create": GitSafetyTier.WRITE,
     "worktree_remove": GitSafetyTier.WRITE,
     "worktree_prune": GitSafetyTier.WRITE,
     "worktree_clean": GitSafetyTier.DANGEROUS,  # Removes ALL worktrees
+    "worktree_finish": GitSafetyTier.WRITE,
     # Tier 3: Dangerous operations (require --write --force, blocked in agent mode)
     "push_force": GitSafetyTier.DANGEROUS,
     "reset_hard": GitSafetyTier.DANGEROUS,
@@ -224,8 +238,11 @@ def check_git_safety(
         return
 
     # Tier 2: Write operations require --write flag
+    # Auto-imply --write for interactive sessions (human at terminal).
+    # Non-interactive contexts (agents, CI, MCP) still require explicit --write.
     if tier == GitSafetyTier.WRITE:
-        if not write_flag:
+        effective_write = write_flag or (os.isatty(0) and not agent_mode)
+        if not effective_write:
             raise GitSafetyError(
                 f"Operation '{operation}' requires --write flag",
                 tier=tier,

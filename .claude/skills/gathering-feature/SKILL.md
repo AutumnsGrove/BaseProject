@@ -16,6 +16,30 @@ The drum echoes through the forest. One by one, they come. The Bloodhound scouts
 
 ---
 
+## Grove Tools for This Gathering
+
+Use `gw` and `gf` throughout. Quick reference for feature work:
+
+```bash
+# Orientation — start every gathering here
+gw context
+
+# Exploration phase (Bloodhound)
+gf --agent search "pattern"         # Find relevant code
+gf --agent func "functionName"      # Find function definitions
+gf --agent usage "ComponentName"    # Find where things are used
+gf --agent impact "module"          # Understand change blast radius
+
+# Testing phase (Beaver)
+gw ci --affected --diagnose         # Run CI on affected packages
+
+# Shipping phase (after all animals complete)
+gw git pr-prep                      # Preflight check before PR
+gw git ship --write -a -m "feat: description"  # Commit + push
+```
+
+---
+
 ## The Gathering
 
 ```
@@ -40,20 +64,23 @@ Request  Animals    Work       All      Ready
 
 ### Phase 1: SUMMON
 
-*The drum sounds. The forest listens...*
+_The drum sounds. The forest listens..._
 
 Receive and parse the request:
 
 **Clarify the Feature:**
+
 - What does this feature do?
 - Which users benefit?
 - What's in scope? What's out?
 - Any existing issues or specs?
 
 **Confirm:**
+
 > "I'll mobilize a gathering for: **[feature description]**
 >
 > This will involve:
+>
 > - 🐕 Bloodhound scouting the codebase
 > - 🐘 Elephant building across **[estimated files]** files
 > - 🐢 Turtle hardening security by design
@@ -69,7 +96,7 @@ Receive and parse the request:
 
 ### Phase 2: ORGANIZE
 
-*The animals assemble, knowing their roles...*
+_The animals assemble, knowing their roles..._
 
 Dispatch in sequence:
 
@@ -85,6 +112,7 @@ Patterns      Feature     Security    Coverage    Cleanup    Check   Opt     Wri
 
 **Cross-Cutting Standard — Signpost Error Codes:**
 All animals MUST use Signpost error codes (from `@autumnsgrove/groveengine/errors`). This is not optional:
+
 - **Elephant** uses them when building (buildErrorJson in API routes, throwGroveError in page loads)
 - **Turtle** verifies all errors use Signpost codes during hardening (Phase 2E checklist)
 - **Beaver** tests that API routes return proper `error_code` fields
@@ -94,6 +122,7 @@ All animals MUST use Signpost error codes (from `@autumnsgrove/groveengine/error
 See `AgentUsage/error_handling.md` for the full reference.
 
 **Dependencies:**
+
 - Bloodhound must complete before Elephant (needs context)
 - Elephant must complete before Turtle (hardens what was built)
 - Turtle must complete before Beaver (tests the hardened code)
@@ -102,13 +131,13 @@ See `AgentUsage/error_handling.md` for the full reference.
 - Owl last (documents everything)
 
 **Why Turtle before Beaver:**
-Security is not a phase you bolt on after testing — it shapes *what* you build. The Turtle reviews Elephant's work and hardens it: adds input validation schemas, output encoding, parameterized queries, security headers. Then Beaver tests the hardened code, catching both functional and security regressions. This is secure by design.
+Security is not a phase you bolt on after testing — it shapes _what_ you build. The Turtle reviews Elephant's work and hardens it: adds input validation schemas, output encoding, parameterized queries, security headers. Then Beaver tests the hardened code, catching both functional and security regressions. This is secure by design.
 
 ---
 
 ### Phase 3: EXECUTE
 
-*The animals work. The forest transforms...*
+_The animals work. The forest transforms..._
 
 Execute each phase:
 
@@ -216,10 +245,25 @@ Output:
 
 ### Phase 4: VALIDATE
 
-*The work is done. Each animal verifies their contribution...*
+_The work is done. Each animal verifies their contribution..._
 
-**Validation Checklist:**
+**MANDATORY: Run full affected-package verification before the gathering concludes.**
 
+This is the final quality gate — the moment the entire gathering's work is proven sound:
+
+```bash
+# Step 1: Sync all dependencies
+pnpm install
+
+# Step 2: Run affected-only CI — lint, check, test, build on ONLY packages the gathering touched
+gw ci --affected --fail-fast --diagnose
+```
+
+**If verification fails:** Identify which animal's work caused the failure. Return to that phase, fix the issue, and re-run verification. The gathering does not conclude on broken code.
+
+**Validation Checklist (after CI passes):**
+
+- [ ] CI: `gw ci --affected` passes clean (lint, check, test, build)
 - [ ] Bloodhound: All integration points mapped
 - [ ] Elephant: Feature functional end-to-end
 - [ ] Turtle: Input validation on all entry points
@@ -235,10 +279,17 @@ Output:
 **Quality Gates:**
 
 ```
+If CI fails:
+  → Read diagnostics (--diagnose output)
+  → Identify the responsible animal phase
+  → Fix the issue
+  → Re-run: gw ci --affected --fail-fast --diagnose
+  → Repeat until clean
+
 If any animal finds critical issues:
   → Return to that phase
   → Fix the issue
-  → Re-run dependent phases
+  → Re-run CI verification
   → Continue validation
 
 If all gates pass:
@@ -249,7 +300,7 @@ If all gates pass:
 
 ### Phase 5: COMPLETE
 
-*The gathering ends. A feature stands complete...*
+_The gathering ends. A feature stands complete..._
 
 **Completion Report:**
 
@@ -259,15 +310,18 @@ If all gates pass:
 ### Feature: [Name]
 
 ### Animals Mobilized
+
 🐕 Bloodhound → 🐘 Elephant → 🐢 Turtle → 🦫 Beaver → 🦝 Raccoon → 🦌 Deer → 🦊 Fox → 🦉 Owl
 
 ### What Was Built
+
 - **Files Changed:** [count]
 - **New Components:** [list]
 - **API Endpoints:** [list]
 - **Database Changes:** [summary]
 
 ### Quality Verification
+
 - ✅ Tests: [X] passing, [Y]% coverage
 - ✅ Hardened: Input validation, output encoding, security headers
 - ✅ Security: No secrets or vulnerabilities found
@@ -276,15 +330,17 @@ If all gates pass:
 - ✅ Documentation: Complete
 
 ### Artifacts Created
+
 - Source code (committed)
 - Tests ([location])
 - Documentation ([location])
 - Migration scripts (if applicable)
 
 ### Time Elapsed
+
 [Duration]
 
-*The forest grows. The feature lives.*
+_The forest grows. The feature lives._
 ```
 
 ---
@@ -315,4 +371,4 @@ If all gates pass:
 
 ---
 
-*When the drum sounds, the forest answers.* 🌲
+_When the drum sounds, the forest answers._ 🌲
