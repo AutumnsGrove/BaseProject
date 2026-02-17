@@ -62,15 +62,6 @@ Compare `AgentUsage/` with `/tmp/bp-update/AgentUsage/`:
 - **Preserve** unchanged files (skip if identical)
 - Report: added, updated, unchanged, custom-preserved counts
 
-### Step 5b: Sync Tools
-Compare `tools/` with `/tmp/bp-update/tools/`:
-- **Add** new tools that don't exist locally
-- **Update** existing tools where upstream content has changed
-- **Preserve** custom tools that only exist locally
-- **Preserve** unchanged tools (skip if identical)
-- Skip lock files (uv.lock) as they are per-project
-- Report: added, updated, unchanged counts
-
 ### Step 6: Merge .gitignore
 ```bash
 # Add any new entries from upstream that aren't already present
@@ -91,7 +82,7 @@ rm -rf /tmp/bp-update
 
 ### Step 9: Commit
 ```bash
-git add .claude/skills/ AgentUsage/ tools/ .gitignore AGENT.md
+git add .claude/skills/ AgentUsage/ .gitignore AGENT.md
 git commit -m "chore: sync BaseProject skills, docs, and agent config"
 ```
 
@@ -109,14 +100,13 @@ Show:
 |--------|--------|
 | `.claude/skills/` | Sync all skills from upstream |
 | `AgentUsage/` | Sync docs, preserve custom files |
-| `tools/` | Sync CLI tools (grove-find), preserve custom tools |
 | `.gitignore` | Merge new entries |
 | `AGENT.md` | Merge template sections, preserve custom content |
 
 ## What Is NOT Touched
 
 - `README.md` - Your project README
-- `TODOS.md` - Your task list
+- `TODOS.md` - Your task tracking reference (points to GitHub Issues)
 - `secrets.json` / `secrets_template.json` - Your secrets
 - `pyproject.toml` / `package.json` / `go.mod` - Language configs
 - `src/` / `tests/` - Your source code

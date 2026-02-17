@@ -119,6 +119,11 @@ Write a brief description of what the PR does and why. No specific format requir
 - **Debug issues systematically** → Use skill: `lynx-repair`
 - **Optimize code for performance** → Use skill: `deer-sense` / `fox-optimize`
 - **Security audit and hardening** → Use skill: `raccoon-audit` / `hawk-survey` / `turtle-harden`
+- **Cross-codebase security investigation** → Use skill: `raven-investigate`
+- **Estimate project scope and pricing** → Use skill: `osprey-appraise`
+
+### Exploration & Review
+- **Systematically review a collection of items** → Use skill: `safari-explore`
 
 ### Data & Database
 - **Migrate data between systems** → Use skill: `bear-migrate`
@@ -272,6 +277,9 @@ Skills are invoked using the Skill tool. When a situation matches a skill trigge
 | `raccoon-audit` | Security auditing, vulnerability assessment |
 | `hawk-survey` | Security review, threat analysis |
 | `turtle-harden` | Security hardening, defense in depth |
+| `raven-investigate` | Cross-codebase security investigation, posture assessment |
+| `osprey-appraise` | Project estimation, scope, pricing, proposals |
+| `safari-explore` | Systematic review of collections (pages, components, endpoints) |
 | **Data & Database** | |
 | `bear-migrate` | Data migration, schema transformation |
 | `druid` | Database operations, queries, D1 management |
@@ -359,8 +367,18 @@ alias gw="uv run --project ~/path/to/tools/gw gw"
 | `gw git status` | Enhanced git status | ✅ Always safe |
 | `gw git commit --write -m "..."` | Commit changes | ⚠️ Needs `--write` |
 | `gw git push --write` | Push to remote | ⚠️ Needs `--write` |
+| `gw git ship --write -m "..."` | Format → check → commit → push | ⚠️ Needs `--write` |
+| `gw git prep` | Preflight workflow check | ✅ Always safe |
+| `gw git pr-prep` | PR preparation workflow | ✅ Always safe |
+| `gw git fetch` | Fetch refs from remote | ✅ Always safe |
+| `gw git reflog` | Show reference log history | ✅ Always safe |
+| `gw git shortlog` | Commit summary statistics | ✅ Always safe |
+| `gw git remote list` | List remote repositories | ✅ Always safe |
+| `gw git tag list` | List tags | ✅ Always safe |
+| `gw git config list` | Show git configuration | ✅ Always safe |
 | `gw gh pr list` | List pull requests | ✅ Always safe |
 | `gw gh pr create --write` | Create PR | ⚠️ Needs `--write` |
+| `gw context` | Agent session snapshot | ✅ Always safe |
 | `gw health` | Health check all components | ✅ Always safe |
 | `gw deploy --write` | Deploy to Cloudflare | ⚠️ Needs `--write` |
 
@@ -383,5 +401,5 @@ See `tools/gw/README.md` for complete documentation.
 
 ---
 
-*Last updated: 2026-01-22*
-*Model: Claude Opus 4.5*
+*Last updated: 2026-02-17*
+*Model: Claude Opus 4.6*

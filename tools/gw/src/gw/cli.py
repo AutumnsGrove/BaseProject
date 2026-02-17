@@ -3,7 +3,7 @@
 import click
 
 from .commands import auth, bindings, cache, db, health, secret, status, tenant
-from .commands import backup, deploy, do, email, flag, kv, logs, r2, packages, social
+from .commands import backup, deploy, do, email, export, flag, kv, logs, r2, packages, social
 from .commands.doctor import doctor
 from .commands.whoami import whoami
 from .commands.history import history
@@ -13,6 +13,7 @@ from .commands.metrics import metrics
 from .commands.config_validate import config_validate
 from .commands.env_audit import env_audit
 from .commands.monorepo_size import monorepo_size
+from .commands.context import context
 from .commands.git import git
 from .commands.gh import gh
 from .commands.dev import dev
@@ -135,6 +136,7 @@ main.add_command(deploy.deploy)
 main.add_command(do.do)
 main.add_command(flag.flag)
 main.add_command(backup.backup)
+main.add_command(export.export)
 main.add_command(email.email)
 main.add_command(social.social)
 
@@ -164,6 +166,9 @@ main.add_command(metrics)
 main.add_command(config_validate)
 main.add_command(env_audit)
 main.add_command(monorepo_size)
+
+# Agent-optimized commands
+main.add_command(context)
 
 
 if __name__ == "__main__":
