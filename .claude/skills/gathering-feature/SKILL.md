@@ -111,15 +111,23 @@ Patterns      Feature     Security    Coverage    Cleanup    Check   Opt     Wri
 ```
 
 **Cross-Cutting Standard — Signpost Error Codes:**
-All animals MUST use Signpost error codes (from `@autumnsgrove/groveengine/errors`). This is not optional:
+All animals MUST use Signpost error codes (from `@autumnsgrove/lattice/errors`). This is not optional:
 
 - **Elephant** uses them when building (buildErrorJson in API routes, throwGroveError in page loads)
 - **Turtle** verifies all errors use Signpost codes during hardening (Phase 2E checklist)
 - **Beaver** tests that API routes return proper `error_code` fields
 - **Raccoon** audits for bare `throw error()` and `console.error` without `logGroveError()`
-- Client-side feedback uses `toast` from `@autumnsgrove/groveengine/ui`
+- Client-side feedback uses `toast` from `@autumnsgrove/lattice/ui`
 
 See `AgentUsage/error_handling.md` for the full reference.
+
+**Type Safety at Boundaries (Rootwork):**
+
+- **Elephant** validates form inputs with `parseFormData()` and KV reads with `safeJsonParse()`
+- **Turtle** verifies all trust boundaries use Rootwork utilities (no `as` casts at boundaries)
+- **Beaver** tests that validation rejects bad input and catch blocks use `isRedirect()`/`isHttpError()`
+- **Raccoon** audits for unsafe casts and unvalidated JSON parsing
+- Reference: `AgentUsage/rootwork_type_safety.md`
 
 **Dependencies:**
 
@@ -139,107 +147,78 @@ Security is not a phase you bolt on after testing — it shapes _what_ you build
 
 _The animals work. The forest transforms..._
 
-Execute each phase:
+Execute each phase by loading and running each animal's dedicated skill:
+
+---
 
 **🐕 BLOODHOUND — SCOUT**
 
-```
-"Scouting the codebase for [feature]..."
+Load skill: `bloodhound-scout`
 
-Output:
-- Files that will need changes
-- Patterns to follow
-- Integration points identified
-- Potential obstacles found
-```
+Execute the full Bloodhound workflow focused on [the feature being built].
+Handoff: territory map (files to change, patterns found, integration points, potential obstacles) → Elephant
+
+---
 
 **🐘 ELEPHANT — BUILD**
 
-```
-"Building [feature] with momentum..."
+Load skill: `elephant-build`
 
-Output:
-- All required files created/modified
-- Frontend components
-- Backend API endpoints
-- Database schema changes
-- Integration wired
-```
+Execute the full Elephant workflow using the Bloodhound's territory map.
+Handoff: complete list of built files (components, endpoints, schema changes, wired integrations) → Turtle for hardening
+
+---
 
 **🐢 TURTLE — HARDEN**
 
-```
-"Withdrawing to study what was built..."
+Load skill: `turtle-harden`
 
-Output:
-- Input validation added (Zod schemas on all endpoints)
-- Output encoding verified (context-aware)
-- Parameterized queries enforced (zero concatenation)
-- Security headers configured (CSP, HSTS, etc.)
-- Error handling hardened (generic messages, no leaks)
-- Defense-in-depth layers applied
-```
+Execute the full Turtle workflow on everything the Elephant built.
+Handoff: hardened code (input validation, output encoding, parameterized queries, security headers, error handling) → Beaver for testing
+
+---
 
 **🦫 BEAVER — TEST**
 
-```
-"Building test dams for confidence..."
+Load skill: `beaver-build`
 
-Output:
-- Integration tests for user flows
-- Unit tests for complex logic
-- Security regression tests (from Turtle's hardening)
-- Edge case coverage
-- All tests passing
-```
+Execute the full Beaver workflow on the hardened code, including security regression tests from Turtle's hardening.
+Handoff: test results and coverage summary → Raccoon, Deer, Fox (parallel)
 
-**🦝 RACCOON — AUDIT**
+---
 
-```
-"Rummaging for security risks..."
+**🦝 RACCOON — AUDIT** _(parallel with Deer and Fox)_
 
-Output:
-- Secrets scan (none found)
-- Vulnerability check (clean)
-- Input validation verified
-- Auth checks confirmed
-```
+Load skill: `raccoon-audit`
 
-**🦌 DEER — SENSE**
+Execute the full Raccoon workflow on the completed feature.
+Handoff: audit findings resolved → Owl
 
-```
-"Sensing accessibility barriers..."
+---
 
-Output:
-- Keyboard navigation works
-- Screen reader compatible
-- Color contrast passes
-- Reduced motion respected
-```
+**🦌 DEER — SENSE** _(parallel with Raccoon and Fox)_
 
-**🦊 FOX — OPTIMIZE**
+Load skill: `deer-sense`
 
-```
-"Hunting for performance gains..."
+Execute the full Deer workflow on all UI produced by the Elephant and Chameleon.
+Handoff: accessibility findings resolved → Owl
 
-Output:
-- Bundle size optimized
-- Database queries fast
-- Images optimized
-- Caching implemented
-```
+---
+
+**🦊 FOX — OPTIMIZE** _(parallel with Raccoon and Deer)_
+
+Load skill: `fox-optimize`
+
+Execute the full Fox workflow targeting the new feature's bundle, queries, and assets.
+Handoff: performance findings resolved → Owl
+
+---
 
 **🦉 OWL — ARCHIVE**
 
-```
-"Archiving knowledge for the forest..."
+Load skill: `owl-archive`
 
-Output:
-- Help documentation written
-- API documentation updated
-- Code comments added
-- README updated
-```
+Execute the full Owl workflow, documenting everything built, hardened, tested, and optimized in this gathering.
 
 ---
 
@@ -261,9 +240,26 @@ gw ci --affected --fail-fast --diagnose
 
 **If verification fails:** Identify which animal's work caused the failure. Return to that phase, fix the issue, and re-run verification. The gathering does not conclude on broken code.
 
+**Visual Verification (for features with UI):**
+
+If the feature has a user-facing interface, capture it before declaring the gathering complete:
+
+```bash
+# Verify the feature renders correctly across seasons
+uv run --project tools/glimpse glimpse matrix http://localhost:5173/[feature-page] \
+  --seasons autumn,winter --themes light,dark --logs
+
+# Walk through the feature flow visually
+uv run --project tools/glimpse glimpse browse http://localhost:5173/[feature-page] \
+  --do "interact with the new feature elements" --screenshot-each --logs
+```
+
+Review screenshots for visual correctness, console errors, and theme consistency. Fix and re-capture until the feature looks right.
+
 **Validation Checklist (after CI passes):**
 
 - [ ] CI: `gw ci --affected` passes clean (lint, check, test, build)
+- [ ] Glimpse: Feature visually verified (if UI work) — no console errors
 - [ ] Bloodhound: All integration points mapped
 - [ ] Elephant: Feature functional end-to-end
 - [ ] Turtle: Input validation on all entry points
@@ -275,6 +271,10 @@ gw ci --affected --fail-fast --diagnose
 - [ ] Deer: WCAG AA compliance verified
 - [ ] Fox: Performance targets met
 - [ ] Owl: Documentation complete
+- [ ] All form data parsed with parseFormData() + Zod schemas
+- [ ] All KV/JSON reads use safeJsonParse() with schemas
+- [ ] Catch blocks use isRedirect()/isHttpError() type guards
+- [ ] No `as` casts at trust boundaries
 
 **Quality Gates:**
 
