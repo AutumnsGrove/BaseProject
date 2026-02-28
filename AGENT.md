@@ -350,15 +350,17 @@ This project uses **Grove Wrap (`gw`)** as the primary CLI tool for git operatio
 
 ### Installation
 
+Check if it's already available:
 ```bash
-cd tools/gw
-uv sync
+gw --help
 ```
 
-The `gw` command is now available. You can add an alias to your shell:
+If the command is not found, install the Go binary:
 ```bash
-alias gw="uv run --project ~/path/to/tools/gw gw"
+bash tools/grove-wrap-go/install.sh
 ```
+
+This installs a single native binary to `~/.local/bin/gw` — no runtime dependencies needed.
 
 ### Key Commands
 
@@ -397,9 +399,9 @@ The `git-workflows` skill uses `gw` for all git and GitHub operations. This prov
 - Audit logging for agent mode
 - Consistent error handling
 
-See `tools/gw/README.md` for complete documentation.
+Run `gw --help` for full command list.
 
 ---
 
-*Last updated: 2026-02-17*
+*Last updated: 2026-02-28*
 *Model: Claude Opus 4.6*
