@@ -49,7 +49,7 @@ What are you reviewing? Name every item:
 ```bash
 # Examples — adapt to what you're actually reviewing:
 gf --agent search "curios"           # Find all curio-related files
-ls packages/                          # All packages in the monorepo
+ls apps/ libs/ services/ workers/   # All packages in the monorepo
 gf --agent search "admin page"       # All admin pages
 ```
 
@@ -83,7 +83,8 @@ What are you looking at per item? Define this upfront so every stop is consisten
 **Create the journal file:**
 
 ```bash
-# The expedition journal lives in docs/plans/
+# The expedition journal lives in docs/safaris/
+# Active safaris go in docs/safaris/active/, planned in docs/safaris/planned/
 # Name it after the safari: curio-safari.md, admin-safari.md, etc.
 ```
 
@@ -169,6 +170,7 @@ At each stop, read the actual code and document what exists:
 **Observation rules:**
 
 - **Read the actual files.** Don't guess from memory. Every observation backed by code.
+- **Look at the rendered result.** Use Glimpse to see what it actually looks like in a browser — code alone doesn't tell the full story.
 - **Check every layer** defined in the scope (admin + public + API + shared lib + DB)
 - **Celebrate what works.** Check marks for the good stuff. This isn't a roast — it's an honest observation.
 - **Be specific about gaps.** "Hardcoded `rgba(0,0,0,0.04)`" is good. "Colors are wrong" is not.
@@ -181,6 +183,24 @@ gf --agent search "CurioHitcounter"     # Find related files
 gf --agent usage "CurioHitcounter"       # Where is it used?
 gf --agent func "hitcounter"             # Function definitions
 ```
+
+**Use Glimpse to see the rendered state:**
+
+```bash
+# Capture the page where this item lives
+uv run --project tools/glimpse glimpse capture http://localhost:5173/[item-page] \
+  --season autumn --theme dark --logs
+
+# Browse to the item and capture what it looks like in context
+uv run --project tools/glimpse glimpse browse http://localhost:5173/[item-page] \
+  --do "scroll to [item], click [item]" --screenshot-each
+
+# Check dark mode rendering
+uv run --project tools/glimpse glimpse matrix http://localhost:5173/[item-page] \
+  --themes light,dark
+```
+
+Screenshots are observation data — include visual findings alongside code findings in the journal.
 
 **Safari narration:**
 
@@ -312,8 +332,8 @@ Compile the full expedition journal:
 **Write the journal to disk:**
 
 ```bash
-# The journal goes in docs/plans/planned/ or docs/plans/active/
-# depending on whether implementation starts immediately
+# The journal goes in docs/safaris/active/ or docs/safaris/planned/
+# Active = implementation starts soon, Planned = queued for later
 ```
 
 **Final safari narration:**

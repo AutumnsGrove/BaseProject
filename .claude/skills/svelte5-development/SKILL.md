@@ -8,6 +8,7 @@ description: Build web applications with Svelte 5 runes, SvelteKit routing, form
 ## When to Activate
 
 Activate this skill when:
+
 - Creating Svelte 5 components
 - Working with SvelteKit routing
 - Implementing runes ($state, $derived, $effect)
@@ -25,29 +26,29 @@ pnpm build             # Build for production
 
 ## Runes Quick Reference
 
-| Rune | Purpose | Example |
-|------|---------|---------|
-| `$state` | Reactive state | `let count = $state(0)` |
-| `$derived` | Computed values | `let doubled = $derived(count * 2)` |
-| `$effect` | Side effects | `$effect(() => console.log(count))` |
-| `$props` | Component props | `let { name } = $props()` |
+| Rune        | Purpose         | Example                                  |
+| ----------- | --------------- | ---------------------------------------- |
+| `$state`    | Reactive state  | `let count = $state(0)`                  |
+| `$derived`  | Computed values | `let doubled = $derived(count * 2)`      |
+| `$effect`   | Side effects    | `$effect(() => console.log(count))`      |
+| `$props`    | Component props | `let { name } = $props()`                |
 | `$bindable` | Two-way binding | `let { value = $bindable() } = $props()` |
 
 ## Reactive State ($state)
 
 ```svelte
 <script>
-  let count = $state(0);
-  let user = $state({ name: 'Alice', age: 30 });
-  let items = $state(['apple', 'banana']);
+	let count = $state(0);
+	let user = $state({ name: "Alice", age: 30 });
+	let items = $state(["apple", "banana"]);
 </script>
 
 <button onclick={() => count++}>
-  Clicked {count} times
+	Clicked {count} times
 </button>
 
 <button onclick={() => user.age++}>
-  {user.name} is {user.age}
+	{user.name} is {user.age}
 </button>
 ```
 
@@ -57,15 +58,15 @@ pnpm build             # Build for production
 
 ```svelte
 <script>
-  let count = $state(0);
-  let doubled = $derived(count * 2);
+	let count = $state(0);
+	let doubled = $derived(count * 2);
 
-  // For complex computations
-  let summary = $derived.by(() => {
-    const total = items.length;
-    const done = items.filter(i => i.done).length;
-    return `${done}/${total}`;
-  });
+	// For complex computations
+	let summary = $derived.by(() => {
+		const total = items.length;
+		const done = items.filter((i) => i.done).length;
+		return `${done}/${total}`;
+	});
 </script>
 ```
 
@@ -73,17 +74,17 @@ pnpm build             # Build for production
 
 ```svelte
 <script>
-  let count = $state(0);
+	let count = $state(0);
 
-  $effect(() => {
-    console.log(`Count is ${count}`);
-    document.title = `Count: ${count}`;
+	$effect(() => {
+		console.log(`Count is ${count}`);
+		document.title = `Count: ${count}`;
 
-    // Cleanup function
-    return () => {
-      console.log('Cleanup');
-    };
-  });
+		// Cleanup function
+		return () => {
+			console.log("Cleanup");
+		};
+	});
 </script>
 ```
 
@@ -92,7 +93,7 @@ pnpm build             # Build for production
 ```svelte
 <!-- Button.svelte -->
 <script>
-  let { label, disabled = false, onclick } = $props();
+	let { label, disabled = false, onclick } = $props();
 </script>
 
 <button {disabled} {onclick}>{label}</button>
@@ -102,83 +103,109 @@ pnpm build             # Build for production
 
 ```svelte
 <script lang="ts">
-  interface Props {
-    label: string;
-    disabled?: boolean;
-    onclick?: () => void;
-  }
+	interface Props {
+		label: string;
+		disabled?: boolean;
+		onclick?: () => void;
+	}
 
-  let { label, disabled = false, onclick }: Props = $props();
+	let { label, disabled = false, onclick }: Props = $props();
 </script>
 ```
 
 ## SvelteKit File Conventions
 
-| File | Purpose |
-|------|---------|
-| `+page.svelte` | Page component |
+| File              | Purpose                  |
+| ----------------- | ------------------------ |
+| `+page.svelte`    | Page component           |
 | `+page.server.js` | Server-only load/actions |
-| `+layout.svelte` | Shared layout |
-| `+server.js` | API endpoints |
-| `+error.svelte` | Error boundary |
+| `+layout.svelte`  | Shared layout            |
+| `+server.js`      | API endpoints            |
+| `+error.svelte`   | Error boundary           |
 
 ## Data Loading
 
 ```javascript
 // src/routes/posts/+page.server.js
 export async function load({ fetch }) {
-  const response = await fetch('/api/posts');
-  return { posts: await response.json() };
+	const response = await fetch("/api/posts");
+	return { posts: await response.json() };
 }
 ```
 
 ```svelte
 <!-- src/routes/posts/+page.svelte -->
 <script>
-  let { data } = $props();
+	let { data } = $props();
 </script>
 
 {#each data.posts as post}
-  <article>
-    <h2>{post.title}</h2>
-  </article>
+	<article>
+		<h2>{post.title}</h2>
+	</article>
 {/each}
 ```
 
 ## Form Actions
 
-```javascript
-// src/routes/login/+page.server.js
-import { fail, redirect } from '@sveltejs/kit';
+### Type-Safe Form Validation (Rootwork Pattern)
+
+Use `parseFormData()` for type-safe form handling at trust boundaries:
+
+```typescript
+// src/routes/login/+page.server.ts
+import { fail, redirect } from "@sveltejs/kit";
+import { parseFormData } from "@autumnsgrove/lattice/server";
+import { z } from "zod";
+
+const LoginSchema = z.object({
+	email: z.string().email("Valid email required"),
+	password: z.string().min(8, "Password must be at least 8 characters"),
+});
 
 export const actions = {
-  default: async ({ request, cookies }) => {
-    const data = await request.formData();
-    const email = data.get('email');
+	default: async ({ request, cookies }) => {
+		const formData = await request.formData();
+		const result = parseFormData(formData, LoginSchema);
 
-    if (!email) {
-      return fail(400, { missing: true });
-    }
+		if (!result.success) {
+			const firstError = Object.values(result.errors).flat()[0];
+			return fail(400, { error: firstError || "Invalid input" });
+		}
 
-    cookies.set('session', token, { path: '/' });
-    throw redirect(303, '/dashboard');
-  }
+		const { email, password } = result.data;
+
+		// Authenticate with validated, typed data
+		const token = await authenticate(email, password);
+		if (!token) {
+			return fail(401, { error: "Invalid credentials" });
+		}
+
+		cookies.set("session", token, { path: "/" });
+		throw redirect(303, "/dashboard");
+	},
 };
 ```
+
+**Benefits:**
+
+- Type-safe: `result.data` is fully typed as `LoginSchema`
+- Structured errors: `result.errors` is a map of field → messages
+- No `as` casts at trust boundaries
 
 ```svelte
 <!-- +page.svelte -->
 <script>
-  import { enhance } from '$app/forms';
-  let { form } = $props();
+	import { enhance } from "$app/forms";
+	let { form } = $props();
 </script>
 
 <form method="POST" use:enhance>
-  <input name="email" value={form?.email ?? ''} />
-  {#if form?.missing}
-    <p class="error">Email required</p>
-  {/if}
-  <button>Submit</button>
+	<input name="email" value={form?.email ?? ""} />
+	{#if form?.missing}
+		<p class="error">Email required</p>
+	{/if}
+	<button>Submit</button>
 </form>
 ```
 
@@ -186,23 +213,24 @@ export const actions = {
 
 ```javascript
 // src/routes/api/posts/+server.js
-import { json } from '@sveltejs/kit';
+import { json } from "@sveltejs/kit";
 
 export async function GET({ url }) {
-  const posts = await getPosts();
-  return json(posts);
+	const posts = await getPosts();
+	return json(posts);
 }
 
 export async function POST({ request }) {
-  const data = await request.json();
-  const post = await createPost(data);
-  return json(post, { status: 201 });
+	const data = await request.json();
+	const post = await createPost(data);
+	return json(post, { status: 201 });
 }
 ```
 
 ## Common Pitfalls
 
 ### Destructuring Breaks Reactivity
+
 ```javascript
 // ❌ Bad
 let { count } = $state({ count: 0 });
@@ -213,6 +241,7 @@ state.count++;
 ```
 
 ### Missing Keys in Each
+
 ```svelte
 <!-- ❌ Bad -->
 {#each items as item}
@@ -222,6 +251,7 @@ state.count++;
 ```
 
 ### Use Progressive Enhancement
+
 ```svelte
 <script>
   import { enhance } from '$app/forms';
@@ -235,40 +265,82 @@ state.count++;
 **Toast** is the primary client-side feedback for user actions:
 
 ```typescript
-import { toast } from '@autumnsgrove/groveengine/ui';
+import { toast } from "@autumnsgrove/lattice/ui";
 
 // After successful action
-toast.success('Post published!');
+toast.success("Post published!");
 
 // After failed action
-toast.error(err instanceof Error ? err.message : 'Something went wrong');
+toast.error(err instanceof Error ? err.message : "Something went wrong");
 
 // Async operations
-toast.promise(apiRequest('/api/export', { method: 'POST' }), {
-  loading: 'Exporting...', success: 'Done!', error: 'Export failed.',
+toast.promise(apiRequest("/api/export", { method: "POST" }), {
+	loading: "Exporting...",
+	success: "Done!",
+	error: "Export failed.",
 });
 
 // Multi-step flows
-const id = toast.loading('Saving...');
+const id = toast.loading("Saving...");
 // ... later
 toast.dismiss(id);
-toast.success('Saved!');
+toast.success("Saved!");
 ```
 
 **When NOT to use toast:** form validation (use `fail()` + inline errors), page load failures (`+error.svelte`), persistent notices (use GroveMessages).
 
 **Server-side errors** use Signpost codes:
+
 ```typescript
-import { API_ERRORS, buildErrorJson, throwGroveError, logGroveError } from '@autumnsgrove/groveengine/errors';
+import {
+	API_ERRORS,
+	buildErrorJson,
+	throwGroveError,
+	logGroveError,
+} from "@autumnsgrove/lattice/errors";
 
 // API route: return structured error
 return json(buildErrorJson(API_ERRORS.RESOURCE_NOT_FOUND), { status: 404 });
 
 // Page load: throw to +error.svelte
-throwGroveError(404, SITE_ERRORS.PAGE_NOT_FOUND, 'Engine');
+throwGroveError(404, SITE_ERRORS.PAGE_NOT_FOUND, "Engine");
 ```
 
-See `AgentUsage/error_handling.md` for the full reference.
+### Type-Safe Error Handling (Rootwork Guards)
+
+Use `isRedirect()` and `isHttpError()` to safely handle caught exceptions in form actions:
+
+```typescript
+import { isRedirect, isHttpError } from "@autumnsgrove/lattice/server";
+import { fail } from "@sveltejs/kit";
+
+export const actions = {
+	default: async ({ request }) => {
+		try {
+			const formData = await request.formData();
+			const result = parseFormData(formData, MySchema);
+
+			if (!result.success) {
+				return fail(400, { error: "Validation failed" });
+			}
+
+			// Process data
+			const response = await processData(result.data);
+			throw redirect(303, "/success");
+		} catch (err) {
+			// Redirects and HTTP errors must be re-thrown
+			if (isRedirect(err)) throw err;
+			if (isHttpError(err)) return fail(err.status, { error: err.body.message });
+
+			// Unexpected errors
+			console.error("Unexpected error:", err);
+			return fail(500, { error: "Something went wrong" });
+		}
+	},
+};
+```
+
+See `AgentUsage/error_handling.md` and `AgentUsage/rootwork_type_safety.md` for the full reference.
 
 ## Project Structure
 
@@ -291,8 +363,8 @@ When building Grove UI that includes nature-themed terminology, always use the G
 
 ```svelte
 <script lang="ts">
-  import { GroveTerm, GroveSwap, GroveText } from '@autumnsgrove/groveengine/ui';
-  import groveTermManifest from '$lib/data/grove-term-manifest.json';
+	import { GroveTerm, GroveSwap, GroveText } from "@autumnsgrove/lattice/ui";
+	import groveTermManifest from "$lib/data/grove-term-manifest.json";
 </script>
 
 <!-- Interactive term with popup definition -->
@@ -302,14 +374,18 @@ When building Grove UI that includes nature-themed terminology, always use the G
 <GroveSwap term="arbor" manifest={groveTermManifest} />
 
 <!-- Parse [[term]] syntax in data strings -->
-<GroveText content="Your [[bloom|posts]] live in your [[garden|blog]]." manifest={groveTermManifest} />
+<GroveText
+	content="Your [[bloom|posts]] live in your [[garden|blog]]."
+	manifest={groveTermManifest}
+/>
 ```
 
-See `packages/engine/src/lib/ui/components/ui/groveterm/` for component source and `chameleon-adapt` skill for full UI design guidance.
+See `libs/engine/src/lib/ui/components/ui/groveterm/` for component source and `chameleon-adapt` skill for full UI design guidance.
 
 ## Related Resources
 
 See `AgentUsage/svelte5_guide.md` for complete documentation including:
+
 - Advanced rune patterns
 - Snippets for reusable markup
 - Performance optimization

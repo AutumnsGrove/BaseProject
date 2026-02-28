@@ -13,9 +13,10 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/AutumnsGrove/GroveEngine/tools/grove-find-go/internal/config"
-	"github.com/AutumnsGrove/GroveEngine/tools/grove-find-go/internal/output"
-	"github.com/AutumnsGrove/GroveEngine/tools/grove-find-go/internal/search"
+	"github.com/AutumnsGrove/Lattice/tools/grove-find-go/internal/config"
+	"github.com/AutumnsGrove/Lattice/tools/grove-find-go/internal/output"
+	"github.com/AutumnsGrove/Lattice/tools/grove-find-go/internal/pager"
+	"github.com/AutumnsGrove/Lattice/tools/grove-find-go/internal/search"
 )
 
 // countFileLines counts the number of lines in a file using a buffered scanner.
@@ -189,12 +190,21 @@ func runLargeCommand(threshold int) error {
 // gf orphaned -- Find Svelte components not imported anywhere
 // =============================================================================
 
+var orphanedFlagAll bool
+
 var orphanedCmd = &cobra.Command{
 	Use:   "orphaned",
 	Short: "Find Svelte components not imported anywhere",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if orphanedFlagAll {
+			config.Get().IncludeArchived = true
+		}
 		return runOrphanedCommand()
 	},
+}
+
+func init() {
+	orphanedCmd.Flags().BoolVar(&orphanedFlagAll, "all", false, "Include _archived/ directories in results")
 }
 
 func runOrphanedCommand() error {
@@ -222,7 +232,7 @@ func runOrphanedCommand() error {
 		return nil
 	}
 
-	// Filter out route files (+page, +layout, +error, etc.) and _deprecated.
+	// Filter out route files (+page, +layout, +error, etc.), _deprecated, and _archived (unless --all).
 	var componentFiles []string
 	for _, fp := range allSvelte {
 		name := filepath.Base(fp)
@@ -230,6 +240,9 @@ func runOrphanedCommand() error {
 			continue // Route files are implicitly used by SvelteKit.
 		}
 		if strings.Contains(fp, "_deprecated") {
+			continue
+		}
+		if !cfg.IncludeArchived && strings.Contains(fp, "_archived") {
 			continue
 		}
 		componentFiles = append(componentFiles, fp)
@@ -294,16 +307,18 @@ func runOrphanedCommand() error {
 	}
 
 	if len(orphaned) > 0 {
-		output.PrintSection(fmt.Sprintf("Orphaned Components (%d)", len(orphaned)))
+		// Build full content with section header so pager owns all output when it activates.
+		var sb strings.Builder
+		sb.WriteString(output.RenderSection(fmt.Sprintf("Orphaned Components (%d)", len(orphaned))))
 		for _, fp := range orphaned {
-			output.Printf("  %s", fp)
+			sb.WriteString(fmt.Sprintf("  %s\n", fp))
 		}
-		output.Printf("\n  %d components with no external imports", len(orphaned))
-		output.Print("  These may be safe to remove or may be dynamically loaded")
-	} else {
-		output.Print("  All components are imported somewhere!")
+		sb.WriteString(fmt.Sprintf("\n  %d components with no external imports\n", len(orphaned)))
+		sb.WriteString("  These may be safe to remove or may be dynamically loaded\n")
+		return pager.MaybePage(sb.String())
 	}
 
+	output.Print("  All components are imported somewhere!")
 	return nil
 }
 
@@ -375,17 +390,9 @@ func runMigrationsCommand() error {
 				relDir = path
 			}
 
-			parts := strings.Split(relDir, string(filepath.Separator))
-			pkgName := relDir
-			for i, part := range parts {
-				if part == "packages" && i+1 < len(parts) {
-					pkgName = parts[i+1]
-					break
-				}
-				if part == "workers" && i+1 < len(parts) {
-					pkgName = "workers/" + parts[i+1]
-					break
-				}
+			pkgName := extractPackageFromPath(relDir)
+			if pkgName == "" {
+				pkgName = relDir
 			}
 
 			groups = append(groups, migrationGroup{
@@ -921,14 +928,34 @@ func runDepsCommand(pkg string) error {
 
 	if pkg != "" {
 		// Validate package name -- reject path traversal attempts.
-		if strings.Contains(pkg, "..") || strings.Contains(pkg, "/") {
-			output.PrintWarning("Invalid package name -- must be a simple name like 'engine'")
+		if strings.Contains(pkg, "..") {
+			output.PrintWarning("Invalid package name")
 			return nil
 		}
 
-		packageDir := filepath.Join(cfg.GroveRoot, "packages", pkg)
-		if info, err := os.Stat(packageDir); err != nil || !info.IsDir() {
-			output.PrintWarning(fmt.Sprintf("Package not found: packages/%s", pkg))
+		// Find package directory. Supports both bare names (engine → packages/engine)
+		// and prefixed names (apps/landing → apps/landing).
+		var packageDir string
+		if strings.Contains(pkg, "/") {
+			// Prefixed name — validate the category directory.
+			parts := strings.SplitN(pkg, "/", 3)
+			if len(parts) < 2 || !isPackageDir(parts[0]) {
+				output.PrintWarning(fmt.Sprintf("Unknown package category: %s", pkg))
+				return nil
+			}
+			packageDir = filepath.Join(cfg.GroveRoot, pkg)
+		} else {
+			// Bare name — search all category directories, packages/ first.
+			for _, dir := range packageDirs {
+				candidate := filepath.Join(cfg.GroveRoot, dir, pkg)
+				if info, err := os.Stat(candidate); err == nil && info.IsDir() {
+					packageDir = candidate
+					break
+				}
+			}
+		}
+		if packageDir == "" {
+			output.PrintWarning(fmt.Sprintf("Package not found: %s", pkg))
 			return nil
 		}
 
@@ -1027,20 +1054,8 @@ func runDepsCommand(pkg string) error {
 			continue
 		}
 
-		parts := strings.Split(fp, string(filepath.Separator))
-
 		// Determine source package.
-		var source string
-		for i, part := range parts {
-			if part == "packages" && i+1 < len(parts) {
-				source = parts[i+1]
-				break
-			}
-			if part == "workers" && i+1 < len(parts) {
-				source = "workers/" + parts[i+1]
-				break
-			}
-		}
+		source := extractPackageFromPath(fp)
 
 		if source == "" {
 			continue
@@ -1130,19 +1145,9 @@ func runDepsCommand(pkg string) error {
 func extractPackageNames(rgOutput string, excludePkg string) []string {
 	packages := make(map[string]bool)
 	for _, line := range search.SplitLines(rgOutput) {
-		parts := strings.Split(line, string(filepath.Separator))
-		for i, part := range parts {
-			if part == "packages" && i+1 < len(parts) {
-				pkg := parts[i+1]
-				if pkg != excludePkg {
-					packages[pkg] = true
-				}
-				break
-			}
-			if part == "workers" && i+1 < len(parts) {
-				packages["workers/"+parts[i+1]] = true
-				break
-			}
+		pkg := extractPackageFromPath(line)
+		if pkg != "" && pkg != excludePkg {
+			packages[pkg] = true
 		}
 	}
 
